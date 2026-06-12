@@ -90,3 +90,33 @@ def test_graph_lifts_principal_recall():
     own = princ_recall("deviation_score_own")
     net = princ_recall("deviation_score")
     assert net > own, f"network signal did not help principals (own={own}, net={net})"
+
+
+# ---- Hard ER cases: same-name relatives must NOT be merged ----------------
+def _entities_of_person(mentions, link, person_id):
+    rec2pid = dict(zip(link.record_id, link.person_id))
+    mids = mentions[mentions.record_id.map(rec2pid) == person_id]
+    return set(mids.entity_id)
+
+def test_father_and_son_not_merged(mentions):
+    """Seed personas P000002 (father) and P000003 (son) share name + address but
+    differ in CNIC, DOB and father's name. The DOB/father vetoes must keep them
+    as distinct entities — the classic over-merge trap."""
+    import pandas as pd, os
+    from conftest import GT
+    link = pd.read_csv(os.path.join(GT, "record_linkage.csv"))
+    father = _entities_of_person(mentions, link, "P000002")
+    son = _entities_of_person(mentions, link, "P000003")
+    assert father and son, "seed father/son records missing"
+    assert father.isdisjoint(son), \
+        f"father/son were merged (father={father}, son={son})"
+
+def test_twins_not_merged(mentions):
+    """Seed twins P000004/P000005: same father + address + DOB year, different
+    first name, CNIC and exact DOB. Must stay distinct."""
+    import pandas as pd, os
+    from conftest import GT
+    link = pd.read_csv(os.path.join(GT, "record_linkage.csv"))
+    a = _entities_of_person(mentions, link, "P000004")
+    b = _entities_of_person(mentions, link, "P000005")
+    assert a and b and a.isdisjoint(b), f"twins were merged (a={a}, b={b})"

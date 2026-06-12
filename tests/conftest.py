@@ -20,13 +20,15 @@ GT = os.path.join(DATA, "ground_truth")
 @pytest.fixture(scope="session", autouse=True)
 def pipeline():
     """Generate data + run the full pipeline once so all tests share fresh outputs."""
-    import generate_data, entity_resolution, build_graph, scoring, gnn_detector, ensemble
+    import generate_data, entity_resolution, build_graph, scoring
+    import gnn_detector, ensemble, rule_floors
     generate_data.main()
     entity_resolution.resolve()
     build_graph.build()
     scoring.score()
     gnn_detector.run()          # writes gnn_scores.csv (skips cleanly if torch absent)
     ensemble.combine()          # adds deviation_score_combined to entity_scores.csv
+    rule_floors.compute_floors()  # entity_floors.csv + factors.json (explainable layer)
     return True
 
 
@@ -49,6 +51,11 @@ def scores():
 @pytest.fixture
 def features():
     return pd.read_csv(os.path.join(RES, "entity_features.csv"))
+
+
+@pytest.fixture
+def floors():
+    return pd.read_csv(os.path.join(RES, "entity_floors.csv"))
 
 
 @pytest.fixture

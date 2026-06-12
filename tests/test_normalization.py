@@ -1,62 +1,81 @@
-"""Unit tests for the entity-resolution normalization primitives + edge cases."""
-import entity_resolution as er
+"""Unit tests for the entity-resolution cascade primitives + edge cases.
+
+Targets the ported `matching` package: consonant-skeleton normalization (the
+script-bridging trick), CNIC parsing (full / masked / garbage), the DOB band,
+and the typo matcher.
+"""
+from matching import normalize as nz
+from matching import features as ft
+from matching.records import Record
 
 
-# ---- CNIC normalization --------------------------------------------------
-def test_cnic_strips_formatting():
-    assert er.normalize_cnic("12345-1234567-1") == "1234512345671"
-
-def test_cnic_missing_and_garbage_become_empty():
-    assert er.normalize_cnic("") == ""
-    assert er.normalize_cnic(None) == ""
-    assert er.normalize_cnic("N/A") == ""
-    assert er.normalize_cnic("123") == ""            # wrong length -> unusable
-
-def test_cnic_float_nan_safe():
-    assert er.normalize_cnic(float("nan")) == ""
+def _rec(name="", *, father="", cnic="", dob=None, phone=None, city=None, addr=None):
+    return Record(
+        record_id="X", registry="test", raw_name=name,
+        name_toks=nz.name_tokens(name) if not nz.is_urdu(name) else [],
+        name_skels=nz.name_skeletons(name), urdu=nz.is_urdu(name),
+        father_skels=nz.name_skeletons(father) if father else [],
+        addr=nz.normalize_address(addr) if addr else None,
+        cnic=nz.normalize_cnic(cnic), phone=nz.normalize_phone(phone) if phone else None,
+        dob=dob, city=city,
+    )
 
 
-# ---- Name normalization (Urdu/English mixed text) ------------------------
-def test_transliteration_variants_canonicalize_together():
-    # the core challenge: different spellings of one name must collapse
-    _, a = er.normalize_name("Muhammad Khan")
-    _, b = er.normalize_name("Mohammad Khan")
-    _, c = er.normalize_name("Mohammed Khan")
-    assert a == b == c
+# ---- Consonant skeleton: the script-bridging core ------------------------
+def test_urdu_and_roman_collapse_to_same_skeleton():
+    assert nz.roman_skeleton("Muhammad") == nz.urdu_skeleton("محمد") == "mhmd"
+    assert nz.roman_skeleton("Khan") == nz.urdu_skeleton("خان")
 
-def test_urdu_script_maps_to_latin_canonical():
-    _, latin = er.normalize_name("Imran Mughal")
-    _, urdu = er.normalize_name("عمران مغل")
-    assert latin == urdu
+def test_roman_spelling_variants_collapse():
+    sk = {nz.roman_skeleton(v) for v in ("Muhammad", "Mohammad", "Mohammed", "Muhammed")}
+    assert sk == {"mhmd"}
 
-def test_mixed_script_name():
-    # a real record: one token Urdu, one Latin
-    _, mixed = er.normalize_name("عمران Mughal")
-    _, latin = er.normalize_name("Imran Mughal")
-    assert mixed == latin
+def test_honorifics_are_stripped():
+    assert nz.name_tokens("Dr. Imran Khan")[0] == "imran"
+    assert nz.name_tokens("Haji Muhammad Akram")[0] == "muhammad"
 
-def test_name_similarity_high_for_variants():
-    _, a = er.normalize_name("Ayesha Qureshi")
-    _, b = er.normalize_name("Aisha Quraishi")
-    assert er.name_similarity(a, b) > 0.8
-
-def test_name_similarity_low_for_different_people():
-    _, a = er.normalize_name("Imran Khan")
-    _, b = er.normalize_name("Bilal Malik")
-    assert er.name_similarity(a, b) < 0.3
-
-def test_empty_name_edge_case():
-    canon, toks = er.normalize_name("")
-    assert canon == "" and toks == ()
-    assert er.name_similarity(toks, ("imran",)) == 0.0
+def test_mixed_script_name_skeletons_agree():
+    assert nz.name_skeletons("عمران Mughal") == nz.name_skeletons("Imran Mughal")
 
 
-# ---- CNIC typo matching --------------------------------------------------
-def test_typo_match_detects_single_digit_diff():
-    assert er.cnic_typo_match("1234512345671", "1234512345672") is True
+# ---- CNIC parsing (full / masked / garbage) ------------------------------
+def test_cnic_full_parsed():
+    c = nz.normalize_cnic("12345-1234567-1")
+    assert c["digits"] == "1234512345671" and c["prefix"] == "12345" and c["last"] == "1"
 
-def test_typo_match_rejects_two_digit_diff():
-    assert er.cnic_typo_match("1234512345671", "1234512345688") is False
+def test_cnic_masked_keeps_prefix_and_last():
+    c = nz.normalize_cnic("42101-XXXXXXX-7")
+    assert c["digits"] is None and c["prefix"] == "42101" and c["last"] == "7"
 
-def test_typo_match_rejects_empty():
-    assert er.cnic_typo_match("", "1234512345671") is False
+def test_cnic_garbage_and_empty_are_none():
+    for bad in ("", "N/A", "123", None, float("nan")):
+        c = nz.normalize_cnic(bad)
+        assert c["digits"] is None
+
+
+# ---- Typo matcher (Damerau-1) --------------------------------------------
+def test_damerau1_single_digit_diff():
+    assert ft.damerau1("1234512345671", "1234512345681") is True
+
+def test_damerau1_transposition():
+    assert ft.damerau1("1234512345671", "1234512345617") is True
+
+def test_damerau1_rejects_two_edits():
+    assert ft.damerau1("1234512345671", "1234512345688") is False
+
+
+# ---- Name similarity bands -----------------------------------------------
+def test_name_band_high_for_variants():
+    assert ft.band_name(_rec("Ayesha Qureshi"), _rec("Aisha Quraishi")) in ("name_exact", "name_close")
+
+def test_name_band_diff_for_different_people():
+    assert ft.band_name(_rec("Imran Khan"), _rec("Bilal Malik")) == "name_diff"
+
+
+# ---- DOB band (the recall lever) -----------------------------------------
+def test_dob_band_match_and_diff():
+    assert ft.band_dob(_rec("A", dob="1980-05-12"), _rec("B", dob="1980-05-12")) == "dob_match"
+    assert ft.band_dob(_rec("A", dob="1980-05-12"), _rec("B", dob="1991-01-02")) == "dob_diff"
+
+def test_dob_band_unobservable_when_missing():
+    assert ft.band_dob(_rec("A", dob=None), _rec("B", dob="1980-05-12")) is None

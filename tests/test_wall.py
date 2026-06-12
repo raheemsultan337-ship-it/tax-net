@@ -1,6 +1,7 @@
 """The WALL: the unsupervised detector must NEVER see ground truth. These tests
 enforce the separation structurally — a core correctness + integrity guarantee."""
 import os
+import glob
 import pandas as pd
 
 from conftest import OBS, SRC
@@ -9,8 +10,19 @@ from conftest import OBS, SRC
 LEAKY_COLUMNS = {"person_id", "true_income", "asset_income", "report_ratio",
                  "is_evader", "non_filer", "role", "principal_id", "uses_proxy"}
 
-# modules that make up the unsupervised detector — none may reference ground truth
-DETECTOR_MODULES = ["entity_resolution.py", "build_graph.py", "scoring.py"]
+# Modules that make up the unsupervised detector — none may reference ground truth.
+# (generate_data.py / datagen/* legitimately WRITE ground truth, so they are not
+#  detector modules and are excluded.)
+DETECTOR_MODULES = ["entity_resolution.py", "build_graph.py", "scoring.py",
+                    "gnn_detector.py", "ensemble.py", "score_person.py",
+                    "rule_floors.py", "tax_slabs.py", "audit_report.py",
+                    "live_match.py"]
+
+
+def _detector_sources():
+    paths = [os.path.join(SRC, m) for m in DETECTOR_MODULES]
+    paths += glob.glob(os.path.join(SRC, "matching", "*.py"))
+    return [p for p in paths if os.path.exists(p)]
 
 
 def test_observable_data_has_no_leaky_columns():
@@ -21,10 +33,10 @@ def test_observable_data_has_no_leaky_columns():
 
 
 def test_detector_source_never_reads_ground_truth():
-    for mod in DETECTOR_MODULES:
-        src = open(os.path.join(SRC, mod), encoding="utf-8").read()
+    for path in _detector_sources():
+        src = open(path, encoding="utf-8").read()
         assert "ground_truth" not in src, \
-            f"{mod} references ground_truth — the wall is breached"
+            f"{os.path.relpath(path, SRC)} references ground_truth — the wall is breached"
 
 
 def test_observable_records_have_no_person_id(observable):

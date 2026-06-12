@@ -131,58 +131,10 @@ def run(epochs=200):
     out = pd.DataFrame({"entity_id": eids, "gnn_score": np.round(score, 1)})
     out.to_csv(os.path.join(RES, "gnn_scores.csv"), index=False)
     print(f"\n  wrote data/resolved/gnn_scores.csv ({len(out)} entities)")
-
-    # optional AP comparison vs Isolation Forest (reads ground truth via evaluate)
-    try:
-        _compare_ap(out)
-    except Exception as e:                                # noqa: BLE001
-        print(f"  (AP comparison skipped: {e})")
+    # NB: gnn_score is reconstruction error only — no ground truth is read here.
+    # All accuracy comparison (IF vs GNN vs ensemble) lives in evaluate.py, the
+    # single ground-truth reader (the wall).
     return out
-
-
-def _compare_ap(gnn_out):
-    link = pd.read_csv(os.path.join(ROOT, "data", "ground_truth", "record_linkage.csv"))
-    persons = pd.read_csv(os.path.join(ROOT, "data", "ground_truth", "persons.csv"),
-                          keep_default_na=False)
-    mentions = pd.read_csv(os.path.join(RES, "mentions.csv"))
-    mentions["tp"] = mentions.record_id.map(dict(zip(link.record_id, link.person_id)))
-    ent_pid = mentions.groupby("entity_id").tp.agg(lambda s: s.value_counts().idxmax())
-    ev = dict(zip(persons.person_id, persons.is_evader))
-    role = dict(zip(persons.person_id, persons.get("role", "normal")))
-
-    def tag(df):
-        d = df.copy()
-        d["pid"] = d.entity_id.map(ent_pid)
-        d["role"] = d.pid.map(role).fillna("normal")
-        d["target"] = d.pid.map(ev).fillna(False) | (d["role"] == "proxy")
-        return d
-
-    def ap(d, col):
-        d = d.sort_values(col, ascending=False)
-        y = d.target.astype(int).tolist()
-        c = s = 0
-        n = sum(y)
-        for i, v in enumerate(y, 1):
-            if v:
-                c += 1
-                s += c / i
-        return s / n if n else 0.0
-
-    def princ_recall(d, col, frac=0.25):
-        d = d.sort_values(col, ascending=False)
-        k = max(1, int(len(d) * frac))
-        tot = (d.role == "principal").sum()
-        return (d.head(k).role == "principal").sum() / tot if tot else float("nan")
-
-    iso = tag(pd.read_csv(os.path.join(RES, "entity_scores.csv")))
-    gnn = tag(gnn_out)
-    print(f"\n  AP — Isolation Forest : {ap(iso, 'deviation_score'):.3f}")
-    print(f"  AP — GNN autoencoder  : {ap(gnn, 'gnn_score'):.3f}")
-    # The GNN uses OWN features only — message-passing over household edges is its
-    # only route to a proxy-using principal. Compare to IF's own-only column.
-    print(f"\n  principal recall@25% — IF own-only      : {princ_recall(iso, 'deviation_score_own'):.3f}")
-    print(f"  principal recall@25% — IF own+network   : {princ_recall(iso, 'deviation_score'):.3f}")
-    print(f"  principal recall@25% — GNN (msg-passing): {princ_recall(gnn, 'gnn_score'):.3f}")
 
 
 if __name__ == "__main__":

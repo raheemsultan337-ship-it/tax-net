@@ -42,53 +42,109 @@ data/
 
 ## Pipeline
 
-| Stage | File | What it does |
+| Stage | File(s) | What it does |
 |------|------|--------------|
-| 1. Synthetic data | `src/generate_data.py` | Realistic Pakistani civic datasets with Urdu/English name variants, dirty/missing CNICs, and a latent evasion model. |
-| 2. Entity resolution | `src/entity_resolution.py` | Transliteration-aware normalization, CNIC-authoritative clustering, typo recovery, city-disambiguated attachment of CNIC-less records. |
+| 1. Synthetic data | `src/generate_data.py` + `src/datagen/*` | Realistic Pakistani civic datasets: per-registry **Urdu script**, masked/typo'd CNICs, phone identifiers, address-rendering variation, real vehicle makes, DOB + father in every record; a latent evasion + proxy model behind the wall. |
+| 2. Entity resolution | `src/entity_resolution.py` + `src/matching/*` | A multi-tier cascade: **Tier 1** unsupervised Fellegi-Sunter probabilistic matching (consonant-skeleton script bridging + a DOB band) → **Tier 2** multilingual sentence-embedding rescue (Urdu↔Roman) → **Tier 4** collective resolution over the identifier graph (merge/split). Emits per-link evidence for the audit trail. |
 | 3. Knowledge graph | `src/build_graph.py` | NetworkX graph (persons ↔ vehicles/property/utilities/addresses) + per-entity feature table. |
 | 4. Deviation scoring | `src/scoring.py` | Multi-signal **implied-income** estimator → footprint-to-declared ratios → **Isolation Forest** anomaly score (0–100) + explainable audit trail. |
-| 4b. GNN fallback | `src/gnn_detector.py` | Optional graph-neural-net anomaly detector (PyTorch Geometric) for the academic-complexity criterion. |
-| 4c. Score new person | `src/score_person.py` | Inference: loads the frozen model and scores a brand-new individual (deviation score + audit trail) without retraining. |
-| 5. Dashboard | `app.py` | Streamlit UI. Headline KPIs (tax-base gap, proxy networks detected) + three tabs: **Flagged individuals** (ranked list, audit trails, ego-graphs), **Proxy/benami networks** (hub table, hidden-asset totals, network graph), and **Score a new individual** (enter records → live deviation score + audit trail). |
+| 4b. GNN detector | `src/gnn_detector.py` | Graph-neural-net (GraphSAGE) anomaly detector — message-passing catches wealth hidden across proxy networks. |
+| 4c. Ensemble | `src/ensemble.py` | Blends IF + GNN into one production score (`deviation_score_combined`) — the dashboard headline. Falls back to IF if torch is absent. |
+| 4c. Score new person | `src/score_person.py` | Inference: scores a brand-new individual from the frozen model without retraining. |
+| 4d. Rule floors | `src/rule_floors.py`, `src/tax_slabs.py` | Secondary, fully explainable lifestyle-income **floors** (engine-cc / electricity / property / travel) → an independent tax-gap cross-check shown in the audit + dashboard. |
+| 4e. Audit notices | `src/audit_report.py` | Per-entity **bilingual (English/Urdu) PDF** notice + JSON + Markdown: headline ML score, the per-link ER evidence, and the rule-floor cross-check. |
+| 5. Dashboard | `app.py` + `src/live_match.py` | Streamlit UI: KPIs + five tabs — **Overview** (charts), **Flagged** (audit trail, floor cross-check, PDF download, ego-graph), **Proxy/benami networks**, **Live match** (type any record → cascade matches it live with evidence), **Score a new individual**. |
 | Eval | `src/evaluate.py` | **Only** module that reads ground truth — ER + detection precision/recall. |
 
 ---
 
-## Quick start
+## Setup (after cloning)
+
+**Prerequisites:** Python **3.12+** (developed on 3.14) and `git`. ~1 GB free disk
+(a multilingual embedding model is downloaded on first run). The generated data and
+the model cache are **git-ignored** — you regenerate them locally with the steps below.
+
+### 1. Create a virtual environment & install dependencies
 
 ```bash
+# from the repo root
 python -m venv .venv
-.venv/Scripts/pip install -r requirements.txt   # Windows
-# source .venv/bin/activate; pip install -r requirements.txt   # *nix
 
-# run the whole pipeline (stages 1-4 + evaluation)
-.venv/Scripts/python src/run_pipeline.py
+# Windows (PowerShell / Git Bash)
+.venv/Scripts/python -m pip install --upgrade pip
+.venv/Scripts/python -m pip install -r requirements.txt
 
-# launch the dashboard
-.venv/Scripts/streamlit run app.py
+# macOS / Linux
+# python3 -m venv .venv && source .venv/bin/activate
+# pip install --upgrade pip && pip install -r requirements.txt
 ```
 
-> On Windows, set `PYTHONUTF8=1` if you see encoding errors printing Urdu names.
+> **PyTorch (Stage 4b GNN, optional but recommended).** If `torch` fails to install
+> from PyPI on your platform, use the CPU wheels and re-run the requirements install:
+> ```bash
+> .venv/Scripts/python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+> ```
+> The pipeline **degrades gracefully** without torch (it falls back to the Isolation
+> Forest only — the ensemble step just copies the IF score).
+
+### 2. Run the full pipeline (generates data → resolves → scores → audits → evaluates)
+
+```bash
+# Windows — PYTHONUTF8=1 avoids cp1252 errors when printing Urdu names
+set PYTHONUTF8=1                       # PowerShell: $env:PYTHONUTF8=1
+.venv/Scripts/python src/run_pipeline.py
+
+# macOS / Linux
+# PYTHONUTF8=1 python src/run_pipeline.py
+```
+
+This recreates everything under `data/` (observable registries, ground truth,
+resolved entities, graph, scores, rule floors) and writes bilingual audit notices to
+`data/audit/`, then prints the ER + detection scorecard. First run takes ~60 s
+(subsequent runs are similar; the embedding model is cached after the first download).
+
+> **Entity-resolution embeddings (Tier 2).** On first run the cascade downloads
+> `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` (~450 MB) into
+> `models/`. If the machine is **offline** and the model isn't cached, Tier 2 is
+> skipped automatically (a warning prints) and resolution proceeds with Tiers 1 + 4 —
+> recall drops slightly but the pipeline still completes.
+
+### 3. Run the tests (optional but recommended)
+
+```bash
+.venv/Scripts/python -m pytest tests/ -q      # 42 tests; regenerates data once, ~80 s
+```
+
+### 4. Launch the dashboard
+
+```bash
+.venv/Scripts/streamlit run app.py            # serves http://localhost:8501
+```
+
+The dashboard reads the artifacts produced in step 2 — **run the pipeline before
+launching it** on a fresh clone.
 
 ---
 
 ## Results (default seed)
 
+Run at **N = 10,000 people** (~31,650 raw records → ~10,675 resolved entities;
+full pipeline ~60 s incl. embeddings):
+
 | Stage | Metric | Value |
 |------|--------|-------|
-Run at **N = 10,000 people** (~31,500 raw records → ~11,234 resolved entities;
-full pipeline ~26 s):
+| Entity resolution (cascade) | Precision / Recall / F1 | **0.999 / 0.968 / 0.983** |
+| | Cluster purity | **1.000** |
+| Detection (Isolation Forest, own+network) | Average Precision | **0.95** |
+| | Precision@25% / Recall@25% | **0.77 / 0.97** (vs ~0.20 base rate) |
+| **Ensemble (IF + GNN)** — production score | Average Precision | **0.96** |
+| | Principal recall@25% | **0.95** |
 
-| Entity resolution | Precision / Recall / F1 | **0.99 / 0.95 / 0.97** |
-| | Cluster purity | **1.00** |
-| Detection (Isolation Forest, own+network) | Precision@25% | **0.75** (vs ~0.31 base rate) |
-| | Recall@25% | **0.60** |
-| | Average Precision | **0.71** |
-
-Entity resolution reaches near-perfect linkage by using the disambiguating fields
-real civic records carry (father's name + date of birth), which separate
-same-named people who share or lack a CNIC.
+Entity resolution reaches near-perfect linkage by combining probabilistic
+Fellegi-Sunter matching, multilingual embeddings that bridge Urdu↔Roman spellings,
+and collective graph resolution — using the disambiguating fields real civic records
+carry (father's name + date of birth) to separate same-named people who share or lack
+a CNIC.
 
 ### The proxy/benami demonstration — why "Graph AI"
 
@@ -99,17 +155,18 @@ the graph links them to their asset-rich, non-filing associates.
 
 | Detector | Principal recall@25% |
 |---|---|
-| Isolation Forest — own features only (tabular) | **0.04** (blind) |
-| Isolation Forest — own + engineered network feature | **0.51** |
-| **GNN (GraphSAGE) — message-passing over the graph** | **0.93** |
+| Isolation Forest — own features only (tabular) | **0.09** (blind) |
+| Isolation Forest — own + engineered network feature | **0.92** |
+| GNN (GraphSAGE) — message-passing over the graph | **~0.94** |
+| **Ensemble (IF + GNN) — the production score** | **0.95** |
 
 **Right tool per threat.** For straightforward footprint-vs-declared mismatch
-(self-evaders), Isolation Forest wins overall (AP 0.71 vs GNN 0.63) and is fully
-explainable. For wealth hidden *across a network* of proxies, the **GNN dominates**
-— message-passing propagates a proxy's anomalous assets back onto the principal,
-something a tabular model structurally cannot do without bespoke features. The
-production system uses Isolation Forest (own + network features) as the
-explainable core and the GNN for relational hidden-wealth.
+(self-evaders), Isolation Forest is accurate (AP 0.95) and fully explainable. For
+wealth hidden *across a network* of proxies, the **GNN dominates** — message-passing
+propagates a proxy's anomalous assets back onto the principal, something a tabular
+model structurally cannot do without bespoke features. The production system
+**ensembles** the two (AP 0.96, principal recall 0.95): Isolation Forest's accuracy
+plus the GNN's relational reach in one 0–100 score.
 
 ---
 
@@ -117,18 +174,22 @@ explainable core and the GNN for relational hidden-wealth.
 
 A `pytest` suite (`tests/`) runs the full pipeline once and validates:
 
-- **Normalization & edge cases** — CNIC formatting/missing/garbage, Urdu↔English
-  transliteration collapsing to one identity, empty names, typo matching.
+- **Cascade primitives & edge cases** — consonant-skeleton script bridging
+  (Urdu↔Roman collapse to one key), CNIC parsing (full / masked / garbage), the DOB
+  evidence band, typo (Damerau-1) matching, honorific stripping.
 - **Quality thresholds** — ER precision ≥ 0.95 / recall ≥ 0.90 / purity ≥ 0.97;
-  detection AP ≥ 0.60; deviation scores in range; every flag has an audit trail.
+  detection AP ≥ 0.60; ensemble AP ≥ 0.70; deviation scores in range; audit trails.
+- **Hard ER cases** — same-name father/son and twins must stay **distinct** entities.
 - **Graph integrity** — expected node kinds and asset linkage.
 - **The proxy claim** — the network signal must lift principal recall over the
   own-features baseline.
-- **The wall** — observable data carries no ground-truth columns, and the
-  detector modules never reference the `ground_truth/` directory.
+- **Rule floors & audit** — the false-positive guard (compliant filers score zero
+  gap) and that bilingual JSON/Markdown/PDF notices generate for the top flags.
+- **The wall** — observable data carries no ground-truth columns, and every detector
+  module (incl. the cascade and rule/audit layers) never references `ground_truth/`.
 
 ```bash
-.venv/Scripts/python -m pytest tests/ -q        # 25 tests, ~6s
+.venv/Scripts/python -m pytest tests/ -q        # 42 tests, ~80s
 ```
 
 ## Scalability & deployment

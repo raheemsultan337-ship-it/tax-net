@@ -26,37 +26,39 @@ a knowledge graph, and flags likely tax non-filers / under-reporters with an
 
 | Stage | File | Notes |
 |------|------|------|
-| 1 | `src/generate_data.py` | Synthetic data; latent `is_evader` flag; Urdu/English name variants; dirty/missing CNICs. SEED=42, N_PERSONS=10000 (demo scale; ~4.5 records/person). |
-| 2 | `src/entity_resolution.py` | CNIC-authoritative clustering (NOT transitive name edges — that over-merged). Typo recovery + attach blocked by DOB (high-cardinality → scalable) then name metaphone. DOB + father's name disambiguate CNIC-less attach. |
-| 3 | `src/build_graph.py` | NetworkX graph + `entity_features.csv`; fine-grained household address nodes + network (proxy) features. |
+| 1 | `src/generate_data.py` + `src/datagen/*` | Donor 6-registry generator adapted to tax-net's observable+GT schema; per-registry Urdu script, masked/typo CNICs, phone identifiers, address-rendering variation, real vehicle makes; DOB + father in every record; hand-seeded edge personas (demo star, father/son, twins, proxy). Latent `is_evader`/`role` labels behind the wall. SEED=42, N_PERSONS=10000. |
+| 2 | `src/entity_resolution.py` + `src/matching/*` | Thin orchestrator over the ported cascade: Tier1 Fellegi-Sunter (self-calibrated, +DOB band & DOB blocking) → Tier2 multilingual sentence-embedding rescue (`models/` cache) → Tier4 graph-collective PROMOTE/SPLIT (+`shared_dob` promotion). Emits `mentions.csv` (contiguous **int** entity_id) + `match_evidence.csv`. Tier3/Ollama dropped. |
+| 3 | `src/build_graph.py` | UNCHANGED. NetworkX graph + `entity_features.csv`; fine-grained household address nodes + network (proxy) features. |
 | 4 | `src/scoring.py` | Multi-signal implied-income estimator → footprint/declared RATIOS + network signal → Isolation Forest (own + network). Audit trail = population-percentile reasons in PKR. |
-| 4b | `src/gnn_detector.py` | GraphSAGE autoencoder. Wins on proxy networks (msg-passing). |
-| 4c | `src/ensemble.py` | Blends IF + GNN into ONE production score (`deviation_score_combined`). Quantile-aligns GNN→IF, blends `IF_WEIGHT*IF + (1-w)*GNN`, then remaps onto IF's distribution so the 0–100 scale/threshold keep meaning. Falls back to IF if no torch. No ground truth (wall holds). |
-| 4c | `src/score_person.py` | INFERENCE on a new individual: loads frozen model bundle (saved by scoring.py to `model_bundle.pkl`), predicts deviation score + audit trail without retraining. |
-| 5 | `app.py` | Streamlit dashboard: KPIs + 3 tabs — Flagged, Proxy/benami networks, "Score a new individual" form (live inference). |
-| eval | `src/evaluate.py` | ONLY reader of ground truth. |
-| run | `src/run_pipeline.py` | Runs stages 1–4c (incl. GNN + ensemble) + eval. |
-| test | `tests/` (pytest) | 26 tests: normalization/edge cases, ER+detection quality thresholds, ensemble (AP held + proxy recall lift), graph integrity, proxy claim, the wall. `pytest tests/ -q`. |
-| bench | `src/benchmark.py` | Scalability: ER near-linear via blocking (restores N=1500 after). |
+| 4b | `src/gnn_detector.py` | GraphSAGE autoencoder. Wins on proxy networks (msg-passing). (Diagnostic GT read removed — evaluate.py is now the sole GT reader.) |
+| 4c | `src/ensemble.py` | Blends IF + GNN into ONE production score (`deviation_score_combined`). Quantile-aligns GNN→IF, blends `IF_WEIGHT*IF + (1-w)*GNN`, then remaps onto IF's distribution. Falls back to IF if no torch. No ground truth (wall holds). |
+| 4c | `src/score_person.py` | INFERENCE on a new individual: loads frozen `model_bundle.pkl`, predicts deviation score + audit trail without retraining. |
+| 4d | `src/rule_floors.py` + `src/tax_slabs.py` | SECONDARY explainable layer (NOT the headline). Donor rule engine re-implemented over the flat `entity_features.csv`: engine-cc/electricity/property/travel income FLOORS → `entity_floors.csv` + `factors.json`. |
+| 4e | `src/audit_report.py` | `AuditBuilder` → per-entity JSON + Markdown + **bilingual PDF** notice (Urdu header via Windows Arabic font + reshaper/bidi, English fallback). Headline = ensemble score; rule floors + per-link ER evidence as cross-check. `make_audits(top_n)`. |
+| 5 | `app.py` + `src/live_match.py` | Streamlit dashboard: KPIs + 5 tabs — Overview (Altair), Flagged (+ floors cross-check + PDF download), Proxy/benami, **Live match** (type a record, cascade matches live with evidence), Score-a-new-individual. |
+| eval | `src/evaluate.py` | ONLY reader of ground truth. Target = `is_evader OR role=='proxy'`. |
+| run | `src/run_pipeline.py` | Runs stages 1–4e + eval. |
+| test | `tests/` (pytest) | 42 tests: normalization (cascade primitives + DOB band), ER+detection thresholds, ensemble, graph, proxy claim, father/son + twins split, rule floors, audit, live match, the wall. `pytest tests/ -q`. |
+| bench | `src/benchmark.py` | Scalability: ER near-linear via blocking. |
 | pitch | `PITCH.md` | Round-2 material (value prop / market / demo script). |
 
-## Current results (seed 42, N=10000 — full pipeline ~30s)
+## Current results (MERGED build, seed 42, N=10000 — full pipeline ~60s incl. embeddings)
 
-- ~31,500 raw records → ~11,354 resolved entities (10,440 true; 315 proxy-using
-  principals).
-- **ER:** P 1.00 / R 0.96 / F1 0.97, cluster purity 0.998.
-- **Detection (Isolation Forest, own+network):** P@25% 0.82, R@25% 0.64, **AP 0.79**
-  (audit-worthy base rate ~32%).
+- ~31,650 raw records → 10,675 resolved entities (10,000 true; ~420 proxy
+  principals + ~420 proxies). Harder data than pre-merge (masked CNICs, per-registry
+  Urdu, address-rendering variation) — yet every metric improved.
+- **ER (cascade: Fellegi-Sunter + embeddings + graph-collective):** P **0.999** /
+  R **0.968** / F1 **0.983**, cluster purity **1.000**. (Pre-merge: 0.996/0.956/0.975.)
+- **Detection (Isolation Forest, own+network):** P@25% 0.77, R@25% 0.97, **AP 0.951**
+  (audit-worthy base rate ~20%). (Pre-merge AP 0.79.)
 - **Proxy/benami scenario (the graph payoff):** principal recall@25% —
-  IF own-only **0.11**, IF own+network **0.78**, GNN (msg-passing) **0.94**.
-  GNN loses overall AP but DOMINATES on relational hidden-wealth. Conclusion:
-  IF for tabular mismatch (self-evaders), GNN for proxy networks. Right tool per threat.
-- **ENSEMBLE (one production score, `deviation_score_combined`):** AP **0.78**
-  (IF 0.79 — held), principal recall@25% **0.90** (vs IF+net 0.78). Best of both:
-  keeps IF's accuracy, inherits most of the GNN's proxy recall. `IF_WEIGHT=0.7`
-  (tunable in ensemble.py): ↑ favours tabular/non-zero-filer catches, ↓ favours
-  relational recall. Dashboard headline = combined; audit panel shows the per-model
-  (tabular vs relational) breakdown + which signal drove each flag.
+  IF own-only **0.085**, IF own+network **0.92**, GNN (msg-passing) ~0.94.
+  IF for tabular mismatch, GNN for proxy networks. Right tool per threat.
+- **ENSEMBLE (one production score, `deviation_score_combined`):** AP **0.961**,
+  principal recall@25% **0.954**. (Pre-merge 0.78 / 0.90.) `IF_WEIGHT=0.7`.
+  Dashboard headline = combined; audit panel shows the per-model breakdown.
+- **Rule-based floors (secondary, explainable):** 2,074 high-band; Rs ~13.0B
+  lifestyle-implied tax gap. Used in the audit notice + dashboard cross-check.
 - **Flagged-list composition (score ≥ 60):** ~534 flagged, 21% non-zero-declared
   under-reporting filers (was 11%); 839 filers score ≥40 → visible colour in the
   declared-vs-implied scatter. Non-filers ~15% of population.
@@ -121,7 +123,42 @@ a knowledge graph, and flags likely tax non-filers / under-reporters with an
 - shap/numba not installed — the audit trail is percentile-based by design (no
   numba dependency risk). SHAP is optional future work.
 
-## WHERE WE LEFT OFF (last session — 2026-06-12, part 2)
+## WHERE WE LEFT OFF (2026-06-13 — THE MERGE)
+
+Merged the donor `D:\Projects\hackathon-tax-net` INTO this repo to get best-of-both.
+Decisions (fixed by the user): base = tax-net; data = donor's richer 6-registry
+generator enriched with DOB+father; scoring = IF+GNN ensemble stays headline, donor
+rule-floors are a secondary explainable layer; the Ollama LLM tier was dropped.
+
+What landed (all 6 workstreams, **42 pytest tests green**, dashboard HTTP 200,
+full pipeline runs end-to-end ~60s):
+- **Data:** `src/datagen/*` (ported names/addresses/noise/tax/personas/registries) +
+  thin `src/generate_data.py`. Donor population model mapped to tax-net's GT schema
+  (`is_evader` = materially under-reporting a materially-taxable income, ≥2.5M; proxy
+  owner→`principal`, frontman→`proxy`). Proxy `_proxy_pair` reworked so the principal
+  keeps a SMALL visible footprint incl. a utility at the **stable canonical** household
+  string (so build_graph forms the shared-address link) while the non-filing proxy
+  holds the bulk. build_graph UNCHANGED (column-name contract preserved).
+- **ER cascade:** `src/matching/*` (normalize/features/blocking/fellegi/cluster/
+  pipeline/tier2/tier4 + records). Added a **DOB evidence band**, **DOB blocking key**
+  (`D:{dob}|{last_skel}`), a tier1 **dob_veto**, and a **tier4 `shared_dob` PROMOTE** —
+  the last lifted recall 0.934→0.968 at precision 0.999. `entity_resolution.py` is a
+  thin orchestrator emitting `mentions.csv` (string entity_id remapped to contiguous
+  **int** for build_graph) + `match_evidence.csv`. Model cache copied to `models/`.
+- **Rule floors / audit / dashboard / wall** — see the stage table above.
+- **Wall made airtight:** removed gnn_detector's diagnostic GT read; `evaluate.py` is
+  now the SOLE ground-truth reader. Wall test extended to `matching/*` + new modules.
+
+Gotchas worth remembering: `entity_id` MUST stay int (build_graph does `int(eid)`);
+the proxy graph link only forms if principal & proxy emit byte-identical household
+strings (we write `Address.canonical()`, not `render_address`); tier2 needs
+`sentence-transformers` + the `models/` cache (guarded — degrades to tier1+tier4 if
+absent); PDF Urdu header uses Windows tahoma/arial Arabic glyphs + reshaper/bidi.
+New deps installed: sentence-transformers, reportlab, arabic_reshaper, python-bidi.
+
+---
+
+### Earlier session (2026-06-12, part 2)
 
 Everything is DONE, working, committed-to-disk at **N=10000**, all **25 pytest
 tests green**, dashboard boots clean (HTTP 200). Data on disk is the canonical 10k

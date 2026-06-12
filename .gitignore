@@ -179,3 +179,12 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+# ── tax-net project artifacts (all regenerable; keep the repo lightweight) ──
+# Generated pipeline outputs — recreated by `python src/run_pipeline.py`
+/data/
+# Sentence-transformer cache (~450 MB) — downloaded on first run or copied in
+/models/
+# Transient dashboard render + on-demand audit PDFs
+_ego.html
+*_dash_*.pdf

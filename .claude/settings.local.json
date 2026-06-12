@@ -23,7 +23,10 @@
       "Bash(PYTHONUTF8=1 .venv/Scripts/python.exe -c \"import sys;sys.path.insert\\(0,'src'\\);import evaluate as ev;ev.evaluate_detection\\(\\)\")",
       "Bash(PYTHONUTF8=1 .venv/Scripts/python.exe -m streamlit run app.py --server.headless true --server.port 8525)",
       "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:8525/)",
-      "Bash(echo \"HTTP $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:8525/ 2>/dev/null\\)\")"
+      "Bash(echo \"HTTP $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:8525/ 2>/dev/null\\)\")",
+      "Bash(xargs ls -la)",
+      "Bash(python -m pytest tests/ --collect-only -q)",
+      "Bash(python *)"
     ]
   }
 }

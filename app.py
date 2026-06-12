@@ -23,6 +23,8 @@ import streamlit.components.v1 as components
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 from score_person import score_person   # noqa: E402  (inference on a new individual)
+import live_match                         # noqa: E402  (live ER on a typed record)
+import audit_report                       # noqa: E402  (bilingual PDF notice)
 RES = os.path.join(ROOT, "data", "resolved")
 OBS = os.path.join(ROOT, "data", "observable")
 GT = os.path.join(ROOT, "data", "ground_truth")
@@ -52,6 +54,26 @@ def load():
 def load_graph():
     with open(os.path.join(RES, "graph.gpickle"), "rb") as fh:
         return pickle.load(fh)
+
+
+@st.cache_data
+def load_floors():
+    """Rule-based lifestyle-floor cross-check (secondary, explainable layer)."""
+    try:
+        f = pd.read_csv(os.path.join(RES, "entity_floors.csv"))
+        return f.set_index("entity_id")
+    except FileNotFoundError:
+        return None
+
+
+@st.cache_resource
+def load_match_index():
+    return live_match.load_index()
+
+
+@st.cache_resource
+def audit_builder():
+    return audit_report.AuditBuilder()
 
 
 @st.cache_data
@@ -196,6 +218,7 @@ def render_network(G, feats, focal_eid, radius=3, height=460):
 # --------------------------------------------------------------------------
 scores, mentions, feats = load()
 G = load_graph()
+floors = load_floors()
 
 # derived: suspected proxy-network hubs = filers whose household associates hold
 # large non-filed assets (principals file clean returns, so is_filer == 1).
@@ -233,9 +256,9 @@ with st.expander("📊 Pipeline performance (evaluated against held-out ground t
     except Exception as e:
         st.warning(f"Could not compute metrics: {e}")
 
-tab_overview, tab_flagged, tab_proxy, tab_new = st.tabs(
+tab_overview, tab_flagged, tab_proxy, tab_live, tab_new = st.tabs(
     ["📈 Overview", "🚩 Flagged individuals", "🕵️ Proxy / benami networks",
-     "➕ Score a new individual"])
+     "🔎 Live match", "➕ Score a new individual"])
 
 # ==========================================================================
 with tab_overview:
@@ -332,9 +355,37 @@ with tab_flagged:
                         range=["#457b9d", "#e63946"]), legend=None),
                     tooltip=["kind", "value"]).properties(height=110),
                 use_container_width=True)
-            st.markdown("**Why this entity was flagged:**")
+            st.markdown("**Why this entity was flagged (ML signal):**")
             for reason in json.loads(row.audit_trail):
                 st.markdown(f"- {reason}")
+
+            # Secondary, deterministic cross-check: lifestyle-implied income floors.
+            if floors is not None and eid in floors.index:
+                fr = floors.loc[eid]
+                with st.expander("🧮 Explainable cross-check — lifestyle income floors "
+                                 "(secondary, not the headline)"):
+                    f = st.columns(3)
+                    f[0].metric("Estimated income (floor)", pkr(fr.estimated_income_pkr))
+                    f[1].metric("Expected tax", pkr(fr.expected_tax_pkr))
+                    f[2].metric("Lifestyle-implied tax gap", pkr(fr.tax_gap_pkr),
+                                help=f"rule band: {fr.band}")
+                    st.caption("Deterministic rule engine (engine-cc / electricity / "
+                               "property / travel floors) — an independent sanity check "
+                               "on the ML ranking, and the basis of the audit notice.")
+
+            # Downloadable bilingual audit notice (PDF).
+            try:
+                builder = audit_builder()
+                audit = builder.build(eid)
+                pdf_path = os.path.join(ROOT, "data", "audit", f"_dash_{eid}.pdf")
+                builder.pdf(audit, pdf_path)
+                with open(pdf_path, "rb") as fh:
+                    st.download_button("📄 Download audit notice (PDF)", fh.read(),
+                                       file_name=f"tax_notice_{eid}.pdf",
+                                       mime="application/pdf")
+            except Exception as e:
+                st.caption(f"(PDF notice unavailable: {e})")
+
             recs = mentions[mentions.entity_id == eid]
             with st.expander(f"📄 {len(recs)} source records across "
                              f"{recs.source.nunique()} databases"):
@@ -383,6 +434,53 @@ with tab_proxy:
         st.markdown("**Network — 🎯 principal (red), 👤 associates/proxies (purple), "
                     "assets coloured by type:**")
         render_network(G, feats, pid, radius=3, height=520)
+
+# ==========================================================================
+with tab_live:
+    st.subheader("🔎 Live entity match")
+    st.markdown(
+        "Type a raw record the way a messy registry would hold it — any spelling, "
+        "**Urdu or Roman script**, partial address. The matcher blocks it against the "
+        "resolved population and scores candidates with the **same unsupervised "
+        "Fellegi-Sunter weights** the pipeline learned. No staging: invent an input "
+        "on the spot.")
+    with st.form("live_match"):
+        a, b = st.columns(2)
+        with a:
+            q_name = st.text_input("Name (Urdu or Roman)", "Mohd Asif Khan")
+            q_father = st.text_input("Father's name (optional)", "")
+            q_city = st.text_input("City (optional)", "Lahore")
+            q_dob = st.text_input("Date of birth YYYY-MM-DD (optional)", "")
+        with b:
+            q_cnic = st.text_input("CNIC (full or masked, optional)", "")
+            q_phone = st.text_input("Phone (optional)", "")
+            q_addr = st.text_input("Address (optional)", "")
+        go = st.form_submit_button("🔎 Match against the population")
+
+    if go:
+        with st.spinner("Blocking + scoring candidates …"):
+            idx = load_match_index()
+            cands = live_match.match_record({
+                "name": q_name, "father": q_father, "city": q_city, "dob": q_dob,
+                "cnic": q_cnic, "phone": q_phone, "address": q_addr,
+            }, index=idx)
+        if not cands:
+            st.warning("No candidate entities share a blocking key with this record.")
+        else:
+            st.caption(f"{len(cands)} candidate entit(y/ies); a high posterior needs a "
+                       "hard identifier (CNIC / phone / address / DOB) — name alone is "
+                       "deliberately weak.")
+            for c in cands:
+                srow = scores[scores.entity_id == c["entity_id"]]
+                dev = f"{srow.deviation_score.iloc[0]:.0f}" if len(srow) else "n/a"
+                with st.container(border=True):
+                    cc1, cc2, cc3 = st.columns([2, 1, 1])
+                    cc1.markdown(f"**Entity #{c['entity_id']}** — matched record "
+                                 f"`{c['candidate_record']}` ({c['registry']}): "
+                                 f"{c['candidate_name']}")
+                    cc2.metric("Match posterior", f"{c['posterior']:.3f}")
+                    cc3.metric("Deviation score", dev)
+                    st.caption("Evidence: " + ", ".join(c["evidence"]))
 
 # ==========================================================================
 with tab_new:

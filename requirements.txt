@@ -3,12 +3,16 @@ pandas
 numpy
 scikit-learn          # Isolation Forest (core anomaly detector)
 networkx              # knowledge graph
-rapidfuzz             # fast fuzzy name matching (entity resolution)
-jellyfish             # phonetic / edit-distance name similarity
+rapidfuzz             # fuzzy name matching (legacy ER helpers)
+jellyfish             # phonetic / edit-distance name similarity (legacy ER helpers)
+sentence-transformers # Tier-2 multilingual name embeddings (Urdu<->Roman bridge)
 shap                  # explainable audit trail
 streamlit             # Stage 5 dashboard
 pyvis                 # interactive graph viz in the dashboard
 matplotlib
+reportlab             # bilingual PDF audit notices
+arabic_reshaper       # shape Urdu text for the PDF notice header
+python-bidi           # right-to-left ordering for the Urdu PDF header
 
 # Optional fallback (Stage 4b) — GNN anomaly detector.
 # torch wheels exist for Python 3.14 via the CPU index:

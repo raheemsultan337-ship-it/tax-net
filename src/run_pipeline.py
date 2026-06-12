@@ -14,6 +14,8 @@ import build_graph
 import scoring
 import gnn_detector
 import ensemble
+import rule_floors
+import audit_report
 import evaluate
 
 
@@ -30,6 +32,10 @@ def main():
     gnn_detector.run()
     print("\n[4c] Ensembling Isolation Forest + GNN into one production score ...")
     ensemble.combine()
+    print("\n[4d] Rule-based lifestyle floors (explainable cross-check) ...")
+    rule_floors.compute_floors()
+    print("\n[4e] Generating bilingual audit notices for top flagged ...")
+    audit_report.make_audits(top_n=25)
     print("\n[6/6] Evaluation (reads ground truth — scorecard only) ...")
     evaluate.evaluate_entity_resolution()
     evaluate.evaluate_detection()
