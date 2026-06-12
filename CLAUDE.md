@@ -35,30 +35,34 @@ a knowledge graph, and flags likely tax non-filers / under-reporters with an
 | 4c | `src/score_person.py` | INFERENCE on a new individual: loads frozen `model_bundle.pkl`, predicts deviation score + audit trail without retraining. |
 | 4d | `src/rule_floors.py` + `src/tax_slabs.py` | SECONDARY explainable layer (NOT the headline). Donor rule engine re-implemented over the flat `entity_features.csv`: engine-cc/electricity/property/travel income FLOORS → `entity_floors.csv` + `factors.json`. |
 | 4e | `src/audit_report.py` | `AuditBuilder` → per-entity JSON + Markdown + **bilingual PDF** notice (Urdu header via Windows Arabic font + reshaper/bidi, English fallback). Headline = ensemble score; rule floors + per-link ER evidence as cross-check. `make_audits(top_n)`. |
-| 5 | `app.py` + `src/live_match.py` | Streamlit dashboard: KPIs + 5 tabs — Overview (Altair), Flagged (+ floors cross-check + PDF download), Proxy/benami, **Live match** (type a record, cascade matches live with evidence), Score-a-new-individual. |
+| 5 | `app.py` | Streamlit dashboard: KPIs + 4 tabs — Overview (scatter w/ points slider + score/tax-gap charts), Flagged (named; rich audit: lifestyle factors + per-link cascade evidence + observations + named records + PDF), Proxy/benami (own-vs-network lift + named frontmen), Score-a-new-individual. (`src/live_match.py` remains as a standalone backend module; the Live-match tab was removed.) |
 | eval | `src/evaluate.py` | ONLY reader of ground truth. Target = `is_evader OR role=='proxy'`. |
 | run | `src/run_pipeline.py` | Runs stages 1–4e + eval. |
 | test | `tests/` (pytest) | 42 tests: normalization (cascade primitives + DOB band), ER+detection thresholds, ensemble, graph, proxy claim, father/son + twins split, rule floors, audit, live match, the wall. `pytest tests/ -q`. |
 | bench | `src/benchmark.py` | Scalability: ER near-linear via blocking. |
 | pitch | `PITCH.md` | Round-2 material (value prop / market / demo script). |
 
-## Current results (MERGED build, seed 42, N=10000 — full pipeline ~60s incl. embeddings)
+## Current results (MERGED build, seed 42, N=50000 — full pipeline ~20 min)
 
-- ~31,650 raw records → 10,675 resolved entities (10,000 true; ~420 proxy
-  principals + ~420 proxies). Harder data than pre-merge (masked CNICs, per-registry
-  Urdu, address-rendering variation) — yet every metric improved.
-- **ER (cascade: Fellegi-Sunter + embeddings + graph-collective):** P **0.999** /
-  R **0.968** / F1 **0.983**, cluster purity **1.000**. (Pre-merge: 0.996/0.956/0.975.)
-- **Detection (Isolation Forest, own+network):** P@25% 0.77, R@25% 0.97, **AP 0.951**
-  (audit-worthy base rate ~20%). (Pre-merge AP 0.79.)
+- ~195k raw records → 53,586 resolved entities (50,000 true; ~2,365 proxy
+  principals + ~2,365 proxies). Diversified population: per-registry Urdu, masked
+  CNICs, expanded name pools, 12 cities; segments reshared toward under-reporting
+  filers (18%) → evader base rate ~31% (was ~16%).
+- **ER (cascade: Fellegi-Sunter + embeddings + graph-collective):** P **1.000** /
+  R **0.972** / F1 **0.985**, cluster purity **1.000**. (Held at 5× scale.)
+- **Detection (Isolation Forest, own+network):** P@25% 0.90, R@25% 0.72, **AP 0.906**
+  (audit-worthy base rate ~31%).
 - **Proxy/benami scenario (the graph payoff):** principal recall@25% —
-  IF own-only **0.085**, IF own+network **0.92**, GNN (msg-passing) ~0.94.
+  IF own-only **0.071**, IF own+network **0.84**, ensemble **0.905**.
   IF for tabular mismatch, GNN for proxy networks. Right tool per threat.
-- **ENSEMBLE (one production score, `deviation_score_combined`):** AP **0.961**,
-  principal recall@25% **0.954**. (Pre-merge 0.78 / 0.90.) `IF_WEIGHT=0.7`.
-  Dashboard headline = combined; audit panel shows the per-model breakdown.
-- **Rule-based floors (secondary, explainable):** 2,074 high-band; Rs ~13.0B
+- **ENSEMBLE (one production score, `deviation_score_combined`):** AP **0.904**,
+  principal recall@25% **0.905**. `IF_WEIGHT=0.7`. Dashboard headline = combined.
+- **Rule-based floors (secondary, explainable):** 14,588 high-band; Rs ~107B
   lifestyle-implied tax gap. Used in the audit notice + dashboard cross-check.
+- **Scale knobs:** `N_PERSONS` in `src/generate_data.py` (50k demo default; Tier-1
+  scores ~4.6M candidate pairs at that size → ~20 min). Tests run decoupled at
+  `N_PERSONS=8000` (set in `tests/conftest.py`) so the suite stays ~80s. At N=10000
+  earlier: ER 0.999/0.968/0.983, detection AP 0.951, ensemble 0.961/0.954.
 - **Flagged-list composition (score ≥ 60):** ~534 flagged, 21% non-zero-declared
   under-reporting filers (was 11%); 839 filers score ≥40 → visible colour in the
   declared-vs-implied scatter. Non-filers ~15% of population.
@@ -122,6 +126,21 @@ a knowledge graph, and flags likely tax non-filers / under-reporters with an
   or you get UnicodeEncodeError.
 - shap/numba not installed — the audit trail is percentile-based by design (no
   numba dependency risk). SHAP is optional future work.
+
+## WHERE WE LEFT OFF (2026-06-13 — SCALE-UP + DASHBOARD POLISH)
+
+After the merge (below), this session: scaled to **N_PERSONS=50000** and diversified
+the population (segments reshared toward under-reporting filers 7%→18%, wider income/
+ratio ranges, +~75 names, +4 cities w/ CNIC prefixes; evaders 16%→31%) so the charts
+fill in. Metrics held (ER F1 0.985, ensemble AP 0.904, principal recall 0.905).
+Dashboard: removed the Live-match tab; added Name/City to the Flagged list + a much
+richer audit panel (lifestyle factors, per-link cascade evidence, observations, named
+records); enriched the Proxy/benami tab (own-vs-network lift + named frontmen); dropped
+the redundant filer checkbox in Score-a-new (status derived from declared>0); scatter
+now a **stratified, slider-controlled sample (1000–8000, keeps all deviation≥40 flags)**
+with Altair's 5k-row guard lifted. Tests decoupled to a fast `N_PERSONS=8000` in
+conftest (suite ~80s) and the live-match smoke test made scale-robust. 42 tests green,
+dashboard HTTP 200. Gotcha: full pipeline is ~20 min at 50k (Tier-1 scores ~4.6M pairs).
 
 ## WHERE WE LEFT OFF (2026-06-13 — THE MERGE)
 

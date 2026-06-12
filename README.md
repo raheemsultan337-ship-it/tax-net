@@ -53,7 +53,7 @@ data/
 | 4c. Score new person | `src/score_person.py` | Inference: scores a brand-new individual from the frozen model without retraining. |
 | 4d. Rule floors | `src/rule_floors.py`, `src/tax_slabs.py` | Secondary, fully explainable lifestyle-income **floors** (engine-cc / electricity / property / travel) → an independent tax-gap cross-check shown in the audit + dashboard. |
 | 4e. Audit notices | `src/audit_report.py` | Per-entity **bilingual (English/Urdu) PDF** notice + JSON + Markdown: headline ML score, the per-link ER evidence, and the rule-floor cross-check. |
-| 5. Dashboard | `app.py` + `src/live_match.py` | Streamlit UI: KPIs + five tabs — **Overview** (charts), **Flagged** (audit trail, floor cross-check, PDF download, ego-graph), **Proxy/benami networks**, **Live match** (type any record → cascade matches it live with evidence), **Score a new individual**. |
+| 5. Dashboard | `app.py` | Streamlit UI: KPIs + four tabs — **Overview** (declared-vs-implied scatter with an adjustable points slider, score & tax-gap charts), **Flagged** (named entities; rich audit panel: lifestyle factors, per-link cascade evidence, observations, named records, PDF download, ego-graph), **Proxy/benami networks** (own-vs-network score lift + the named frontmen holding the assets), **Score a new individual** (live inference). |
 | Eval | `src/evaluate.py` | **Only** module that reads ground truth — ER + detection precision/recall. |
 
 ---
@@ -100,8 +100,11 @@ set PYTHONUTF8=1                       # PowerShell: $env:PYTHONUTF8=1
 
 This recreates everything under `data/` (observable registries, ground truth,
 resolved entities, graph, scores, rule floors) and writes bilingual audit notices to
-`data/audit/`, then prints the ER + detection scorecard. First run takes ~60 s
-(subsequent runs are similar; the embedding model is cached after the first download).
+`data/audit/`, then prints the ER + detection scorecard. At the default scale
+(`N_PERSONS = 50,000` → ~195k records) a full run takes **~20 minutes** — the entity-
+resolution cascade scores ~4.6M candidate pairs. To iterate faster, lower `N_PERSONS`
+in `src/generate_data.py` (e.g. 10,000 ≈ ~60 s). The embedding model is cached after
+the first download.
 
 > **Entity-resolution embeddings (Tier 2).** On first run the cascade downloads
 > `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` (~450 MB) into
@@ -112,8 +115,12 @@ resolved entities, graph, scores, rule floors) and writes bilingual audit notice
 ### 3. Run the tests (optional but recommended)
 
 ```bash
-.venv/Scripts/python -m pytest tests/ -q      # 42 tests; regenerates data once, ~80 s
+.venv/Scripts/python -m pytest tests/ -q      # 42 tests, ~80 s
 ```
+
+> Tests run at a **reduced fixed population** (8,000 people, set in `tests/conftest.py`),
+> decoupled from the production `N_PERSONS`, so the suite stays fast regardless of the
+> demo scale.
 
 ### 4. Launch the dashboard
 
@@ -128,17 +135,16 @@ launching it** on a fresh clone.
 
 ## Results (default seed)
 
-Run at **N = 10,000 people** (~31,650 raw records → ~10,675 resolved entities;
-full pipeline ~60 s incl. embeddings):
+Run at **N = 50,000 people** (~195k raw records → ~53,586 resolved entities):
 
 | Stage | Metric | Value |
 |------|--------|-------|
-| Entity resolution (cascade) | Precision / Recall / F1 | **0.999 / 0.968 / 0.983** |
+| Entity resolution (cascade) | Precision / Recall / F1 | **1.000 / 0.972 / 0.985** |
 | | Cluster purity | **1.000** |
-| Detection (Isolation Forest, own+network) | Average Precision | **0.95** |
-| | Precision@25% / Recall@25% | **0.77 / 0.97** (vs ~0.20 base rate) |
-| **Ensemble (IF + GNN)** — production score | Average Precision | **0.96** |
-| | Principal recall@25% | **0.95** |
+| Detection (Isolation Forest, own+network) | Average Precision | **0.91** |
+| | Precision@25% / Recall@25% | **0.90 / 0.72** (vs ~0.31 base rate) |
+| **Ensemble (IF + GNN)** — production score | Average Precision | **0.90** |
+| | Principal recall@25% | **0.91** |
 
 Entity resolution reaches near-perfect linkage by combining probabilistic
 Fellegi-Sunter matching, multilingual embeddings that bridge Urdu↔Roman spellings,
@@ -155,13 +161,12 @@ the graph links them to their asset-rich, non-filing associates.
 
 | Detector | Principal recall@25% |
 |---|---|
-| Isolation Forest — own features only (tabular) | **0.09** (blind) |
-| Isolation Forest — own + engineered network feature | **0.92** |
-| GNN (GraphSAGE) — message-passing over the graph | **~0.94** |
-| **Ensemble (IF + GNN) — the production score** | **0.95** |
+| Isolation Forest — own features only (tabular) | **0.07** (blind) |
+| Isolation Forest — own + engineered network feature | **0.84** |
+| **Ensemble (IF + GNN) — the production score** | **0.91** |
 
 **Right tool per threat.** For straightforward footprint-vs-declared mismatch
-(self-evaders), Isolation Forest is accurate (AP 0.95) and fully explainable. For
+(self-evaders), Isolation Forest is accurate (AP 0.91) and fully explainable. For
 wealth hidden *across a network* of proxies, the **GNN dominates** — message-passing
 propagates a proxy's anomalous assets back onto the principal, something a tabular
 model structurally cannot do without bespoke features. The production system
