@@ -125,7 +125,7 @@ def chart_score_hist(scores, threshold=60):
     return (_hist_layer(scores, "#457b9d") + rule).properties(height=260)
 
 
-def chart_declared_vs_implied(scores, sample=12000, hi_threshold=40):
+def chart_declared_vs_implied(scores, sample=8000, hi_threshold=40):
     """The core narrative: declared vs lifestyle-implied income (log-log). Honest
     filers sit on the diagonal; evaders fall far below it (declared << implied).
 
@@ -297,7 +297,12 @@ with tab_overview:
         "diagonal** (declared ≈ implied). The further an entity falls **below** the "
         "line, the larger the gap between what they spend and what they declare — "
         "redder points are the model's higher-deviation flags.")
-    st.altair_chart(chart_declared_vs_implied(scores), use_container_width=True)
+    n_points = st.slider(
+        "Points to plot", min_value=1000, max_value=8000, value=5000, step=500,
+        help="How many resolved individuals to scatter. Higher-deviation flags are "
+             "always kept first; the rest fills with a random slice of the population.")
+    st.altair_chart(chart_declared_vs_implied(scores, sample=n_points),
+                    use_container_width=True)
 
     c1, c2 = st.columns(2)
     with c1:
