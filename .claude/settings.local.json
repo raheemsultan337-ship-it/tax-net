@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.venv/Scripts/python.exe -c \"import altair; print\\('altair', altair.__version__\\)\")",
+      "Bash(.venv/Scripts/python.exe -c \"import plotly; print\\('plotly', plotly.__version__\\)\")",
+      "Bash(.venv/Scripts/python.exe *)",
+      "Bash(PYTHONUTF8=1 .venv/Scripts/python.exe -m streamlit run app.py --server.headless true --server.port 8521)",
+      "Bash(echo \"started pid $!\")",
+      "Bash(pkill -f \"streamlit run app.py\")",
+      "Bash(PYTHONUTF8=1 .venv/Scripts/python.exe -m streamlit run app.py --server.headless true --server.port 8522)",
+      "Bash(PYTHONUTF8=1 .venv/Scripts/python.exe src/run_pipeline.py)",
+      "Bash(PYTHONUTF8=1 .venv/Scripts/python.exe src/scoring.py)",
+      "Bash(PYTHONUTF8=1 .venv/Scripts/python.exe -c ' *)",
+      "Bash(sed -n '/Entity Resolution/,$p')",
+      "Bash(PYTHONUTF8=1 .venv/Scripts/python.exe -m pytest tests/ -q)",
+      "Bash(PYTHONUTF8=1 .venv/Scripts/python.exe -m streamlit run app.py --server.headless true --server.port 8523)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8523/)",
+      "Bash(PYTHONUTF8=1 .venv/Scripts/python.exe src/gnn_detector.py)",
+      "Bash(PYTHONUTF8=1 .venv/Scripts/python.exe -m streamlit run app.py --server.headless true --server.port 8524)",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:8524/)",
+      "Bash(echo \"HTTP $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:8524/ 2>/dev/null\\)\")",
+      "Bash(PYTHONUTF8=1 .venv/Scripts/python.exe src/ensemble.py)",
+      "Bash(PYTHONUTF8=1 .venv/Scripts/python.exe -c \"import sys;sys.path.insert\\(0,'src'\\);import evaluate as ev;ev.evaluate_detection\\(\\)\")",
+      "Bash(PYTHONUTF8=1 .venv/Scripts/python.exe -m streamlit run app.py --server.headless true --server.port 8525)",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' http://localhost:8525/)",
+      "Bash(echo \"HTTP $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:8525/ 2>/dev/null\\)\")"
+    ]
+  }
+}

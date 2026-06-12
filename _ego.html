@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 520px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#2a9d8f", "id": "property:PROP003877", "label": "property\nRs 27.15 cr", "shape": "dot", "size": 16, "title": "property Rs 27.15 cr"}, {"color": "#2a9d8f", "id": "property:PROP003878", "label": "property\nRs 21.30 cr", "shape": "dot", "size": 16, "title": "property Rs 21.30 cr"}, {"color": "#457b9d", "id": "vehicle:VEH007207", "label": "vehicle\nRs 1.56 cr", "shape": "dot", "size": 16, "title": "vehicle Rs 1.56 cr"}, {"color": "#2a9d8f", "id": "property:PROP004957", "label": "property\nRs 30.23 cr", "shape": "dot", "size": 16, "title": "property Rs 30.23 cr"}, {"color": "#e9c46a", "id": "utility:UTL010363", "label": "utility\nRs 7.32 lakh", "shape": "dot", "size": 16, "title": "utility Rs 7.32 lakh"}, {"color": "#457b9d", "id": "vehicle:VEH007209", "label": "vehicle\nRs 1.80 cr", "shape": "dot", "size": 16, "title": "vehicle Rs 1.80 cr"}, {"color": "#2a9d8f", "id": "property:PROP003876", "label": "property\nRs 29.19 cr", "shape": "dot", "size": 16, "title": "property Rs 29.19 cr"}, {"color": "#8d99ae", "id": "address:h-08481, saddar, rawalpindi", "label": "address", "shape": "dot", "size": 16, "title": "address "}, {"color": "#457b9d", "id": "vehicle:VEH005609", "label": "vehicle\nRs 1.59 cr", "shape": "dot", "size": 16, "title": "vehicle Rs 1.59 cr"}, {"color": "#457b9d", "id": "vehicle:VEH005608", "label": "vehicle\nRs 1.54 cr", "shape": "dot", "size": 16, "title": "vehicle Rs 1.54 cr"}, {"borderWidth": 3, "borderWidthSelected": 4, "color": "#c77dff", "id": "person:4341", "label": "\ud83d\udc64 #4341", "shape": "dot", "size": 24, "title": "non-filer associate (entity #4341)"}, {"color": "#457b9d", "id": "vehicle:VEH007210", "label": "vehicle\nRs 1.77 cr", "shape": "dot", "size": 16, "title": "vehicle Rs 1.77 cr"}, {"color": "#457b9d", "id": "vehicle:VEH007213", "label": "vehicle\nRs 1.76 cr", "shape": "dot", "size": 16, "title": "vehicle Rs 1.76 cr"}, {"color": "#e9c46a", "id": "utility:UTL010364", "label": "utility\nRs 6.60 lakh", "shape": "dot", "size": 16, "title": "utility Rs 6.60 lakh"}, {"color": "#457b9d", "id": "vehicle:VEH007206", "label": "vehicle\nRs 1.62 cr", "shape": "dot", "size": 16, "title": "vehicle Rs 1.62 cr"}, {"color": "#2a9d8f", "id": "property:PROP004960", "label": "property\nRs 29.45 cr", "shape": "dot", "size": 16, "title": "property Rs 29.45 cr"}, {"borderWidth": 3, "borderWidthSelected": 4, "color": "#c77dff", "id": "person:4342", "label": "\ud83d\udc64 #4342", "shape": "dot", "size": 24, "title": "non-filer associate (entity #4342)"}, {"color": "#2a9d8f", "id": "property:PROP004961", "label": "property\nRs 30.54 cr", "shape": "dot", "size": 16, "title": "property Rs 30.54 cr"}, {"color": "#457b9d", "id": "vehicle:VEH007212", "label": "vehicle\nRs 1.48 cr", "shape": "dot", "size": 16, "title": "vehicle Rs 1.48 cr"}, {"color": "#457b9d", "id": "vehicle:VEH005611", "label": "vehicle\nRs 1.60 cr", "shape": "dot", "size": 16, "title": "vehicle Rs 1.60 cr"}, {"color": "#2a9d8f", "id": "property:PROP004958", "label": "property\nRs 38.81 cr", "shape": "dot", "size": 16, "title": "property Rs 38.81 cr"}, {"color": "#457b9d", "id": "vehicle:VEH007211", "label": "vehicle\nRs 1.70 cr", "shape": "dot", "size": 16, "title": "vehicle Rs 1.70 cr"}, {"color": "#457b9d", "id": "vehicle:VEH005610", "label": "vehicle\nRs 1.46 cr", "shape": "dot", "size": 16, "title": "vehicle Rs 1.46 cr"}, {"color": "#457b9d", "id": "vehicle:VEH007208", "label": "vehicle\nRs 1.78 cr", "shape": "dot", "size": 16, "title": "vehicle Rs 1.78 cr"}, {"color": "#2a9d8f", "id": "property:PROP004956", "label": "property\nRs 24.79 cr", "shape": "dot", "size": 16, "title": "property Rs 24.79 cr"}, {"color": "#e9c46a", "id": "utility:UTL008481", "label": "utility\nRs 6.91 lakh", "shape": "dot", "size": 16, "title": "utility Rs 6.91 lakh"}, {"borderWidth": 3, "color": "#e63946", "id": "person:3420", "label": "\ud83c\udfaf TARGET #3420", "shape": "dot", "size": 36, "title": "focal entity #3420"}, {"color": "#2a9d8f", "id": "property:PROP004959", "label": "property\nRs 32.06 cr", "shape": "dot", "size": 16, "title": "property Rs 32.06 cr"}]);
+                  edges = new vis.DataSet([{"color": "#cccccc", "from": "property:PROP003877", "title": "OWNS", "to": "person:3420"}, {"color": "#cccccc", "from": "property:PROP003878", "title": "OWNS", "to": "person:3420"}, {"color": "#cccccc", "from": "vehicle:VEH007207", "title": "OWNS", "to": "person:4341"}, {"color": "#cccccc", "from": "property:PROP004957", "title": "OWNS", "to": "person:4341"}, {"color": "#cccccc", "from": "utility:UTL010363", "title": "PAYS", "to": "person:4341"}, {"color": "#cccccc", "from": "vehicle:VEH007209", "title": "OWNS", "to": "person:4341"}, {"color": "#cccccc", "from": "property:PROP003876", "title": "OWNS", "to": "person:3420"}, {"color": "#cccccc", "from": "address:h-08481, saddar, rawalpindi", "title": "LOCATED_AT", "to": "person:3420"}, {"color": "#cccccc", "from": "address:h-08481, saddar, rawalpindi", "title": "LOCATED_AT", "to": "person:4341"}, {"color": "#cccccc", "from": "address:h-08481, saddar, rawalpindi", "title": "LOCATED_AT", "to": "person:4342"}, {"color": "#cccccc", "from": "vehicle:VEH005609", "title": "OWNS", "to": "person:3420"}, {"color": "#cccccc", "from": "vehicle:VEH005608", "title": "OWNS", "to": "person:3420"}, {"color": "#cccccc", "from": "person:4341", "title": "OWNS", "to": "vehicle:VEH007206"}, {"color": "#cccccc", "from": "person:4341", "title": "OWNS", "to": "vehicle:VEH007208"}, {"color": "#cccccc", "from": "person:4341", "title": "OWNS", "to": "property:PROP004956"}, {"color": "#cccccc", "from": "person:4341", "title": "OWNS", "to": "property:PROP004958"}, {"color": "#cccccc", "from": "vehicle:VEH007210", "title": "OWNS", "to": "person:4342"}, {"color": "#cccccc", "from": "vehicle:VEH007213", "title": "OWNS", "to": "person:4342"}, {"color": "#cccccc", "from": "utility:UTL010364", "title": "PAYS", "to": "person:4342"}, {"color": "#cccccc", "from": "property:PROP004960", "title": "OWNS", "to": "person:4342"}, {"color": "#cccccc", "from": "person:4342", "title": "OWNS", "to": "vehicle:VEH007211"}, {"color": "#cccccc", "from": "person:4342", "title": "OWNS", "to": "vehicle:VEH007212"}, {"color": "#cccccc", "from": "person:4342", "title": "OWNS", "to": "property:PROP004959"}, {"color": "#cccccc", "from": "person:4342", "title": "OWNS", "to": "property:PROP004961"}, {"color": "#cccccc", "from": "vehicle:VEH005611", "title": "OWNS", "to": "person:3420"}, {"color": "#cccccc", "from": "vehicle:VEH005610", "title": "OWNS", "to": "person:3420"}, {"color": "#cccccc", "from": "utility:UTL008481", "title": "PAYS", "to": "person:3420"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {"physics": {"barnesHut": {"springLength": 130, "gravitationalConstant": -8000}}};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

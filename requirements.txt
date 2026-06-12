@@ -1,0 +1,17 @@
+# Core (Stage 1-4) — all work on Python 3.14
+pandas
+numpy
+scikit-learn          # Isolation Forest (core anomaly detector)
+networkx              # knowledge graph
+rapidfuzz             # fast fuzzy name matching (entity resolution)
+jellyfish             # phonetic / edit-distance name similarity
+shap                  # explainable audit trail
+streamlit             # Stage 5 dashboard
+pyvis                 # interactive graph viz in the dashboard
+matplotlib
+
+# Optional fallback (Stage 4b) — GNN anomaly detector.
+# torch wheels exist for Python 3.14 via the CPU index:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+torch
+torch-geometric
