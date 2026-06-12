@@ -80,8 +80,13 @@ def name_skeletons(name: str) -> list[str]:
 CITY_ABBR = {
     "rwp": "rawalpindi", "isb": "islamabad", "lhr": "lahore", "lhe": "lahore",
     "khi": "karachi", "pesh": "peshawar", "fsd": "faisalabad",
-    "mtn": "multan", "skt": "sialkot",
+    "mtn": "multan", "skt": "sialkot", "hyd": "hyderabad",
+    "gjw": "gujranwala", "grw": "gujranwala", "qta": "quetta", "bwp": "bahawalpur",
 }
+
+_FULL_CITIES = ("rawalpindi", "islamabad", "lahore", "karachi", "peshawar",
+                "faisalabad", "multan", "sialkot", "hyderabad", "gujranwala",
+                "quetta", "bahawalpur")
 
 _ADDR_REPL = [
     (r"\bh\.?\s*no\.?\s*", "house "),
@@ -122,8 +127,7 @@ def normalize_address(addr: str) -> dict:
         if t_clean in CITY_ABBR:
             city = CITY_ABBR[t_clean]
             break
-        if t_clean in ("rawalpindi", "islamabad", "lahore", "karachi",
-                       "peshawar", "faisalabad", "multan", "sialkot"):
+        if t_clean in _FULL_CITIES:
             city = t_clean
             break
     skip = {"house", "street", "no", city or ""} | set(CITY_ABBR)

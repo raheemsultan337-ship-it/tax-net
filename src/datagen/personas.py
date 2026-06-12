@@ -25,12 +25,12 @@ from .addresses import Address, random_address
 from .noise import make_cnic, make_phone
 
 SEGMENTS = {
-    "ordinary_compliant": 0.53,
-    "ordinary_nonfiler": 0.25,
-    "wealthy_compliant": 0.06,
-    "wealthy_nonfiler": 0.05,
-    "under_reporter": 0.07,
-    "proxy_pair": 0.04,
+    "ordinary_compliant": 0.46,
+    "ordinary_nonfiler": 0.17,
+    "wealthy_compliant": 0.08,
+    "wealthy_nonfiler": 0.06,
+    "under_reporter": 0.18,   # more under-reporting FILERS → fills the scatter's middle
+    "proxy_pair": 0.05,
 }
 
 # An evader is someone materially under-reporting a materially-taxable income.
@@ -85,10 +85,10 @@ class Person:
 
 def _income_for(segment: str, rng: random.Random) -> int:
     if segment.startswith("ordinary"):
-        return int(rng.lognormvariate(13.6, 0.5))            # ~0.4M - 2.5M
+        return int(rng.lognormvariate(13.6, 0.62))           # wider spread (~0.3M - 4M)
     if segment == "under_reporter":
-        return int(rng.uniform(4_000_000, 25_000_000))
-    return int(rng.uniform(8_000_000, 60_000_000))           # wealthy_*
+        return int(rng.uniform(3_000_000, 45_000_000))       # wider income range
+    return int(rng.uniform(8_000_000, 90_000_000))           # wealthy_*, taller tail
 
 
 def _declared_for(segment: str, actual: int, rng: random.Random) -> tuple[int, str]:
@@ -99,7 +99,9 @@ def _declared_for(segment: str, actual: int, rng: random.Random) -> tuple[int, s
         # Below or near the taxable threshold - non-filing is legal here.
         return 0, "absent"
     if segment == "under_reporter":
-        return int(actual * rng.uniform(0.10, 0.30)), "filer"
+        # a continuum of under-reporting (8%–55% declared) → a spread of points
+        # across the gap region of the scatter, not a single tight cluster
+        return int(actual * rng.uniform(0.08, 0.55)), "filer"
     # wealthy_nonfiler: ghosts (absent) or nil-filers
     if rng.random() < 0.6:
         return 0, "absent"

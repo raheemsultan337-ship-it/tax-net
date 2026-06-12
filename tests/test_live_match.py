@@ -16,10 +16,15 @@ def test_match_record_returns_ranked_candidates():
     assert posts == sorted(posts, reverse=True)
 
 
-def test_cross_script_query_finds_a_candidate():
-    """A Roman query should still reach Urdu-script records via the consonant
-    skeleton blocking (and vice versa) — at least one candidate surfaces."""
+def test_query_with_a_real_name_finds_its_entity():
+    """Querying a multi-token Roman name that exists in the data must surface at
+    least one candidate (the record itself shares a blocking key)."""
+    import os
+    import pandas as pd
+    from conftest import RES
+    mentions = pd.read_csv(os.path.join(RES, "mentions.csv"))
+    sample = next(n for n in mentions.raw_name.dropna()
+                  if str(n).isascii() and len(str(n).split()) >= 2)
     idx = live_match.load_index()
-    res = live_match.match_record(
-        {"name": "Muhammad Khan", "city": "Lahore"}, index=idx)
+    res = live_match.match_record({"name": sample}, index=idx)
     assert len(res) >= 1

@@ -19,6 +19,10 @@ MALE_FIRST = [
     "Mansoor", "Nasir", "Qasim", "Raza", "Sajid", "Talha", "Umar", "Wasim",
     "Zahid", "Rafiq", "Shoaib", "Tanveer", "Mazhar", "Nawaz", "Sohail",
     "Liaquat", "Pervez", "Younis", "Mehmood", "Shafiq", "Anwar", "Riaz",
+    "Aamir", "Abid", "Ashraf", "Ayaz", "Danish", "Fawad", "Ghulam", "Haroon",
+    "Ibrahim", "Ismail", "Jahangir", "Mubashir", "Mudassar", "Noman", "Owais",
+    "Rehan", "Saad", "Shahzad", "Taimur", "Usama", "Waleed", "Yousuf", "Zeeshan",
+    "Abdullah", "Asad", "Bilawal", "Faraz", "Hammad", "Moin", "Rizwan", "Sufyan",
 ]
 
 FEMALE_FIRST = [
@@ -27,6 +31,9 @@ FEMALE_FIRST = [
     "Samina", "Bushra", "Asma", "Lubna", "Tahira", "Amna", "Iqra", "Kiran",
     "Mehwish", "Nimra", "Rukhsana", "Shabana", "Yasmin", "Zubaida", "Naila",
     "Shaista", "Robina", "Nasreen", "Shagufta", "Abida",
+    "Aleena", "Anika", "Areeba", "Durdana", "Faiza", "Hina", "Javeria", "Komal",
+    "Mahnoor", "Maira", "Nida", "Rida", "Sehrish", "Sidra", "Tooba", "Warda",
+    "Zoya", "Ramsha", "Eman", "Laiba", "Mishal", "Noor", "Aiman", "Fariha",
 ]
 
 FAMILY = [
@@ -35,6 +42,9 @@ FAMILY = [
     "Bhatti", "Dar", "Lodhi", "Niazi", "Mughal", "Shah", "Paracha",
     "Khattak", "Yousafzai", "Afridi", "Satti", "Kayani", "Janjua", "Naqvi",
     "Rizvi", "Zaidi", "Kazmi", "Hamdani", "Abbas", "Akhtar",
+    "Jutt", "Arain", "Rajput", "Gondal", "Cheema", "Tarar", "Warraich", "Sial",
+    "Bajwa", "Virk", "Sandhu", "Gujjar", "Wattoo", "Khokhar", "Memon", "Soomro",
+    "Bhutto", "Jamali", "Magsi", "Mengal", "Durrani", "Tareen", "Kakar", "Marwat",
 ]
 
 # Alternative Roman spellings seen across real registries.

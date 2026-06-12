@@ -22,6 +22,11 @@ def pipeline():
     """Generate data + run the full pipeline once so all tests share fresh outputs."""
     import generate_data, entity_resolution, build_graph, scoring
     import gnn_detector, ensemble, rule_floors
+    # Tests validate correctness, not scale — run at a small, fast, self-contained
+    # population (decoupled from the production N_PERSONS) so the suite stays quick.
+    # test_pipeline's entity-count bound reads generate_data.N_PERSONS, so it stays
+    # consistent with whatever we set here.
+    generate_data.N_PERSONS = 8000
     generate_data.main()
     entity_resolution.resolve()
     build_graph.build()

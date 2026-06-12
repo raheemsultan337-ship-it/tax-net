@@ -23,13 +23,15 @@ import streamlit.components.v1 as components
 ROOT = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(ROOT, "src"))
 from score_person import score_person   # noqa: E402  (inference on a new individual)
-import live_match                         # noqa: E402  (live ER on a typed record)
 import audit_report                       # noqa: E402  (bilingual PDF notice)
 RES = os.path.join(ROOT, "data", "resolved")
 OBS = os.path.join(ROOT, "data", "observable")
 GT = os.path.join(ROOT, "data", "ground_truth")
 
 st.set_page_config(page_title="Tax Net — Graph AI", layout="wide", page_icon="🕸️")
+
+# The scatter shows a stratified sample larger than Altair's default 5k guard.
+alt.data_transformers.disable_max_rows()
 
 NODE_COLOR = {"vehicle": "#457b9d", "property": "#2a9d8f",
               "utility": "#e9c46a", "address": "#8d99ae"}
@@ -64,11 +66,6 @@ def load_floors():
         return f.set_index("entity_id")
     except FileNotFoundError:
         return None
-
-
-@st.cache_resource
-def load_match_index():
-    return live_match.load_index()
 
 
 @st.cache_resource
@@ -128,12 +125,23 @@ def chart_score_hist(scores, threshold=60):
     return (_hist_layer(scores, "#457b9d") + rule).properties(height=260)
 
 
-def chart_declared_vs_implied(scores, sample=3500):
+def chart_declared_vs_implied(scores, sample=12000, hi_threshold=40):
     """The core narrative: declared vs lifestyle-implied income (log-log). Honest
-    filers sit on the diagonal; evaders fall far below it (declared << implied)."""
-    df = scores.copy()
+    filers sit on the diagonal; evaders fall far below it (declared << implied).
+
+    STRATIFIED sample: keep every higher-deviation flag (the diverse, interesting
+    minority) and fill the rest of the budget with a random slice of the compliant
+    majority — so the scatter shows the spread, not just the green diagonal."""
+    df = scores
     if len(df) > sample:
-        df = df.sample(sample, random_state=42)
+        hi = df[df.deviation_score >= hi_threshold]
+        rest = df[df.deviation_score < hi_threshold]
+        if len(hi) >= sample:
+            df = hi.sample(sample, random_state=42)
+        else:
+            df = pd.concat([hi, rest.sample(min(len(rest), sample - len(hi)),
+                                            random_state=42)])
+    df = df.copy()
     df["declared_plot"] = df.declared_income.clip(lower=_FLOOR)
     df["implied_plot"] = df.implied_income.clip(lower=_FLOOR)
     df["Filing"] = df.is_filer.map({1: "Filer", 0: "Non-filer"})
@@ -226,6 +234,27 @@ scores["hidden_assets"] = scores.get("network_nonfiler_assets", 0)
 scores["n_assoc"] = scores.get("network_neighbors", 0)
 hubs = scores[(scores.is_filer == 1) & (scores.hidden_assets > 2_000_000)].copy()
 
+# display name / city per entity (from the rule-floor table), shared by all tabs
+name_of = floors["display_name"].to_dict() if floors is not None else {}
+city_of = floors["city"].to_dict() if floors is not None else {}
+
+
+def household_associates(eid):
+    """Co-household person entities (the potential proxies/frontmen) of an entity,
+    discovered via shared address nodes in the knowledge graph."""
+    pnode = f"person:{eid}"
+    if pnode not in G:
+        return []
+    out = set()
+    for addr in G.neighbors(pnode):
+        if isinstance(addr, str) and addr.startswith("address:"):
+            for nb in G.neighbors(addr):
+                if isinstance(nb, str) and nb.startswith("person:"):
+                    e = int(nb.split(":")[1])
+                    if e != eid:
+                        out.add(e)
+    return sorted(out)
+
 st.title("🕸️ Graph AI — Broadening the National Tax Net")
 st.caption("Entity resolution → knowledge graph → **ensemble** deviation score "
            "(Isolation Forest for tabular mismatch + GNN for hidden proxy networks), "
@@ -256,9 +285,9 @@ with st.expander("📊 Pipeline performance (evaluated against held-out ground t
     except Exception as e:
         st.warning(f"Could not compute metrics: {e}")
 
-tab_overview, tab_flagged, tab_proxy, tab_live, tab_new = st.tabs(
+tab_overview, tab_flagged, tab_proxy, tab_new = st.tabs(
     ["📈 Overview", "🚩 Flagged individuals", "🕵️ Proxy / benami networks",
-     "🔎 Live match", "➕ Score a new individual"])
+     "➕ Score a new individual"])
 
 # ==========================================================================
 with tab_overview:
@@ -307,12 +336,17 @@ with tab_flagged:
             pool, default_min = scores, 60
         min_score = st.slider("Minimum deviation score", 0, 100, default_min, key=seg)
         filt = pool[pool.deviation_score >= min_score].copy()
+        filt["Name"] = filt.entity_id.map(name_of).fillna("—")
+        filt["City"] = filt.entity_id.map(city_of).fillna("—")
         filt["declared"] = filt.declared_income.map(pkr)
         filt["implied"] = filt.implied_income.map(pkr)
         filt["filer"] = filt.is_filer.map({1: "filer", 0: "NON-FILER"})
         st.dataframe(
-            filt[["entity_id", "deviation_score", "declared", "implied", "filer"]]
-            .rename(columns={"entity_id": "Entity", "deviation_score": "Score"}),
+            filt[["entity_id", "Name", "City", "deviation_score", "declared",
+                  "implied", "filer"]]
+            .rename(columns={"entity_id": "Entity", "deviation_score": "Score",
+                             "declared": "Declared", "implied": "Implied",
+                             "filer": "Status"}),
             height=430, use_container_width=True, hide_index=True,
         )
         st.caption(f"{len(filt)} entities at/above this score in this category.")
@@ -323,10 +357,29 @@ with tab_flagged:
         if not options:
             st.info("No entities at this score threshold.")
         else:
-            eid = st.selectbox("Select a flagged entity", options,
-                               format_func=lambda e: f"Entity #{e}  (score "
-                               f"{scores.loc[scores.entity_id==e,'deviation_score'].iloc[0]:.0f})")
+            eid = st.selectbox(
+                "Select a flagged entity", options,
+                format_func=lambda e: f"#{e} — {name_of.get(e, 'Entity ' + str(e))}  "
+                f"(score {scores.loc[scores.entity_id==e,'deviation_score'].iloc[0]:.0f})")
             row = scores[scores.entity_id == eid].iloc[0]
+
+            # Build the full audit once (reused for the rich panel + the PDF).
+            try:
+                audit = audit_builder().build(eid)
+            except Exception as e:                       # noqa: BLE001
+                audit = None
+                st.caption(f"(rich audit unavailable: {e})")
+
+            # Identity header — who this is.
+            disp = (audit["display_name"] if audit else name_of.get(eid, f"Entity {eid}"))
+            city = (audit["city"] if audit else city_of.get(eid, ""))
+            n_recs = len(audit["records"]) if audit else int((mentions.entity_id == eid).sum())
+            n_dbs = (len({r["registry"] for r in audit["records"]}) if audit
+                     else mentions[mentions.entity_id == eid].source.nunique())
+            st.markdown(f"### {disp}")
+            st.caption(f"Entity #{eid} · {city or 'city unknown'} · resolved from "
+                       f"{n_recs} records across {n_dbs} databases")
+
             m = st.columns(3)
             m[0].metric("Deviation Score", f"{row.deviation_score:.0f}/100",
                         help="Production score: ensemble of the tabular (Isolation "
@@ -355,42 +408,80 @@ with tab_flagged:
                         range=["#457b9d", "#e63946"]), legend=None),
                     tooltip=["kind", "value"]).properties(height=110),
                 use_container_width=True)
+
             st.markdown("**Why this entity was flagged (ML signal):**")
             for reason in json.loads(row.audit_trail):
                 st.markdown(f"- {reason}")
+
+            # Lifestyle factors — each implied-income floor + the assumption behind it.
+            if audit and audit["lifestyle_factors"]:
+                with st.expander("🏠 Lifestyle factors — what implies the income",
+                                 expanded=True):
+                    for f in audit["lifestyle_factors"]:
+                        st.markdown(
+                            f"- **{f['factor'].title()}** → implies ≥ "
+                            f"**{pkr(f['implied_income'])}/yr**  \n"
+                            f"  <span style='color:#666;font-size:0.85em'>{f['detail']}"
+                            f"</span>", unsafe_allow_html=True)
+
+            # Observations — ghost / proxy / benami notes.
+            if audit and audit["notes"]:
+                with st.expander("📌 Observations", expanded=True):
+                    for n in audit["notes"]:
+                        st.markdown(f"- {n}")
+
+            # Identity resolution — the records + how the cascade linked them.
+            if audit:
+                with st.expander(f"🔗 Identity resolution — {n_recs} records, "
+                                 f"{len(audit['links'])} link(s)"):
+                    st.markdown("**Records linked into this person:**")
+                    for r in audit["records"]:
+                        st.markdown(f"- `{r['record_id']}` _({r['registry']})_ — "
+                                    f"{r['name'] or '—'}")
+                    if audit["links"]:
+                        st.markdown("**How they were matched (cascade evidence):**")
+                        for l in audit["links"]:
+                            conf = f" · p={l['confidence']:.3f}" if "confidence" in l else ""
+                            st.markdown(f"- {l['records']} — *{l['decided_by']}*{conf}: "
+                                        f"`{l['evidence']}`")
+                    else:
+                        st.caption("Records grouped by the resolver; no pairwise "
+                                   "evidence recorded (e.g. a single-record entity).")
 
             # Secondary, deterministic cross-check: lifestyle-implied income floors.
             if floors is not None and eid in floors.index:
                 fr = floors.loc[eid]
                 with st.expander("🧮 Explainable cross-check — lifestyle income floors "
                                  "(secondary, not the headline)"):
-                    f = st.columns(3)
-                    f[0].metric("Estimated income (floor)", pkr(fr.estimated_income_pkr))
-                    f[1].metric("Expected tax", pkr(fr.expected_tax_pkr))
-                    f[2].metric("Lifestyle-implied tax gap", pkr(fr.tax_gap_pkr),
-                                help=f"rule band: {fr.band}")
+                    fc = st.columns(3)
+                    fc[0].metric("Estimated income (floor)", pkr(fr.estimated_income_pkr))
+                    fc[1].metric("Expected tax", pkr(fr.expected_tax_pkr))
+                    fc[2].metric("Lifestyle-implied tax gap", pkr(fr.tax_gap_pkr),
+                                 help=f"rule band: {fr.band}")
                     st.caption("Deterministic rule engine (engine-cc / electricity / "
                                "property / travel floors) — an independent sanity check "
                                "on the ML ranking, and the basis of the audit notice.")
 
             # Downloadable bilingual audit notice (PDF).
-            try:
-                builder = audit_builder()
-                audit = builder.build(eid)
-                pdf_path = os.path.join(ROOT, "data", "audit", f"_dash_{eid}.pdf")
-                builder.pdf(audit, pdf_path)
-                with open(pdf_path, "rb") as fh:
-                    st.download_button("📄 Download audit notice (PDF)", fh.read(),
-                                       file_name=f"tax_notice_{eid}.pdf",
-                                       mime="application/pdf")
-            except Exception as e:
-                st.caption(f"(PDF notice unavailable: {e})")
+            if audit is not None:
+                try:
+                    pdf_path = os.path.join(ROOT, "data", "audit", f"_dash_{eid}.pdf")
+                    audit_builder().pdf(audit, pdf_path)
+                    with open(pdf_path, "rb") as fh:
+                        st.download_button("📄 Download audit notice (PDF)", fh.read(),
+                                           file_name=f"tax_notice_{eid}.pdf",
+                                           mime="application/pdf")
+                except Exception as e:                   # noqa: BLE001
+                    st.caption(f"(PDF notice unavailable: {e})")
 
             recs = mentions[mentions.entity_id == eid]
-            with st.expander(f"📄 {len(recs)} source records across "
-                             f"{recs.source.nunique()} databases"):
-                st.dataframe(recs[["source", "record_id", "raw_name", "cnic", "city"]],
-                             hide_index=True, use_container_width=True)
+            with st.expander(f"📄 {len(recs)} source records (raw registry rows)"):
+                cols = [c for c in ["source", "record_id", "raw_name", "dob", "cnic",
+                                    "city"] if c in recs.columns]
+                st.dataframe(recs[cols].rename(columns={
+                    "source": "Database", "record_id": "Record", "raw_name": "Name as recorded",
+                    "dob": "DOB", "cnic": "CNIC", "city": "City"}),
+                    hide_index=True, use_container_width=True)
 
     if options:
         st.subheader(f"🌐 Knowledge graph — Entity #{eid}")
@@ -400,87 +491,100 @@ with tab_flagged:
 with tab_proxy:
     st.subheader("🕵️ Suspected proxy / benami networks")
     st.markdown(
-        "These individuals file **clean-looking returns**, but the graph links them "
-        "to household associates holding large **undeclared** assets — wealth hidden "
-        "behind frontmen. *Tabular analysis alone misses these; the network reveals them.*"
-    )
+        "*Benami* = assets held in someone else's name. These individuals file "
+        "**clean-looking returns**, but the graph links them to household associates "
+        "holding large **undeclared** assets — wealth hidden behind frontmen. "
+        "*Tabular analysis clears them; only the network reveals them.*")
     if not len(hubs):
         st.info("No proxy networks detected at the current data/threshold.")
     else:
         h = hubs.sort_values("hidden_assets", ascending=False).copy()
+        h["Name"] = h.entity_id.map(name_of).fillna("—")
+        h["City"] = h.entity_id.map(city_of).fillna("—")
         h["declared_"] = h.declared_income.map(pkr)
         h["hidden_"] = h.hidden_assets.map(pkr)
+        h["own_"] = (h["deviation_score_own"].round(0)
+                     if "deviation_score_own" in h.columns else 0)
         st.dataframe(
-            h[["entity_id", "deviation_score", "declared_", "n_assoc", "hidden_"]]
-            .rename(columns={"entity_id": "Principal", "deviation_score": "Score",
-                             "declared_": "Declared", "n_assoc": "Associates",
+            h[["entity_id", "Name", "City", "own_", "deviation_score", "declared_",
+               "n_assoc", "hidden_"]]
+            .rename(columns={"entity_id": "Principal", "own_": "Own-books score",
+                             "deviation_score": "Network score", "declared_": "Declared",
+                             "n_assoc": "Associates",
                              "hidden_": "Hidden assets (via associates)"}),
             height=240, use_container_width=True, hide_index=True,
         )
-        st.metric("Total hidden assets uncovered via networks",
-                  pkr(h.hidden_assets.sum()))
+        kk = st.columns(2)
+        kk[0].metric("Proxy networks detected", f"{len(h):,}")
+        kk[1].metric("Total hidden assets uncovered via networks",
+                     pkr(h.hidden_assets.sum()))
 
-        pid = st.selectbox("Inspect a network", h.entity_id.tolist(),
-                           format_func=lambda e: f"Principal #{e}  "
-                           f"(hidden ~{pkr(scores.loc[scores.entity_id==e,'hidden_assets'].iloc[0])})")
+        pid = st.selectbox(
+            "Inspect a network", h.entity_id.tolist(),
+            format_func=lambda e: f"#{e} — {name_of.get(e, 'Entity ' + str(e))}  "
+            f"(hidden ~{pkr(scores.loc[scores.entity_id==e,'hidden_assets'].iloc[0])})")
         prow = scores[scores.entity_id == pid].iloc[0]
+
+        st.markdown(f"### {name_of.get(pid, f'Entity {pid}')}")
+        st.caption(f"Principal · Entity #{pid} · {city_of.get(pid, '') or 'city unknown'}")
+
+        # The graph payoff, made explicit for THIS principal: clean on own books,
+        # flagged once the network is considered.
+        own = float(prow.get("deviation_score_own", 0) or 0)
+        net = float(prow.deviation_score)
+        g = st.columns(2)
+        g[0].metric("Score on their OWN books (tabular)", f"{own:.0f}/100",
+                    help="What a row-by-row auditor sees — looks compliant.")
+        g[1].metric("Score WITH the network", f"{net:.0f}/100", delta=f"+{net-own:.0f}",
+                    help="After linking to non-filing associates via the graph.")
+        st.caption("The gap between these two numbers is exactly what the knowledge "
+                   "graph adds — a principal invisible to tabular analysis, surfaced "
+                   "by *who they are connected to*.")
+
         c = st.columns(3)
         c[0].metric("Declared income", pkr(prow.declared_income))
         c[1].metric("Hidden assets (associates)", pkr(prow.hidden_assets))
         c[2].metric("Household associates", int(prow.n_assoc))
-        st.markdown("**Audit trail:**")
+
+        # The actual frontmen: who holds the hidden wealth.
+        arows = []
+        for ae in household_associates(pid):
+            if ae not in feats.index:
+                continue
+            frow = feats.loc[ae]
+            assets = (float(frow.get("total_property_value", 0))
+                      + float(frow.get("total_vehicle_value", 0)))
+            arows.append({
+                "Associate": ae,
+                "Name": name_of.get(ae, f"Entity {ae}"),
+                "Filing": "filer" if int(frow.get("is_filer", 0)) == 1 else "NON-FILER",
+                "Declared": pkr(float(frow.get("declared_income", 0))),
+                "Assets held": pkr(assets),
+            })
+        if arows:
+            st.markdown("**Household associates — the frontmen holding the assets:**")
+            st.dataframe(pd.DataFrame(arows).sort_values("Associate"),
+                         hide_index=True, use_container_width=True)
+            st.caption("Non-filers above holding large assets are the benami holders; "
+                       "that wealth is economically the principal's.")
+
+        st.markdown("**Why this network was flagged:**")
         for reason in json.loads(prow.audit_trail):
             st.markdown(f"- {reason}")
-        st.markdown("**Network — 🎯 principal (red), 👤 associates/proxies (purple), "
-                    "assets coloured by type:**")
+
+        # Proxy/benami observations from the audit builder (the rule-layer notes).
+        try:
+            paudit = audit_builder().build(pid)
+            if paudit["notes"]:
+                st.markdown("**Observations:**")
+                for n in paudit["notes"]:
+                    st.markdown(f"- {n}")
+        except Exception:                                # noqa: BLE001
+            pass
+
+        st.markdown("**Network — 🎯 principal (red), 👤 associates/proxies (purple, "
+                    "non-filers ringed red), assets coloured by type:**")
         render_network(G, feats, pid, radius=3, height=520)
-
-# ==========================================================================
-with tab_live:
-    st.subheader("🔎 Live entity match")
-    st.markdown(
-        "Type a raw record the way a messy registry would hold it — any spelling, "
-        "**Urdu or Roman script**, partial address. The matcher blocks it against the "
-        "resolved population and scores candidates with the **same unsupervised "
-        "Fellegi-Sunter weights** the pipeline learned. No staging: invent an input "
-        "on the spot.")
-    with st.form("live_match"):
-        a, b = st.columns(2)
-        with a:
-            q_name = st.text_input("Name (Urdu or Roman)", "Mohd Asif Khan")
-            q_father = st.text_input("Father's name (optional)", "")
-            q_city = st.text_input("City (optional)", "Lahore")
-            q_dob = st.text_input("Date of birth YYYY-MM-DD (optional)", "")
-        with b:
-            q_cnic = st.text_input("CNIC (full or masked, optional)", "")
-            q_phone = st.text_input("Phone (optional)", "")
-            q_addr = st.text_input("Address (optional)", "")
-        go = st.form_submit_button("🔎 Match against the population")
-
-    if go:
-        with st.spinner("Blocking + scoring candidates …"):
-            idx = load_match_index()
-            cands = live_match.match_record({
-                "name": q_name, "father": q_father, "city": q_city, "dob": q_dob,
-                "cnic": q_cnic, "phone": q_phone, "address": q_addr,
-            }, index=idx)
-        if not cands:
-            st.warning("No candidate entities share a blocking key with this record.")
-        else:
-            st.caption(f"{len(cands)} candidate entit(y/ies); a high posterior needs a "
-                       "hard identifier (CNIC / phone / address / DOB) — name alone is "
-                       "deliberately weak.")
-            for c in cands:
-                srow = scores[scores.entity_id == c["entity_id"]]
-                dev = f"{srow.deviation_score.iloc[0]:.0f}" if len(srow) else "n/a"
-                with st.container(border=True):
-                    cc1, cc2, cc3 = st.columns([2, 1, 1])
-                    cc1.markdown(f"**Entity #{c['entity_id']}** — matched record "
-                                 f"`{c['candidate_record']}` ({c['registry']}): "
-                                 f"{c['candidate_name']}")
-                    cc2.metric("Match posterior", f"{c['posterior']:.3f}")
-                    cc3.metric("Deviation score", dev)
-                    st.caption("Evidence: " + ", ".join(c["evidence"]))
 
 # ==========================================================================
 with tab_new:
@@ -492,9 +596,10 @@ with tab_new:
         a, b = st.columns(2)
         with a:
             st.markdown("**Declared / filing**")
-            declared = st.number_input("Declared annual income (PKR)", 0, 1_000_000_000,
-                                       0, step=100_000)
-            is_filer = st.checkbox("Files a tax return", value=False)
+            declared = st.number_input(
+                "Declared annual income (PKR)", 0, 1_000_000_000, 0, step=100_000,
+                help="Leave at 0 to model a non-filer. Filing status is derived from "
+                     "this: declared > 0 ⇒ filer, declared = 0 ⇒ non-filer.")
             trips = st.number_input("International trips (last year)", 0, 50, 0)
         with b:
             st.markdown("**Observable footprint**")
@@ -515,7 +620,7 @@ with tab_new:
 
     if submitted:
         result = score_person({
-            "declared_income": declared, "is_filer": is_filer,
+            "declared_income": declared,   # filing status derived from this (declared > 0 ⇒ filer)
             "max_vehicle_cc": cc, "total_vehicle_value": veh_val,
             "total_property_value": prop_val, "max_monthly_bill": bill,
             "intl_trips": trips,
@@ -529,6 +634,8 @@ with tab_new:
         m[0].metric("Deviation Score", f"{sc:.0f}/100", verdict)
         m[1].metric("Declared income", pkr(result["declared_income"]))
         m[2].metric("Lifestyle-implied", f"~{pkr(result['implied_income'])}")
+        st.caption(f"Treated as a **{'filer' if result['is_filer'] else 'non-filer'}** "
+                   "(derived from declared income).")
         # rank vs the analysed population
         pct = (scores.deviation_score < sc).mean() * 100
         st.altair_chart(chart_placement(scores, sc), use_container_width=True)

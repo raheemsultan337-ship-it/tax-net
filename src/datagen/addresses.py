@@ -53,10 +53,26 @@ CITIES: dict[str, dict] = {
         "abbr": ["Skt"],
         "areas": ["Cantt", "Model Town", "Paris Road"],
     },
+    "Hyderabad": {
+        "abbr": ["Hyd"],
+        "areas": ["Latifabad", "Qasimabad", "Saddar", "Citizen Colony"],
+    },
+    "Gujranwala": {
+        "abbr": ["Gjw", "Grw"],
+        "areas": ["Model Town", "Satellite Town", "Peoples Colony", "DC Colony"],
+    },
+    "Quetta": {
+        "abbr": ["Qta"],
+        "areas": ["Cantt", "Jinnah Town", "Satellite Town", "Samungli Road"],
+    },
+    "Bahawalpur": {
+        "abbr": ["Bwp"],
+        "areas": ["Model Town A", "Satellite Town", "Cantt"],
+    },
 }
 
 CITY_NAMES = list(CITIES)
-CITY_WEIGHTS = [14, 14, 22, 24, 8, 8, 6, 4]
+CITY_WEIGHTS = [14, 14, 22, 24, 8, 8, 6, 4, 7, 9, 4, 4]
 
 
 @dataclass(frozen=True)

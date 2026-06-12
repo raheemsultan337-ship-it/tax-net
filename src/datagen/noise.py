@@ -27,7 +27,8 @@ def make_cnic(rng: random.Random, city: str) -> str:
     prefixes = {
         "Islamabad": "61101", "Rawalpindi": "37405", "Lahore": "35202",
         "Karachi": "42101", "Peshawar": "17301", "Faisalabad": "33100",
-        "Multan": "36302", "Sialkot": "34603",
+        "Multan": "36302", "Sialkot": "34603", "Hyderabad": "41304",
+        "Gujranwala": "34101", "Quetta": "54400", "Bahawalpur": "31202",
     }
     prefix = prefixes.get(city, "35202")
     serial = rng.randint(1_000_000, 9_999_999)
