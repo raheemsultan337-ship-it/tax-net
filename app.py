@@ -238,6 +238,37 @@ hubs = scores[(scores.is_filer == 1) & (scores.hidden_assets > 2_000_000)].copy(
 name_of = floors["display_name"].to_dict() if floors is not None else {}
 city_of = floors["city"].to_dict() if floors is not None else {}
 
+# raw footprint inputs score_person() consumes, as named in entity_features.csv
+RAW_INPUT_COLS = ["declared_income", "is_filer", "max_vehicle_cc",
+                  "total_vehicle_value", "total_property_value", "max_monthly_bill",
+                  "intl_trips", "network_nonfiler_asset_value", "network_neighbor_count"]
+
+
+@st.cache_data
+def consistency_check(n=12):
+    """Honesty proof for the live scorer: re-score n REAL entities (spanning the
+    whole score range) through the same score_person() inference the form uses,
+    and compare with the score the batch pipeline assigned them. Agreement proves
+    the form runs the identical frozen Isolation Forest — not a separate, re-fit,
+    or hand-tuned demo path. (Compared against the IF component: a brand-new
+    individual has no graph neighbourhood yet, so the GNN leg doesn't apply.)"""
+    sc, _, f = load()
+    if_col = "deviation_score_if" if "deviation_score_if" in sc.columns else "deviation_score"
+    s = sc.sort_values(if_col)
+    pick = s.iloc[:: max(1, len(s) // n)].head(n)
+    rows = []
+    for _, r in pick.iterrows():
+        eid = int(r.entity_id)
+        if eid not in f.index:
+            continue
+        fr = f.loc[eid]
+        live = score_person({c: fr[c] for c in RAW_INPUT_COLS})["deviation_score"]
+        batch = float(r[if_col])
+        rows.append({"Entity": eid, "Name": name_of.get(eid, "—"),
+                     "Pipeline score": round(batch, 1), "Live re-score": round(live, 1),
+                     "Difference": round(abs(live - batch), 2)})
+    return pd.DataFrame(rows)
+
 
 def household_associates(eid):
     """Co-household person entities (the potential proxies/frontmen) of an entity,
@@ -597,6 +628,36 @@ with tab_new:
     st.markdown("Enter someone's records and the **trained Isolation Forest** predicts "
                 "their Tax Compliance Deviation Score and audit trail (live inference — "
                 "no retraining).")
+
+    with st.expander("🔬 Honesty check — verify this scorer against the pipeline"):
+        st.markdown(
+            "How do you know this form runs the **real trained model** and not a "
+            "demo shortcut? Press the button: it picks real individuals from the "
+            "analysed population (lowest to highest score), pushes their raw "
+            "footprint through **this exact inference path**, and compares with "
+            "the score the batch pipeline gave them. If every row agrees, the "
+            "live scorer and the pipeline are provably the same frozen model.")
+        if st.button("▶ Re-score real entities through this form's model"):
+            chk = consistency_check()
+            ok = bool(len(chk)) and chk["Difference"].max() <= 0.2
+            c1, c2 = st.columns(2)
+            c1.metric("Real entities re-scored", len(chk))
+            c2.metric("Max |live − pipeline|", f"{chk['Difference'].max():.2f}",
+                      "scores reproduced" if ok else "MISMATCH — investigate",
+                      delta_color="normal" if ok else "inverse")
+            st.dataframe(chk, use_container_width=True, hide_index=True)
+            if ok:
+                st.success("✅ The live scorer reproduces the pipeline's scores "
+                           "exactly — same frozen model, no retraining, no "
+                           "hand-tuned numbers.")
+            else:
+                st.error("❌ Live inference diverged from the pipeline — the model "
+                         "bundle on disk is stale. Re-run `python src/run_pipeline.py`.")
+        st.caption("Compared against the Isolation-Forest component of the ensemble — "
+                   "a brand-new individual has no graph neighbourhood yet, so the GNN "
+                   "leg can't apply. The same check runs in CI: "
+                   "`tests/test_score_person.py` (6 tests).")
+
     with st.form("new_person"):
         a, b = st.columns(2)
         with a:

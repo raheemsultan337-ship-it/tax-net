@@ -26,7 +26,20 @@
       "Bash(echo \"HTTP $\\(curl -s -o /dev/null -w '%{http_code}' http://localhost:8525/ 2>/dev/null\\)\")",
       "Bash(xargs ls -la)",
       "Bash(python -m pytest tests/ --collect-only -q)",
-      "Bash(python *)"
+      "Bash(python *)",
+      "PowerShell(pip install pypdf -q 2>&1)",
+      "PowerShell($env:PYTHONUTF8=1; python F:\\\\tax-net\\\\_extract_pdfs.py 2>&1 | Select-Object -Skip 30)",
+      "PowerShell($env:PYTHONUTF8=1; Start-Process -FilePath \"F:\\\\tax-net\\\\.venv\\\\Scripts\\\\python.exe\" -ArgumentList \"-m\",\"streamlit\",\"run\",\"F:\\\\tax-net\\\\app.py\",\"--server.headless\",\"true\",\"--server.port\",\"8599\" -WindowStyle Hidden; Start-Sleep -Seconds 25; try { $r = Invoke-WebRequest -Uri \"http://localhost:8599\" -UseBasicParsing -TimeoutSec 10; Write-Output \\(\"HTTP \" + $r.StatusCode\\) } catch { Write-Output \\(\"FAILED: \" + $_.Exception.Message\\) })",
+      "PowerShell($j = Get-Content \"C:\\\\Users\\\\rahee\\\\.claude\\\\projects\\\\F--tax-net\\\\ecd2ad2c-cad2-4782-95fd-76070fc435d5\\\\tool-results\\\\toolu_01HWK18q5JG7tfzafQnWvkJK.json\" -Raw | ConvertFrom-Json; $t = $j[0].text; $i = $t.IndexOf\\(\"## Use case: Diagrams\"\\); if \\($i -lt 0\\) { $i = $t.IndexOf\\(\"Diagram\"\\) }; $t.Substring\\($i, [Math]::Min\\(11000, $t.Length - $i\\)\\))",
+      "mcp__visualize__show_widget",
+      "PowerShell($env:NODE_PATH = \"C:\\\\Users\\\\rahee\\\\AppData\\\\Roaming\\\\npm\\\\node_modules\"; node F:\\\\tax-net\\\\pitch\\\\build_deck.js; if \\($?\\) { try { $pp = New-Object -ComObject PowerPoint.Application; $pres = $pp.Presentations.Open\\(\"F:\\\\tax-net\\\\pitch\\\\tax-net-pitch.pptx\", $true, $false, $false\\); $pres.Slides.Item\\(4\\).Export\\(\"F:\\\\tax-net\\\\pitch\\\\qa\\\\slide-4.png\", \"PNG\", 1500, 844\\); $pres.Slides.Item\\(5\\).Export\\(\"F:\\\\tax-net\\\\pitch\\\\qa\\\\slide-5.png\", \"PNG\", 1500, 844\\); $pres.Close\\(\\); $pp.Quit\\(\\); Write-Output \"re-exported 4 and 5\" } catch { Write-Output \\(\"export failed: \" + $_.Exception.Message\\) } })",
+      "Bash(gh auth *)",
+      "PowerShell($g = Get-Command gh -ErrorAction SilentlyContinue; if \\($g\\) { $g.Source; gh auth status } else { \"gh not found on PATH\" })",
+      "Bash(git config *)",
+      "Bash(git check-ignore *)",
+      "Bash(grep -iE '\\\\.\\(pkl|pptx|csv|parquet\\)$')",
+      "Bash(git add *)",
+      "Bash(git commit -q -m 'Finalize developed build: updated dashboard, pitch deck, score_person test *)"
     ]
   }
 }
