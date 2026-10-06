@@ -40,7 +40,11 @@ NODE_COLOR = {"vehicle": "#457b9d", "property": "#2a9d8f",
 # --------------------------------------------------------------------------
 @st.cache_data
 def load():
-    scores = pd.read_csv(os.path.join(RES, "entity_scores.csv"))
+    scores_path = os.path.join(RES, "entity_scores.csv")
+    if not os.path.exists(scores_path):
+        import run_pipeline
+        run_pipeline.main()
+    scores = pd.read_csv(scores_path)
     # The production score is the ENSEMBLE (Isolation Forest + GNN). Alias it to
     # deviation_score so every KPI / tab / chart uses the combined number, while
     # keeping the per-model components for the interpretability breakdown.
@@ -54,7 +58,11 @@ def load():
 
 @st.cache_resource
 def load_graph():
-    with open(os.path.join(RES, "graph.gpickle"), "rb") as fh:
+    graph_path = os.path.join(RES, "graph.gpickle")
+    if not os.path.exists(graph_path):
+        import run_pipeline
+        run_pipeline.main()
+    with open(graph_path, "rb") as fh:
         return pickle.load(fh)
 
 

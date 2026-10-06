@@ -1,0 +1,148 @@
+{
+ "entity_id": 1793,
+ "display_name": "Zubair Cheema",
+ "city": "Quetta",
+ "records": [
+  {
+   "record_id": "VEH000099",
+   "registry": "vehicles",
+   "name": "Zubair Cheema",
+   "fields": {
+    "record_id": "VEH000099",
+    "owner_name": "Zubair Cheema",
+    "owner_cnic": "54400*****",
+    "dob": "1971-10-23",
+    "engine_cc": "1984",
+    "reg_value": "7543733",
+    "city": "Quetta"
+   }
+  },
+  {
+   "record_id": "PROP000101",
+   "registry": "real_estate",
+   "name": "Zubayr Cheema",
+   "fields": {
+    "record_id": "PROP000101",
+    "owner_name": "Zubayr Cheema",
+    "owner_cnic": "5440082245413",
+    "father_name": "Mohd Adnan Cheema",
+    "dob": "1971-10-23",
+    "property_value": "40642192",
+    "household": "House 341, Street 54, Samungli Road, Quetta",
+    "area": "Samungli Road",
+    "city": "Quetta"
+   }
+  },
+  {
+   "record_id": "PROP000100",
+   "registry": "real_estate",
+   "name": "Zubair Cheema",
+   "fields": {
+    "record_id": "PROP000100",
+    "owner_name": "Zubair Cheema",
+    "dob": "1971-10-23",
+    "property_value": "116032357",
+    "household": "House 341, Street 54, Samungli Road, Quetta",
+    "area": "Samungli Road",
+    "city": "Quetta"
+   }
+  },
+  {
+   "record_id": "UTL000098",
+   "registry": "utilities",
+   "name": "Zubair Cheema",
+   "fields": {
+    "account_id": "UTL000098",
+    "consumer_name": "Zubair Cheema",
+    "consumer_cnic": "5440082245413",
+    "father_name": "Muhammad Adnan Cheema",
+    "dob": "1971-10-23",
+    "address": "House 341, Street 54, Samungli Road, Quetta",
+    "avg_monthly_bill": "361726",
+    "phone": "+923253038948",
+    "city": "Quetta"
+   }
+  }
+ ],
+ "links": [
+  {
+   "records": "PROP000100 <-> UTL000098",
+   "decided_by": "tier1",
+   "evidence": "name_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP000101 <-> UTL000098",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP000101 <-> PROP000100",
+   "decided_by": "tier1",
+   "evidence": "name_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH000099 <-> UTL000098",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH000099 <-> PROP000101",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH000099 <-> PROP000100",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  }
+ ],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 72345200,
+   "detail": "avg bill 361,726 PKR/month; conservative floor assuming power takes up to 6% of gross income"
+  },
+  {
+   "factor": "vehicles",
+   "implied_income": 6000000,
+   "detail": "1 vehicle(s), largest 1984cc; engine-size income floor"
+  },
+  {
+   "factor": "property",
+   "implied_income": 19584318,
+   "detail": "2 holding(s), total value 156,674,549 PKR; assumes purchase from ~8 years of income"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle"
+ ],
+ "ml": {
+  "deviation_score": 93,
+  "deviation_score_if": 88,
+  "gnn_score": 8,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "electricity bills vs declared income in the top 1% of the population (ratio 3.6x)",
+   "overall lifestyle vs declared income in the top 1% of the population (ratio 32.6x)",
+   "property holdings vs declared income in the top 5% of the population (ratio 130.6x)",
+   "vehicle value vs declared income in the top 10% of the population (ratio 6.3x)",
+   "Lifestyle implies ~Rs 3.92 crore/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 72345200,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 24585820,
+  "tax_gap_pkr": 24585820,
+  "rule_deviation_score": 99,
+  "band": "high"
+ }
+}

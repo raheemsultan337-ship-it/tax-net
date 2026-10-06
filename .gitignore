@@ -180,9 +180,9 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
-# ── tax-net project artifacts (all regenerable; keep the repo lightweight) ──
-# Generated pipeline outputs — recreated by `python src/run_pipeline.py`
-/data/
+# ── tax-net project artifacts ──
+# Intermediate candidate pairs / promotions from ER (re-generated if needed)
+/data/er_output/
 # Sentence-transformer cache (~450 MB) — downloaded on first run or copied in
 /models/
 # Transient dashboard render + on-demand audit PDFs

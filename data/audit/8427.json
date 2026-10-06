@@ -1,0 +1,55 @@
+{
+ "entity_id": 8427,
+ "display_name": "Mohd Waqar Naqvi",
+ "city": "Karachi",
+ "records": [
+  {
+   "record_id": "UTL002415",
+   "registry": "utilities",
+   "name": "Mohd Waqar Naqvi",
+   "fields": {
+    "account_id": "UTL002415",
+    "consumer_name": "Mohd Waqar Naqvi",
+    "consumer_cnic": "42101-XXXXXXX-2",
+    "address": "House 207, Street 8, Bahadurabad, Karachi",
+    "avg_monthly_bill": "26147",
+    "phone": "0314-3255194",
+    "city": "Karachi"
+   }
+  }
+ ],
+ "links": [],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 2614700,
+   "detail": "avg bill 26,147 PKR/month; conservative floor assuming power takes up to 6% of gross income, shared across a household of 2"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle",
+  "linked to 1 non-filing household associate(s) holding ~56,521,846 PKR in assets (implied income ~14,130,461 PKR) — possible proxy/benami holding"
+ ],
+ "ml": {
+  "deviation_score": 94,
+  "deviation_score_if": 87,
+  "gnn_score": 29,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "linked to 1 non-filing household associate(s) holding ~Rs 5.65 crore in assets (likely proxy/benami holdings)",
+   "electricity bills vs declared income in the top 11% of the population (ratio 0.3x)",
+   "overall lifestyle vs declared income in the top 13% of the population (ratio 2.1x)",
+   "Lifestyle implies ~Rs 25.69 lakh/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 2614700,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 283675,
+  "tax_gap_pkr": 283675,
+  "rule_deviation_score": 49,
+  "band": "medium"
+ }
+}

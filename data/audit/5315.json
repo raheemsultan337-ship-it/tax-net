@@ -1,0 +1,57 @@
+{
+ "entity_id": 5315,
+ "display_name": "Yousuf Tareen",
+ "city": "Peshawar",
+ "records": [
+  {
+   "record_id": "UTL002125",
+   "registry": "utilities",
+   "name": "Yousuf Tareen",
+   "fields": {
+    "account_id": "UTL002125",
+    "consumer_name": "Yousuf Tareen",
+    "consumer_cnic": "17301-XXXXXXX-8",
+    "father_name": "M. Imran Tareen",
+    "dob": "1989-09-28",
+    "address": "House 824, Street 51, Hayatabad Phase 3, Peshawar",
+    "avg_monthly_bill": "16190",
+    "phone": "0338-5289177",
+    "city": "Peshawar"
+   }
+  }
+ ],
+ "links": [],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 1619000,
+   "detail": "avg bill 16,190 PKR/month; conservative floor assuming power takes up to 6% of gross income, shared across a household of 2"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle",
+  "linked to 1 non-filing household associate(s) holding ~259,105,091 PKR in assets (implied income ~64,776,272 PKR) — possible proxy/benami holding"
+ ],
+ "ml": {
+  "deviation_score": 93,
+  "deviation_score_if": 85,
+  "gnn_score": 32,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "linked to 1 non-filing household associate(s) holding ~Rs 25.91 crore in assets (likely proxy/benami holdings)",
+   "electricity bills vs declared income in the top 14% of the population (ratio 0.2x)",
+   "overall lifestyle vs declared income in the top 17% of the population (ratio 1.2x)",
+   "Lifestyle implies ~Rs 14.64 lakh/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 1619000,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 92850,
+  "tax_gap_pkr": 92850,
+  "rule_deviation_score": 24,
+  "band": "low"
+ }
+}

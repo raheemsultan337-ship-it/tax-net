@@ -1,0 +1,55 @@
+{
+ "entity_id": 7372,
+ "display_name": "M Pervez Bhutto",
+ "city": "Faisalabad",
+ "records": [
+  {
+   "record_id": "UTL008846",
+   "registry": "utilities",
+   "name": "M. Pervez Bhutto",
+   "fields": {
+    "account_id": "UTL008846",
+    "consumer_name": "M. Pervez Bhutto",
+    "consumer_cnic": "33100*****",
+    "address": "House 719, Street 11, Susan Road, Faisalabad",
+    "avg_monthly_bill": "21838",
+    "phone": "03087507503",
+    "city": "Faisalabad"
+   }
+  }
+ ],
+ "links": [],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 2183800,
+   "detail": "avg bill 21,838 PKR/month; conservative floor assuming power takes up to 6% of gross income, shared across a household of 2"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle",
+  "linked to 1 non-filing household associate(s) holding ~269,494,295 PKR in assets (implied income ~67,373,573 PKR) — possible proxy/benami holding"
+ ],
+ "ml": {
+  "deviation_score": 94,
+  "deviation_score_if": 88,
+  "gnn_score": 51,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "linked to 1 non-filing household associate(s) holding ~Rs 26.95 crore in assets (likely proxy/benami holdings)",
+   "electricity bills vs declared income in the top 12% of the population (ratio 0.2x)",
+   "overall lifestyle vs declared income in the top 14% of the population (ratio 1.7x)",
+   "Lifestyle implies ~Rs 20.91 lakh/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 2183800,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 177570,
+  "tax_gap_pkr": 177570,
+  "rule_deviation_score": 37,
+  "band": "low"
+ }
+}

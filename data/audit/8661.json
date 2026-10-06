@@ -1,0 +1,54 @@
+{
+ "entity_id": 8661,
+ "display_name": "Muhammad Bashir Jutt",
+ "city": "Gujranwala",
+ "records": [
+  {
+   "record_id": "UTL000857",
+   "registry": "utilities",
+   "name": "Muhammad Bashir Jutt",
+   "fields": {
+    "account_id": "UTL000857",
+    "consumer_name": "Muhammad Bashir Jutt",
+    "consumer_cnic": "34101*****",
+    "address": "House 410, Street 36, DC Colony, Gujranwala",
+    "avg_monthly_bill": "29070",
+    "city": "Gujranwala"
+   }
+  }
+ ],
+ "links": [],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 2907000,
+   "detail": "avg bill 29,070 PKR/month; conservative floor assuming power takes up to 6% of gross income, shared across a household of 2"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle",
+  "linked to 1 non-filing household associate(s) holding ~213,457,845 PKR in assets (implied income ~53,364,461 PKR) — possible proxy/benami holding"
+ ],
+ "ml": {
+  "deviation_score": 96,
+  "deviation_score_if": 90,
+  "gnn_score": 51,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "linked to 1 non-filing household associate(s) holding ~Rs 21.35 crore in assets (likely proxy/benami holdings)",
+   "electricity bills vs declared income in the top 11% of the population (ratio 0.3x)",
+   "overall lifestyle vs declared income in the top 12% of the population (ratio 2.4x)",
+   "Lifestyle implies ~Rs 28.94 lakh/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 2907000,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 356750,
+  "tax_gap_pkr": 356750,
+  "rule_deviation_score": 54,
+  "band": "medium"
+ }
+}

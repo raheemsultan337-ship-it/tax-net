@@ -1,0 +1,183 @@
+{
+ "entity_id": 6707,
+ "display_name": "Rukhsana Bibi",
+ "city": "Lahore",
+ "records": [
+  {
+   "record_id": "PROP001259",
+   "registry": "real_estate",
+   "name": "Rukhsana Bibi",
+   "fields": {
+    "record_id": "PROP001259",
+    "owner_name": "Rukhsana Bibi",
+    "owner_cnic": "3520275624423",
+    "father_name": "Muhammad Karim Abbasi",
+    "dob": "1962-10-05",
+    "property_value": "67469176",
+    "household": "House 492, Street 55, Shadman, Lahore",
+    "area": "Shadman",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "PROP001260",
+   "registry": "real_estate",
+   "name": "Rukhsana Bibi",
+   "fields": {
+    "record_id": "PROP001260",
+    "owner_name": "Rukhsana Bibi",
+    "owner_cnic": "3520275624423",
+    "father_name": "Muhammad Karim Abbasi",
+    "dob": "1962-10-05",
+    "property_value": "112471202",
+    "household": "House 492, Street 55, Shadman, Lahore",
+    "area": "Shadman",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "PROP001258",
+   "registry": "real_estate",
+   "name": "Rukhsana Bibi",
+   "fields": {
+    "record_id": "PROP001258",
+    "owner_name": "Rukhsana Bibi",
+    "father_name": "Muhammad Karim Abbasi",
+    "dob": "1962-10-05",
+    "property_value": "105132973",
+    "household": "House 492, Street 55, Shadman, Lahore",
+    "area": "Shadman",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "PROP001257",
+   "registry": "real_estate",
+   "name": "Rukhsana Bibi",
+   "fields": {
+    "record_id": "PROP001257",
+    "owner_name": "Rukhsana Bibi",
+    "owner_cnic": "35202-7562442-3",
+    "dob": "1962-10-05",
+    "property_value": "79967531",
+    "household": "House 492, Street 55, Shadman, Lahore",
+    "area": "Shadman",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "UTL001527",
+   "registry": "utilities",
+   "name": "Rukhsana Bibi",
+   "fields": {
+    "account_id": "UTL001527",
+    "consumer_name": "Rukhsana Bibi",
+    "consumer_cnic": "35202*****",
+    "father_name": "Dr. M. Karim Abbasi",
+    "dob": "1962-10-05",
+    "address": "House 492, Street 55, Shadman, Lahore",
+    "avg_monthly_bill": "199293",
+    "city": "Lahore"
+   }
+  }
+ ],
+ "links": [
+  {
+   "records": "PROP001260 <-> UTL001527",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001259 <-> PROP001260",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001260 <-> PROP001257",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001258 <-> UTL001527",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001260 <-> PROP001258",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001257 <-> UTL001527",
+   "decided_by": "tier1",
+   "evidence": "name_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001258 <-> PROP001257",
+   "decided_by": "tier1",
+   "evidence": "name_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001259 <-> UTL001527",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001259 <-> PROP001257",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001259 <-> PROP001258",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  }
+ ],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 19929300,
+   "detail": "avg bill 199,293 PKR/month; conservative floor assuming power takes up to 6% of gross income, shared across a household of 2"
+  },
+  {
+   "factor": "property",
+   "implied_income": 45630110,
+   "detail": "4 holding(s), total value 365,040,882 PKR; assumes purchase from ~8 years of income"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle"
+ ],
+ "ml": {
+  "deviation_score": 96,
+  "deviation_score_if": 94,
+  "gnn_score": 6,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "overall lifestyle vs declared income in the top 0% of the population (ratio 47.1x)",
+   "property holdings vs declared income in the top 1% of the population (ratio 304.2x)",
+   "electricity bills vs declared income in the top 2% of the population (ratio 2.0x)",
+   "Lifestyle implies ~Rs 5.65 crore/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 45630110,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 15235538,
+  "tax_gap_pkr": 15235538,
+  "rule_deviation_score": 98,
+  "band": "high"
+ }
+}

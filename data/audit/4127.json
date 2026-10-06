@@ -1,0 +1,212 @@
+{
+ "entity_id": 4127,
+ "display_name": "Mohammad Zobair Gilani",
+ "city": "Lahore",
+ "records": [
+  {
+   "record_id": "VEH006315",
+   "registry": "vehicles",
+   "name": "MOHAMMAD ZOBAIR GILANI",
+   "fields": {
+    "record_id": "VEH006315",
+    "owner_name": "MOHAMMAD ZOBAIR GILANI",
+    "owner_cnic": "35202-5286186-8",
+    "father_name": "Muhammad Ashraf Gilani",
+    "dob": "1958-08-19",
+    "engine_cc": "2694",
+    "reg_value": "11200367",
+    "phone": "+923012338433",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "VEH006316",
+   "registry": "vehicles",
+   "name": "Mr. Muhammad Zubayr Gillani",
+   "fields": {
+    "record_id": "VEH006316",
+    "owner_name": "Mr. Muhammad Zubayr Gillani",
+    "owner_cnic": "35202-5286186-8",
+    "father_name": "Muhammad Ashraf Gilani",
+    "dob": "1958-08-19",
+    "engine_cc": "2694",
+    "reg_value": "10737134",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "PROP005218",
+   "registry": "real_estate",
+   "name": "محمد زبیر گیلانی",
+   "fields": {
+    "record_id": "PROP005218",
+    "owner_name": "محمد زبیر گیلانی",
+    "owner_cnic": "35202-5286186-8",
+    "father_name": "Muhammad Ashraf Gillani",
+    "property_value": "93052171",
+    "household": "House 27, Street 28, Gulberg III, Lahore",
+    "area": "Gulberg III",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "PROP005217",
+   "registry": "real_estate",
+   "name": "Muhammed Zubair Gillani",
+   "fields": {
+    "record_id": "PROP005217",
+    "owner_name": "Muhammed Zubair Gillani",
+    "owner_cnic": "3520252861868",
+    "father_name": "Muhammad Ashraf Gilani",
+    "dob": "1958-08-19",
+    "property_value": "52125031",
+    "household": "House 27, Street 28, Gulberg III, Lahore",
+    "area": "Gulberg III",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "UTL006260",
+   "registry": "utilities",
+   "name": "Muhammed Zobair Gilani",
+   "fields": {
+    "account_id": "UTL006260",
+    "consumer_name": "Muhammed Zobair Gilani",
+    "consumer_cnic": "35202*****",
+    "dob": "1958-08-19",
+    "address": "House 27, Street 28, Gulberg III, Lahore",
+    "avg_monthly_bill": "330466",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "TAX004733",
+   "registry": "tax_returns",
+   "name": "Muhammad Zubair Gilani",
+   "fields": {
+    "return_id": "TAX004733",
+    "filer_name": "Muhammad Zubair Gilani",
+    "filer_cnic": "35202-5286186-8",
+    "father_name": "Muhammad Ashraf Gilani",
+    "dob": "1958-08-19",
+    "declared_income": "8381",
+    "tax_paid": "0",
+    "city": "Lahore"
+   }
+  }
+ ],
+ "links": [
+  {
+   "records": "PROP005217 <-> TAX004733",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP005218 <-> UTL006260",
+   "decided_by": "tier1",
+   "evidence": "name_exact|addr_exact|city_match",
+   "confidence": 0.9999
+  },
+  {
+   "records": "PROP005217 <-> UTL006260",
+   "decided_by": "tier1",
+   "evidence": "name_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH006315 <-> PROP005218",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH006316 <-> PROP005218",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH006316 <-> PROP005217",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH006315 <-> VEH006316",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH006315 <-> TAX004733",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP005218 <-> TAX004733",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH006316 <-> TAX004733",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH006315 <-> PROP005217",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP005218 <-> PROP005217",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|addr_exact|city_match",
+   "confidence": 1.0
+  }
+ ],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 66093200,
+   "detail": "avg bill 330,466 PKR/month; conservative floor assuming power takes up to 6% of gross income"
+  },
+  {
+   "factor": "vehicles",
+   "implied_income": 15000000,
+   "detail": "2 vehicle(s), largest 2694cc; engine-size income floor"
+  },
+  {
+   "factor": "property",
+   "implied_income": 18147150,
+   "detail": "2 holding(s), total value 145,177,202 PKR; assumes purchase from ~8 years of income"
+  }
+ ],
+ "notes": [],
+ "ml": {
+  "deviation_score": 96,
+  "deviation_score_if": 96,
+  "gnn_score": 8,
+  "reasons": [
+   "electricity bills vs declared income in the top 1% of the population (ratio 3.3x)",
+   "overall lifestyle vs declared income in the top 1% of the population (ratio 30.0x)",
+   "vehicle value vs declared income in the top 2% of the population (ratio 18.2x)",
+   "property holdings vs declared income in the top 5% of the population (ratio 120.1x)",
+   "Lifestyle implies ~Rs 3.63 crore/yr income, but declared Rs 8,381"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 66093200,
+  "declared_income_pkr": 8381,
+  "filer_status": "filer",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 22397620,
+  "tax_gap_pkr": 22397620,
+  "rule_deviation_score": 99,
+  "band": "high"
+ }
+}

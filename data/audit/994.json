@@ -1,0 +1,298 @@
+{
+ "entity_id": 994,
+ "display_name": "Muhammad Ghulam Mirza",
+ "city": "Multan",
+ "records": [
+  {
+   "record_id": "VEH002732",
+   "registry": "vehicles",
+   "name": "Muhammad Ghulam Mirza",
+   "fields": {
+    "record_id": "VEH002732",
+    "owner_name": "Muhammad Ghulam Mirza",
+    "owner_cnic": "3630298682698",
+    "father_name": "Tanveer Mirza",
+    "dob": "1954-12-07",
+    "engine_cc": "2755",
+    "reg_value": "11063752",
+    "city": "Multan"
+   }
+  },
+  {
+   "record_id": "VEH002733",
+   "registry": "vehicles",
+   "name": "Mohammad Ghulam Mirza",
+   "fields": {
+    "record_id": "VEH002733",
+    "owner_name": "Mohammad Ghulam Mirza",
+    "owner_cnic": "36302-9868269-8",
+    "father_name": "Tanveer Mirza",
+    "dob": "1954-12-07",
+    "engine_cc": "2982",
+    "reg_value": "9740185",
+    "city": "Multan"
+   }
+  },
+  {
+   "record_id": "VEH002731",
+   "registry": "vehicles",
+   "name": "Muhammad Ghulam Mirza",
+   "fields": {
+    "record_id": "VEH002731",
+    "owner_name": "Muhammad Ghulam Mirza",
+    "owner_cnic": "36302-9868269-8",
+    "father_name": "Tanveer Mirza",
+    "dob": "1954-12-07",
+    "engine_cc": "1984",
+    "reg_value": "7622225",
+    "phone": "03019890816",
+    "city": "Multan"
+   }
+  },
+  {
+   "record_id": "PROP002280",
+   "registry": "real_estate",
+   "name": "Mohammed Ghulam Mirza",
+   "fields": {
+    "record_id": "PROP002280",
+    "owner_name": "Mohammed Ghulam Mirza",
+    "father_name": "Haji Tanvir Mirza",
+    "dob": "1954-12-07",
+    "property_value": "18323212",
+    "household": "House 676, Street 47, Shah Rukn-e-Alam Colony, Multan",
+    "area": "Shah Rukn-e-Alam Colony",
+    "city": "Multan"
+   }
+  },
+  {
+   "record_id": "PROP002279",
+   "registry": "real_estate",
+   "name": "Mohammad Ghulam Mirza",
+   "fields": {
+    "record_id": "PROP002279",
+    "owner_name": "Mohammad Ghulam Mirza",
+    "owner_cnic": "36302-9868269-8",
+    "father_name": "Tanveer Mirza",
+    "dob": "1954-12-07",
+    "property_value": "35286597",
+    "household": "House 676, Street 47, Shah Rukn-e-Alam Colony, Multan",
+    "area": "Shah Rukn-e-Alam Colony",
+    "city": "Multan"
+   }
+  },
+  {
+   "record_id": "UTL002742",
+   "registry": "utilities",
+   "name": "Mohammed Ghulam Mirza",
+   "fields": {
+    "account_id": "UTL002742",
+    "consumer_name": "Mohammed Ghulam Mirza",
+    "consumer_cnic": "36302-XXXXXXX-8",
+    "dob": "1954-12-07",
+    "address": "House 676, Street 47, Shah Rukn-e-Alam Colony, Multan",
+    "avg_monthly_bill": "297683",
+    "city": "Multan"
+   }
+  },
+  {
+   "record_id": "TAX002080",
+   "registry": "tax_returns",
+   "name": "M. Ghulam Mirza",
+   "fields": {
+    "return_id": "TAX002080",
+    "filer_name": "M. Ghulam Mirza",
+    "father_name": "Tanveer Mirza",
+    "dob": "1954-12-07",
+    "declared_income": "446953",
+    "tax_paid": "0",
+    "city": "Multan"
+   }
+  },
+  {
+   "record_id": "TRV000788",
+   "registry": "travel",
+   "name": "Muhammed Ghulam Mirza",
+   "fields": {
+    "record_id": "TRV000788",
+    "passenger_name": "Muhammed Ghulam Mirza",
+    "dob": "1954-12-07",
+    "trips_last_year": "8",
+    "destinations": "Dubai; Doha; Bangkok; London",
+    "city": "Multan"
+   }
+  }
+ ],
+ "links": [
+  {
+   "records": "PROP002279 <-> UTL002742",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_masked_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002732 <-> VEH002733",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002731 <-> PROP002279",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP002280 <-> UTL002742",
+   "decided_by": "tier1",
+   "evidence": "name_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002732 <-> PROP002279",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP002280 <-> PROP002279",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002733 <-> PROP002279",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002732 <-> VEH002731",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002733 <-> VEH002731",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP002279 <-> TAX002080",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_close|father_match|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002731 <-> TAX002080",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_close|father_match|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002732 <-> TAX002080",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_close|father_match|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP002280 <-> TAX002080",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_close|father_match|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002733 <-> TAX002080",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_close|father_match|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002731 <-> TRV000788",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP002280 <-> TRV000788",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002732 <-> TRV000788",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002733 <-> TRV000788",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "TRV000788 <-> TAX002080",
+   "decided_by": "tier4_promote",
+   "evidence": "name_close|dob_match|city_match",
+   "confidence": 0.9983
+  },
+  {
+   "records": "UTL002742 <-> TRV000788",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP002279 <-> TRV000788",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  }
+ ],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 59536600,
+   "detail": "avg bill 297,683 PKR/month; conservative floor assuming power takes up to 6% of gross income"
+  },
+  {
+   "factor": "vehicles",
+   "implied_income": 15000000,
+   "detail": "3 vehicle(s), largest 2982cc; engine-size income floor"
+  },
+  {
+   "factor": "property",
+   "implied_income": 6701226,
+   "detail": "2 holding(s), total value 53,609,809 PKR; assumes purchase from ~8 years of income"
+  },
+  {
+   "factor": "travel",
+   "implied_income": 12000000,
+   "detail": "8 intl trip(s); ~1,500,000 PKR income per annual trip"
+  }
+ ],
+ "notes": [],
+ "ml": {
+  "deviation_score": 93,
+  "deviation_score_if": 93,
+  "gnn_score": 3,
+  "reasons": [
+   "electricity bills vs declared income in the top 2% of the population (ratio 2.2x)",
+   "international travel vs declared income in the top 2% of the population (ratio 4.9x)",
+   "vehicle value vs declared income in the top 3% of the population (ratio 17.3x)",
+   "overall lifestyle vs declared income in the top 8% of the population (ratio 6.1x)",
+   "Lifestyle implies ~Rs 1.01 crore/yr income, but declared Rs 4.47 lakh"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 59536600,
+  "declared_income_pkr": 446953,
+  "filer_status": "filer",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 20102810,
+  "tax_gap_pkr": 20102810,
+  "rule_deviation_score": 99,
+  "band": "high"
+ }
+}

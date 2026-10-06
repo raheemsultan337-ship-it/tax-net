@@ -1,0 +1,234 @@
+{
+ "entity_id": 6706,
+ "display_name": "M Umar Dar",
+ "city": "Lahore",
+ "records": [
+  {
+   "record_id": "PROP007217",
+   "registry": "real_estate",
+   "name": "M. Umar Dar",
+   "fields": {
+    "record_id": "PROP007217",
+    "owner_name": "M. Umar Dar",
+    "owner_cnic": "3520212397987",
+    "dob": "1964-12-12",
+    "property_value": "75298931",
+    "household": "House 851, Street 15, Johar Town, Lahore",
+    "area": "Johar Town",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "PROP007219",
+   "registry": "real_estate",
+   "name": "M. Umar Dar",
+   "fields": {
+    "record_id": "PROP007219",
+    "owner_name": "M. Umar Dar",
+    "owner_cnic": "35202-1239798-7",
+    "father_name": "YOUNIS DAR",
+    "dob": "1964-12-12",
+    "property_value": "49360717",
+    "household": "House 851, Street 15, Johar Town, Lahore",
+    "area": "Johar Town",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "PROP007218",
+   "registry": "real_estate",
+   "name": "M. Umar Dar",
+   "fields": {
+    "record_id": "PROP007218",
+    "owner_name": "M. Umar Dar",
+    "owner_cnic": "35202-1239798-7",
+    "dob": "1964-12-12",
+    "property_value": "15645778",
+    "household": "House 851, Street 15, Johar Town, Lahore",
+    "area": "Johar Town",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "PROP007220",
+   "registry": "real_estate",
+   "name": "Muhammed Umar Dar",
+   "fields": {
+    "record_id": "PROP007220",
+    "owner_name": "Muhammed Umar Dar",
+    "owner_cnic": "35202-1239798-7",
+    "father_name": "Younis Dar",
+    "dob": "1964-12-12",
+    "property_value": "86249245",
+    "household": "House 851, Street 15, Johar Town, Lahore",
+    "area": "Johar Town",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "UTL008544",
+   "registry": "utilities",
+   "name": "Mian M. Omar Dar",
+   "fields": {
+    "account_id": "UTL008544",
+    "consumer_name": "Mian M. Omar Dar",
+    "consumer_cnic": "35202-1239798-7",
+    "father_name": "Younis Dar",
+    "dob": "1964-12-12",
+    "address": "House 851, Street 15, Johar Town, Lahore",
+    "avg_monthly_bill": "40822",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "TRV002572",
+   "registry": "travel",
+   "name": "Mohd Umar Dar",
+   "fields": {
+    "record_id": "TRV002572",
+    "passenger_name": "Mohd Umar Dar",
+    "passport_cnic": "3520212397987",
+    "father_name": "Younis Dar",
+    "dob": "1964-12-12",
+    "trips_last_year": "5",
+    "destinations": "New York; Dubai; London; Doha",
+    "city": "Lahore"
+   }
+  }
+ ],
+ "links": [
+  {
+   "records": "UTL008544 <-> TRV002572",
+   "decided_by": "tier1",
+   "evidence": "name_close|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP007217 <-> PROP007218",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP007220 <-> TRV002572",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP007219 <-> TRV002572",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP007218 <-> UTL008544",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP007217 <-> PROP007219",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP007219 <-> PROP007220",
+   "decided_by": "tier1",
+   "evidence": "name_weak|father_match|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP007217 <-> PROP007220",
+   "decided_by": "tier1",
+   "evidence": "name_weak|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 0.9999
+  },
+  {
+   "records": "PROP007220 <-> UTL008544",
+   "decided_by": "tier1",
+   "evidence": "name_weak|father_match|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP007219 <-> UTL008544",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP007218 <-> TRV002572",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP007217 <-> UTL008544",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP007217 <-> TRV002572",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP007218 <-> PROP007220",
+   "decided_by": "tier1",
+   "evidence": "name_weak|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 0.9999
+  },
+  {
+   "records": "PROP007219 <-> PROP007218",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  }
+ ],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 8164400,
+   "detail": "avg bill 40,822 PKR/month; conservative floor assuming power takes up to 6% of gross income"
+  },
+  {
+   "factor": "property",
+   "implied_income": 28319333,
+   "detail": "4 holding(s), total value 226,554,671 PKR; assumes purchase from ~8 years of income"
+  },
+  {
+   "factor": "travel",
+   "implied_income": 7500000,
+   "detail": "5 intl trip(s); ~1,500,000 PKR income per annual trip"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle"
+ ],
+ "ml": {
+  "deviation_score": 94,
+  "deviation_score_if": 88,
+  "gnn_score": 22,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "property holdings vs declared income in the top 2% of the population (ratio 188.8x)",
+   "international travel vs declared income in the top 3% of the population (ratio 4.2x)",
+   "electricity bills vs declared income in the top 10% of the population (ratio 0.4x)",
+   "overall lifestyle vs declared income in the top 11% of the population (ratio 3.5x)",
+   "Lifestyle implies ~Rs 41.98 lakh/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 28319333,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 9176767,
+  "tax_gap_pkr": 9176767,
+  "rule_deviation_score": 97,
+  "band": "high"
+ }
+}

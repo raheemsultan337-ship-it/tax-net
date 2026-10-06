@@ -1,0 +1,173 @@
+{
+ "entity_id": 5545,
+ "display_name": "Wasim Kakar",
+ "city": "Peshawar",
+ "records": [
+  {
+   "record_id": "VEH005828",
+   "registry": "vehicles",
+   "name": "Wasim Kakar",
+   "fields": {
+    "record_id": "VEH005828",
+    "owner_name": "Wasim Kakar",
+    "owner_cnic": "17301*****",
+    "father_name": "Muhammad Naveed Kakar",
+    "dob": "1983-03-22",
+    "engine_cc": "2694",
+    "reg_value": "8633814",
+    "city": "Peshawar"
+   }
+  },
+  {
+   "record_id": "VEH005827",
+   "registry": "vehicles",
+   "name": "Wasim Kakar",
+   "fields": {
+    "record_id": "VEH005827",
+    "owner_name": "Wasim Kakar",
+    "owner_cnic": "17301-XXXXXXX-6",
+    "father_name": "Muhammad Naveed Kakar",
+    "dob": "1983-03-22",
+    "engine_cc": "2755",
+    "reg_value": "10490501",
+    "city": "Peshawar"
+   }
+  },
+  {
+   "record_id": "PROP004815",
+   "registry": "real_estate",
+   "name": "Wasim Kakar",
+   "fields": {
+    "record_id": "PROP004815",
+    "owner_name": "Wasim Kakar",
+    "father_name": "Mohd Naveed Kakar",
+    "dob": "1983-03-22",
+    "property_value": "57299076",
+    "household": "House 205, Street 1, Warsak Road, Peshawar",
+    "area": "Warsak Road",
+    "city": "Peshawar"
+   }
+  },
+  {
+   "record_id": "UTL005795",
+   "registry": "utilities",
+   "name": "Wasmi Kakar",
+   "fields": {
+    "account_id": "UTL005795",
+    "consumer_name": "Wasmi Kakar",
+    "dob": "1983-03-22",
+    "address": "House 205, Street 1, Warsak Road, Peshawar",
+    "avg_monthly_bill": "81764",
+    "phone": "03050850977",
+    "city": "Peshawar"
+   }
+  },
+  {
+   "record_id": "TRV001720",
+   "registry": "travel",
+   "name": "Wasim Kakar",
+   "fields": {
+    "record_id": "TRV001720",
+    "passenger_name": "Wasim Kakar",
+    "father_name": "Muhammad Navid Kakar",
+    "dob": "1983-03-22",
+    "trips_last_year": "3",
+    "destinations": "New York; Jeddah; London",
+    "city": "Peshawar"
+   }
+  }
+ ],
+ "links": [
+  {
+   "records": "PROP004815 <-> UTL005795",
+   "decided_by": "tier1",
+   "evidence": "name_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP004815 <-> TRV001720",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_exact|father_match|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH005828 <-> TRV001720",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_exact|father_match|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH005827 <-> TRV001720",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_exact|father_match|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH005828 <-> VEH005827",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_exact|father_match|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH005828 <-> PROP004815",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_exact|father_match|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH005827 <-> PROP004815",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_exact|father_match|dob_match|city_match",
+   "confidence": 1.0
+  }
+ ],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 8176400,
+   "detail": "avg bill 81,764 PKR/month; conservative floor assuming power takes up to 6% of gross income, shared across a household of 2"
+  },
+  {
+   "factor": "vehicles",
+   "implied_income": 15000000,
+   "detail": "2 vehicle(s), largest 2755cc; engine-size income floor"
+  },
+  {
+   "factor": "property",
+   "implied_income": 7162384,
+   "detail": "1 holding(s), total value 57,299,076 PKR; assumes purchase from ~8 years of income"
+  },
+  {
+   "factor": "travel",
+   "implied_income": 4500000,
+   "detail": "3 intl trip(s); ~1,500,000 PKR income per annual trip"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle",
+  "linked to 1 non-filing household associate(s) holding ~35,410,901 PKR in assets (implied income ~8,852,725 PKR) — possible proxy/benami holding"
+ ],
+ "ml": {
+  "deviation_score": 94,
+  "deviation_score_if": 86,
+  "gnn_score": 75,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "linked to 1 non-filing household associate(s) holding ~Rs 3.54 crore in assets (likely proxy/benami holdings)",
+   "vehicle value vs declared income in the top 3% of the population (ratio 15.9x)",
+   "international travel vs declared income in the top 5% of the population (ratio 2.5x)",
+   "overall lifestyle vs declared income in the top 8% of the population (ratio 6.2x)",
+   "Lifestyle implies ~Rs 74.26 lakh/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 15000000,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 4515000,
+  "tax_gap_pkr": 4515000,
+  "rule_deviation_score": 94,
+  "band": "high"
+ }
+}

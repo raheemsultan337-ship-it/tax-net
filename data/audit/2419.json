@@ -1,0 +1,236 @@
+{
+ "entity_id": 2419,
+ "display_name": "Sadia Janjua",
+ "city": "Lahore",
+ "records": [
+  {
+   "record_id": "VEH002623",
+   "registry": "vehicles",
+   "name": "Sadia Janjua",
+   "fields": {
+    "record_id": "VEH002623",
+    "owner_name": "Sadia Janjua",
+    "dob": "1959-04-27",
+    "engine_cc": "2998",
+    "reg_value": "9689866",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "VEH002622",
+   "registry": "vehicles",
+   "name": "Sadia Janjua",
+   "fields": {
+    "record_id": "VEH002622",
+    "owner_name": "Sadia Janjua",
+    "owner_cnic": "35202-3153664-3",
+    "father_name": "Waqar Janjua",
+    "dob": "1959-04-27",
+    "engine_cc": "1984",
+    "reg_value": "6348947",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "VEH002621",
+   "registry": "vehicles",
+   "name": "Saadia Janjua",
+   "fields": {
+    "record_id": "VEH002621",
+    "owner_name": "Saadia Janjua",
+    "owner_cnic": "35202-3153664-3",
+    "father_name": "Waqar Janjua",
+    "dob": "1959-04-27",
+    "engine_cc": "1991",
+    "reg_value": "6670392",
+    "phone": "0302-5687218",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "PROP002180",
+   "registry": "real_estate",
+   "name": "Sadiya Janjua",
+   "fields": {
+    "record_id": "PROP002180",
+    "owner_name": "Sadiya Janjua",
+    "owner_cnic": "35202-3153664-3",
+    "father_name": "Waqar Janjua",
+    "dob": "1959-04-27",
+    "property_value": "70146924",
+    "household": "House 533, Street 19, Gulberg III, Lahore",
+    "area": "Gulberg III",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "UTL002634",
+   "registry": "utilities",
+   "name": "Sadia Janjua",
+   "fields": {
+    "account_id": "UTL002634",
+    "consumer_name": "Sadia Janjua",
+    "consumer_cnic": "3520231536643",
+    "dob": "1959-04-27",
+    "address": "House 533, Street 19, Gulberg III, Lahore",
+    "avg_monthly_bill": "409320",
+    "city": "Lahore"
+   }
+  },
+  {
+   "record_id": "TRV000755",
+   "registry": "travel",
+   "name": "Sadia Janjua",
+   "fields": {
+    "record_id": "TRV000755",
+    "passenger_name": "Sadia Janjua",
+    "passport_cnic": "35202-3153664-3",
+    "father_name": "Waqar Janjua",
+    "dob": "1959-04-27",
+    "trips_last_year": "8",
+    "destinations": "Baku; Bangkok; Jeddah; Kuala Lumpur",
+    "city": "Lahore"
+   }
+  }
+ ],
+ "links": [
+  {
+   "records": "VEH002622 <-> UTL002634",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002622 <-> TRV000755",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002621 <-> UTL002634",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP002180 <-> UTL002634",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002621 <-> TRV000755",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002622 <-> PROP002180",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP002180 <-> TRV000755",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002621 <-> PROP002180",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002622 <-> VEH002621",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "UTL002634 <-> TRV000755",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002623 <-> UTL002634",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002623 <-> TRV000755",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002623 <-> PROP002180",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002623 <-> VEH002621",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002623 <-> VEH002622",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  }
+ ],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 81864000,
+   "detail": "avg bill 409,320 PKR/month; conservative floor assuming power takes up to 6% of gross income"
+  },
+  {
+   "factor": "vehicles",
+   "implied_income": 15000000,
+   "detail": "3 vehicle(s), largest 2998cc; engine-size income floor"
+  },
+  {
+   "factor": "property",
+   "implied_income": 8768365,
+   "detail": "1 holding(s), total value 70,146,924 PKR; assumes purchase from ~8 years of income"
+  },
+  {
+   "factor": "travel",
+   "implied_income": 12000000,
+   "detail": "8 intl trip(s); ~1,500,000 PKR income per annual trip"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle"
+ ],
+ "ml": {
+  "deviation_score": 93,
+  "deviation_score_if": 94,
+  "gnn_score": 2,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "electricity bills vs declared income in the top 0% of the population (ratio 4.1x)",
+   "international travel vs declared income in the top 1% of the population (ratio 6.7x)",
+   "vehicle value vs declared income in the top 2% of the population (ratio 18.9x)",
+   "overall lifestyle vs declared income in the top 6% of the population (ratio 10.2x)",
+   "Lifestyle implies ~Rs 1.22 crore/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 81864000,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 27917400,
+  "tax_gap_pkr": 27917400,
+  "rule_deviation_score": 99,
+  "band": "high"
+ }
+}

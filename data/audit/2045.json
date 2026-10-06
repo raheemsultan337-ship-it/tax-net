@@ -1,0 +1,85 @@
+{
+ "entity_id": 2045,
+ "display_name": "Moin Kazmi",
+ "city": "Islamabad",
+ "records": [
+  {
+   "record_id": "VEH000065",
+   "registry": "vehicles",
+   "name": "Moin Kazmi",
+   "fields": {
+    "record_id": "VEH000065",
+    "owner_name": "Moin Kazmi",
+    "owner_cnic": "61101-5928582-6",
+    "father_name": "Mohd Ghulam Kazmi",
+    "dob": "1984-06-22",
+    "engine_cc": "2755",
+    "reg_value": "10625917",
+    "city": "Islamabad"
+   }
+  },
+  {
+   "record_id": "UTL000066",
+   "registry": "utilities",
+   "name": "Moin Kazmi",
+   "fields": {
+    "account_id": "UTL000066",
+    "consumer_name": "Moin Kazmi",
+    "consumer_cnic": "6110159285826",
+    "father_name": "Muhammed Ghulam Kazmi",
+    "dob": "1984-06-22",
+    "address": "House 435, Street 6, E-11/2, Islamabad",
+    "avg_monthly_bill": "13153",
+    "phone": "03020746667",
+    "city": "Islamabad"
+   }
+  }
+ ],
+ "links": [
+  {
+   "records": "VEH000065 <-> UTL000066",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  }
+ ],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 1315300,
+   "detail": "avg bill 13,153 PKR/month; conservative floor assuming power takes up to 6% of gross income, shared across a household of 2"
+  },
+  {
+   "factor": "vehicles",
+   "implied_income": 15000000,
+   "detail": "1 vehicle(s), largest 2755cc; engine-size income floor"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle",
+  "linked to 1 non-filing household associate(s) holding ~247,482,022 PKR in assets (implied income ~61,870,505 PKR) — possible proxy/benami holding"
+ ],
+ "ml": {
+  "deviation_score": 95,
+  "deviation_score_if": 89,
+  "gnn_score": 53,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "linked to 1 non-filing household associate(s) holding ~Rs 24.75 crore in assets (likely proxy/benami holdings)",
+   "vehicle value vs declared income in the top 7% of the population (ratio 8.9x)",
+   "overall lifestyle vs declared income in the top 12% of the population (ratio 3.0x)",
+   "electricity bills vs declared income in the top 15% of the population (ratio 0.1x)",
+   "Lifestyle implies ~Rs 36.18 lakh/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 15000000,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 4515000,
+  "tax_gap_pkr": 4515000,
+  "rule_deviation_score": 94,
+  "band": "high"
+ }
+}

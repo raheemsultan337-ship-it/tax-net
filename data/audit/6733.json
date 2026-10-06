@@ -1,0 +1,144 @@
+{
+ "entity_id": 6733,
+ "display_name": "Muhammad Nawaz Arain",
+ "city": "Gujranwala",
+ "records": [
+  {
+   "record_id": "PROP004680",
+   "registry": "real_estate",
+   "name": "Muhammad Nawaz Arain",
+   "fields": {
+    "record_id": "PROP004680",
+    "owner_name": "Muhammad Nawaz Arain",
+    "owner_cnic": "3410129116096",
+    "father_name": "Muhammad Ejaz Arain",
+    "dob": "1956-02-26",
+    "property_value": "94275053",
+    "household": "House 659, Street 56, DC Colony, Gujranwala",
+    "area": "DC Colony",
+    "city": "Gujranwala"
+   }
+  },
+  {
+   "record_id": "PROP004679",
+   "registry": "real_estate",
+   "name": "Mohammed Nawaz Arain",
+   "fields": {
+    "record_id": "PROP004679",
+    "owner_name": "Mohammed Nawaz Arain",
+    "father_name": "Muhammad Ejaz Arain",
+    "dob": "1956-02-26",
+    "property_value": "73337888",
+    "household": "House 659, Street 56, DC Colony, Gujranwala",
+    "area": "DC Colony",
+    "city": "Gujranwala"
+   }
+  },
+  {
+   "record_id": "UTL005645",
+   "registry": "utilities",
+   "name": "Muhammad Nawaz Arain",
+   "fields": {
+    "account_id": "UTL005645",
+    "consumer_name": "Muhammad Nawaz Arain",
+    "consumer_cnic": "3410129116096",
+    "father_name": "Muhammad Ejaz Arain",
+    "dob": "1956-02-26",
+    "address": "House 659, Street 56, DC Colony, Gujranwala",
+    "avg_monthly_bill": "263052",
+    "phone": "0316-3489252",
+    "city": "Gujranwala"
+   }
+  },
+  {
+   "record_id": "TRV001662",
+   "registry": "travel",
+   "name": "Mohammed Nawaz Arain",
+   "fields": {
+    "record_id": "TRV001662",
+    "passenger_name": "Mohammed Nawaz Arain",
+    "passport_cnic": "34101-2911609-6",
+    "father_name": "Muhammad Ejaz Arain",
+    "dob": "1956-02-26",
+    "trips_last_year": "8",
+    "destinations": "Jeddah; Kuala Lumpur; Bangkok; Toronto",
+    "city": "Gujranwala"
+   }
+  }
+ ],
+ "links": [
+  {
+   "records": "PROP004679 <-> UTL005645",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "UTL005645 <-> TRV001662",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP004680 <-> TRV001662",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP004680 <-> PROP004679",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP004680 <-> UTL005645",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  }
+ ],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 52610400,
+   "detail": "avg bill 263,052 PKR/month; conservative floor assuming power takes up to 6% of gross income"
+  },
+  {
+   "factor": "property",
+   "implied_income": 20951617,
+   "detail": "2 holding(s), total value 167,612,941 PKR; assumes purchase from ~8 years of income"
+  },
+  {
+   "factor": "travel",
+   "implied_income": 12000000,
+   "detail": "8 intl trip(s); ~1,500,000 PKR income per annual trip"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle"
+ ],
+ "ml": {
+  "deviation_score": 100,
+  "deviation_score_if": 100,
+  "gnn_score": 20,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "international travel vs declared income in the top 1% of the population (ratio 6.7x)",
+   "overall lifestyle vs declared income in the top 1% of the population (ratio 24.1x)",
+   "electricity bills vs declared income in the top 1% of the population (ratio 2.6x)",
+   "property holdings vs declared income in the top 4% of the population (ratio 139.7x)",
+   "Lifestyle implies ~Rs 2.89 crore/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 52610400,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 17678640,
+  "tax_gap_pkr": 17678640,
+  "rule_deviation_score": 98,
+  "band": "high"
+ }
+}

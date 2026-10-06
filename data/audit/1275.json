@@ -1,0 +1,309 @@
+{
+ "entity_id": 1275,
+ "display_name": "Komal Khan",
+ "city": "Faisalabad",
+ "records": [
+  {
+   "record_id": "VEH002328",
+   "registry": "vehicles",
+   "name": "Komal Khan",
+   "fields": {
+    "record_id": "VEH002328",
+    "owner_name": "Komal Khan",
+    "owner_cnic": "33100-5648602-8",
+    "father_name": "Younis Khan",
+    "dob": "1999-11-07",
+    "engine_cc": "1991",
+    "reg_value": "6702426",
+    "phone": "0317-6045566",
+    "city": "Faisalabad"
+   }
+  },
+  {
+   "record_id": "PROP001941",
+   "registry": "real_estate",
+   "name": "Komal Khan",
+   "fields": {
+    "record_id": "PROP001941",
+    "owner_name": "Komal Khan",
+    "father_name": "Younis Khan",
+    "dob": "1999-11-07",
+    "property_value": "23917306",
+    "household": "House 293, Street 10, D Ground, Faisalabad",
+    "area": "D Ground",
+    "city": "Faisalabad"
+   }
+  },
+  {
+   "record_id": "PROP001940",
+   "registry": "real_estate",
+   "name": "Komal Khan",
+   "fields": {
+    "record_id": "PROP001940",
+    "owner_name": "Komal Khan",
+    "father_name": "Younis Khan",
+    "dob": "1999-11-07",
+    "property_value": "42574069",
+    "household": "House 293, Street 10, D Ground, Faisalabad",
+    "area": "D Ground",
+    "city": "Faisalabad"
+   }
+  },
+  {
+   "record_id": "PROP001942",
+   "registry": "real_estate",
+   "name": "Komal Khan",
+   "fields": {
+    "record_id": "PROP001942",
+    "owner_name": "Komal Khan",
+    "owner_cnic": "33100-5648602-8",
+    "father_name": "Younis Khan",
+    "dob": "1999-11-07",
+    "property_value": "57606284",
+    "household": "House 293, Street 10, D Ground, Faisalabad",
+    "area": "D Ground",
+    "city": "Faisalabad"
+   }
+  },
+  {
+   "record_id": "PROP001939",
+   "registry": "real_estate",
+   "name": "Komal Khan",
+   "fields": {
+    "record_id": "PROP001939",
+    "owner_name": "Komal Khan",
+    "owner_cnic": "33100-5648602-8",
+    "father_name": "Younis Khan",
+    "dob": "1999-11-07",
+    "property_value": "12153089",
+    "household": "House 293, Street 10, D Ground, Faisalabad",
+    "area": "D Ground",
+    "city": "Faisalabad"
+   }
+  },
+  {
+   "record_id": "UTL002351",
+   "registry": "utilities",
+   "name": "Komal Khan",
+   "fields": {
+    "account_id": "UTL002351",
+    "consumer_name": "Komal Khan",
+    "consumer_cnic": "33100-5648602-8",
+    "father_name": "YOUNIS KHAN",
+    "dob": "1999-11-07",
+    "address": "House 293, Street 10, D Ground, Faisalabad",
+    "avg_monthly_bill": "283642",
+    "city": "Faisalabad"
+   }
+  },
+  {
+   "record_id": "TRV000674",
+   "registry": "travel",
+   "name": "Komal Khan",
+   "fields": {
+    "record_id": "TRV000674",
+    "passenger_name": "Komal Khan",
+    "passport_cnic": "33100-5648602-8",
+    "father_name": "Younis Khan",
+    "dob": "1999-11-07",
+    "trips_last_year": "8",
+    "destinations": "Baku; Jeddah; Doha; Kuala Lumpur",
+    "city": "Faisalabad"
+   }
+  },
+  {
+   "record_id": "TAX001780",
+   "registry": "tax_returns",
+   "name": "Mst. Komal Khan",
+   "fields": {
+    "return_id": "TAX001780",
+    "filer_name": "Mst. Komal Khan",
+    "filer_cnic": "33100-5648602-8",
+    "father_name": "Younis Khan",
+    "dob": "1999-11-07",
+    "declared_income": "393246",
+    "tax_paid": "0",
+    "city": "Faisalabad"
+   }
+  }
+ ],
+ "links": [
+  {
+   "records": "PROP001939 <-> TRV000674",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "UTL002351 <-> TRV000674",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001941 <-> PROP001940",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002328 <-> TAX001780",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001942 <-> TAX001780",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001939 <-> UTL002351",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002328 <-> TRV000674",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001942 <-> TRV000674",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001942 <-> UTL002351",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002328 <-> PROP001939",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "TRV000674 <-> TAX001780",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001941 <-> PROP001942",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001941 <-> UTL002351",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001941 <-> PROP001939",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002328 <-> PROP001942",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001940 <-> PROP001942",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH002328 <-> UTL002351",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001940 <-> UTL002351",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001942 <-> PROP001939",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001940 <-> PROP001939",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001939 <-> TAX001780",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "UTL002351 <-> TAX001780",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  }
+ ],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 56728400,
+   "detail": "avg bill 283,642 PKR/month; conservative floor assuming power takes up to 6% of gross income"
+  },
+  {
+   "factor": "vehicles",
+   "implied_income": 6000000,
+   "detail": "1 vehicle(s), largest 1991cc; engine-size income floor"
+  },
+  {
+   "factor": "property",
+   "implied_income": 17031343,
+   "detail": "4 holding(s), total value 136,250,748 PKR; assumes purchase from ~8 years of income"
+  },
+  {
+   "factor": "travel",
+   "implied_income": 12000000,
+   "detail": "8 intl trip(s); ~1,500,000 PKR income per annual trip"
+  }
+ ],
+ "notes": [],
+ "ml": {
+  "deviation_score": 93,
+  "deviation_score_if": 91,
+  "gnn_score": 4,
+  "reasons": [
+   "international travel vs declared income in the top 2% of the population (ratio 5.0x)",
+   "electricity bills vs declared income in the top 2% of the population (ratio 2.1x)",
+   "overall lifestyle vs declared income in the top 3% of the population (ratio 11.0x)",
+   "property holdings vs declared income in the top 7% of the population (ratio 85.5x)",
+   "Lifestyle implies ~Rs 1.76 crore/yr income, but declared Rs 3.93 lakh"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 56728400,
+  "declared_income_pkr": 393246,
+  "filer_status": "filer",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 19119940,
+  "tax_gap_pkr": 19119940,
+  "rule_deviation_score": 98,
+  "band": "high"
+ }
+}

@@ -1,0 +1,147 @@
+{
+ "entity_id": 6680,
+ "display_name": "Nailab Ibi",
+ "city": "Islamabad",
+ "records": [
+  {
+   "record_id": "PROP006175",
+   "registry": "real_estate",
+   "name": "NailaB ibi",
+   "fields": {
+    "record_id": "PROP006175",
+    "owner_name": "NailaB ibi",
+    "owner_cnic": "61101-7756423-9",
+    "father_name": "Mian Mohammed Rasheed Wattoo",
+    "dob": "1993-02-19",
+    "property_value": "68771731",
+    "household": "House 535, Street 45, F-7/2, Islamabad",
+    "area": "F-7/2",
+    "city": "Islamabad"
+   }
+  },
+  {
+   "record_id": "PROP006178",
+   "registry": "real_estate",
+   "name": "Naila Bibi",
+   "fields": {
+    "record_id": "PROP006178",
+    "owner_name": "Naila Bibi",
+    "owner_cnic": "61101-7756423-9",
+    "father_name": "Muhammed Rashid Wattoo",
+    "property_value": "45950567",
+    "household": "House 535, Street 45, F-7/2, Islamabad",
+    "area": "F-7/2",
+    "city": "Islamabad"
+   }
+  },
+  {
+   "record_id": "PROP006176",
+   "registry": "real_estate",
+   "name": "Naila Bibi",
+   "fields": {
+    "record_id": "PROP006176",
+    "owner_name": "Naila Bibi",
+    "owner_cnic": "6110175764239",
+    "father_name": "Mohammed Rashid Wattoo",
+    "dob": "1993-02-19",
+    "property_value": "115252687",
+    "household": "House 535, Street 45, F-7/2, Islamabad",
+    "area": "F-7/2",
+    "city": "Islamabad"
+   }
+  },
+  {
+   "record_id": "UTL007332",
+   "registry": "utilities",
+   "name": "Naila Bibi",
+   "fields": {
+    "account_id": "UTL007332",
+    "consumer_name": "Naila Bibi",
+    "consumer_cnic": "61101-7756423-9",
+    "father_name": "Muhammad Rashid Wattoo",
+    "dob": "1993-02-19",
+    "address": "House 535, Street 45, F-7/2, Islamabad",
+    "avg_monthly_bill": "120000",
+    "phone": "+923444602223",
+    "city": "Islamabad"
+   }
+  }
+ ],
+ "links": [
+  {
+   "records": "PROP006178 <-> PROP006176",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_close|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP006175 <-> PROP006176",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_close|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP006175 <-> PROP006178",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP006178 <-> UTL007332",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP006175 <-> UTL007332",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP006176 <-> UTL007332",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_close|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  }
+ ],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 8000000,
+   "detail": "avg bill 120,000 PKR/month; conservative floor assuming power takes up to 6% of gross income, shared across a household of 3"
+  },
+  {
+   "factor": "property",
+   "implied_income": 28746873,
+   "detail": "3 holding(s), total value 229,974,985 PKR; assumes purchase from ~8 years of income"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle",
+  "linked to 2 non-filing household associate(s) holding ~51,740,401 PKR in assets (implied income ~12,935,100 PKR) — possible proxy/benami holding"
+ ],
+ "ml": {
+  "deviation_score": 97,
+  "deviation_score_if": 95,
+  "gnn_score": 14,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "overall lifestyle vs declared income in the top 1% of the population (ratio 29.4x)",
+   "linked to 2 non-filing household associate(s) holding ~Rs 5.17 crore in assets (likely proxy/benami holdings)",
+   "property holdings vs declared income in the top 2% of the population (ratio 191.6x)",
+   "electricity bills vs declared income in the top 6% of the population (ratio 1.2x)",
+   "Lifestyle implies ~Rs 3.52 crore/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 28746873,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 9326406,
+  "tax_gap_pkr": 9326406,
+  "rule_deviation_score": 97,
+  "band": "high"
+ }
+}

@@ -1,0 +1,149 @@
+{
+ "entity_id": 6739,
+ "display_name": "Jamil Satti",
+ "city": "Sialkot",
+ "records": [
+  {
+   "record_id": "PROP000599",
+   "registry": "real_estate",
+   "name": "Jamil Satti",
+   "fields": {
+    "record_id": "PROP000599",
+    "owner_name": "Jamil Satti",
+    "owner_cnic": "34603-4024807-2",
+    "dob": "1992-12-14",
+    "property_value": "85299825",
+    "household": "House 122, Street 39, Model Town, Sialkot",
+    "area": "Model Town",
+    "city": "Sialkot"
+   }
+  },
+  {
+   "record_id": "PROP000598",
+   "registry": "real_estate",
+   "name": "Jamil Satti",
+   "fields": {
+    "record_id": "PROP000598",
+    "owner_name": "Jamil Satti",
+    "owner_cnic": "3460340248072",
+    "father_name": "NAWAZ SATTI",
+    "dob": "1992-12-14",
+    "property_value": "28498433",
+    "household": "House 122, Street 39, Model Town, Sialkot",
+    "area": "Model Town",
+    "city": "Sialkot"
+   }
+  },
+  {
+   "record_id": "UTL000753",
+   "registry": "utilities",
+   "name": "Jamil Satti",
+   "fields": {
+    "account_id": "UTL000753",
+    "consumer_name": "Jamil Satti",
+    "consumer_cnic": "34603-4024807-2",
+    "father_name": "NAWAZ SATTI",
+    "dob": "1992-12-14",
+    "address": "House 122, Street 39, Model Town, Sialkot",
+    "avg_monthly_bill": "176174",
+    "phone": "03428912533",
+    "city": "Sialkot"
+   }
+  },
+  {
+   "record_id": "TRV000215",
+   "registry": "travel",
+   "name": "Jamil Satti",
+   "fields": {
+    "record_id": "TRV000215",
+    "passenger_name": "Jamil Satti",
+    "passport_cnic": "34603-4024807-2",
+    "father_name": "Nawaz Satti",
+    "trips_last_year": "5",
+    "destinations": "Istanbul; Jeddah; Bangkok; Kuala Lumpur",
+    "city": "Sialkot"
+   }
+  }
+ ],
+ "links": [
+  {
+   "records": "PROP000599 <-> PROP000598",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP000599 <-> TRV000215",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|city_match",
+   "confidence": 0.9999
+  },
+  {
+   "records": "PROP000598 <-> UTL000753",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "UTL000753 <-> TRV000215",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP000599 <-> UTL000753",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP000598 <-> TRV000215",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|city_match",
+   "confidence": 1.0
+  }
+ ],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 35234800,
+   "detail": "avg bill 176,174 PKR/month; conservative floor assuming power takes up to 6% of gross income"
+  },
+  {
+   "factor": "property",
+   "implied_income": 14224782,
+   "detail": "2 holding(s), total value 113,798,258 PKR; assumes purchase from ~8 years of income"
+  },
+  {
+   "factor": "travel",
+   "implied_income": 7500000,
+   "detail": "5 intl trip(s); ~1,500,000 PKR income per annual trip"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle"
+ ],
+ "ml": {
+  "deviation_score": 95,
+  "deviation_score_if": 90,
+  "gnn_score": 17,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "overall lifestyle vs declared income in the top 2% of the population (ratio 16.0x)",
+   "electricity bills vs declared income in the top 3% of the population (ratio 1.8x)",
+   "international travel vs declared income in the top 3% of the population (ratio 4.2x)",
+   "property holdings vs declared income in the top 7% of the population (ratio 94.8x)",
+   "Lifestyle implies ~Rs 1.92 crore/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 35234800,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 11597180,
+  "tax_gap_pkr": 11597180,
+  "rule_deviation_score": 97,
+  "band": "high"
+ }
+}

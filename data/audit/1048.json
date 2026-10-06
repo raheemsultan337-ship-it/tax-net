@@ -1,0 +1,228 @@
+{
+ "entity_id": 1048,
+ "display_name": "Mishal Bhutto",
+ "city": "Karachi",
+ "records": [
+  {
+   "record_id": "VEH000393",
+   "registry": "vehicles",
+   "name": "Mishal Bhutto",
+   "fields": {
+    "record_id": "VEH000393",
+    "owner_name": "Mishal Bhutto",
+    "owner_cnic": "42101-XXXXXXX-8",
+    "father_name": "Noman Bhutto",
+    "dob": "1953-07-04",
+    "engine_cc": "1984",
+    "reg_value": "7398205",
+    "phone": "03046831418",
+    "city": "Karachi"
+   }
+  },
+  {
+   "record_id": "PROP000312",
+   "registry": "real_estate",
+   "name": "Mishal Bhutto",
+   "fields": {
+    "record_id": "PROP000312",
+    "owner_name": "Mishal Bhutto",
+    "owner_cnic": "42101-9286841-8",
+    "father_name": "Nomann Bhutto",
+    "dob": "1953-07-04",
+    "property_value": "74211162",
+    "household": "House 775, Street 28, Gulshan-e-Iqbal Block 13, Karachi",
+    "area": "Gulshan-e-Iqbal Block 13",
+    "city": "Karachi"
+   }
+  },
+  {
+   "record_id": "PROP000314",
+   "registry": "real_estate",
+   "name": "MISHAL BHUTTO",
+   "fields": {
+    "record_id": "PROP000314",
+    "owner_name": "MISHAL BHUTTO",
+    "owner_cnic": "4210192868418",
+    "father_name": "Noman Bhutto",
+    "dob": "1953-07-04",
+    "property_value": "9997665",
+    "household": "House 775, Street 28, Gulshan-e-Iqbal Block 13, Karachi",
+    "area": "Gulshan-e-Iqbal Block 13",
+    "city": "Karachi"
+   }
+  },
+  {
+   "record_id": "PROP000313",
+   "registry": "real_estate",
+   "name": "Mishal Bhutto",
+   "fields": {
+    "record_id": "PROP000313",
+    "owner_name": "Mishal Bhutto",
+    "father_name": "Noman Bhutto",
+    "dob": "1953-07-04",
+    "property_value": "72558347",
+    "household": "House 775, Street 28, Gulshan-e-Iqbal Block 13, Karachi",
+    "area": "Gulshan-e-Iqbal Block 13",
+    "city": "Karachi"
+   }
+  },
+  {
+   "record_id": "UTL000391",
+   "registry": "utilities",
+   "name": "Mishal Bhutto",
+   "fields": {
+    "account_id": "UTL000391",
+    "consumer_name": "Mishal Bhutto",
+    "consumer_cnic": "42101*****",
+    "father_name": "Noman Bhutto",
+    "dob": "1953-07-04",
+    "address": "House 775, Street 28, Gulshan-e-Iqbal Block 13, Karachi",
+    "avg_monthly_bill": "370492",
+    "city": "Karachi"
+   }
+  },
+  {
+   "record_id": "TRV000113",
+   "registry": "travel",
+   "name": "Mishal Bhutto",
+   "fields": {
+    "record_id": "TRV000113",
+    "passenger_name": "Mishal Bhutto",
+    "passport_cnic": "42101-9286841-8",
+    "father_name": "NOMAN BHUTTO",
+    "dob": "1953-07-04",
+    "trips_last_year": "8",
+    "destinations": "London; Doha; Dubai; Bangkok",
+    "city": "Karachi"
+   }
+  }
+ ],
+ "links": [
+  {
+   "records": "PROP000314 <-> TRV000113",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP000312 <-> PROP000314",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP000314 <-> PROP000313",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP000312 <-> TRV000113",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP000314 <-> UTL000391",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP000312 <-> PROP000313",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP000313 <-> UTL000391",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP000312 <-> UTL000391",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH000393 <-> PROP000312",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_exact|father_match|cnic_masked_match|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH000393 <-> PROP000314",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_exact|father_match|cnic_masked_match|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH000393 <-> TRV000113",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_exact|father_match|cnic_masked_match|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH000393 <-> PROP000313",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_exact|father_match|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH000393 <-> UTL000391",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_exact|father_match|dob_match|city_match",
+   "confidence": 1.0
+  }
+ ],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 74098400,
+   "detail": "avg bill 370,492 PKR/month; conservative floor assuming power takes up to 6% of gross income"
+  },
+  {
+   "factor": "vehicles",
+   "implied_income": 6000000,
+   "detail": "1 vehicle(s), largest 1984cc; engine-size income floor"
+  },
+  {
+   "factor": "property",
+   "implied_income": 19595896,
+   "detail": "3 holding(s), total value 156,767,174 PKR; assumes purchase from ~8 years of income"
+  },
+  {
+   "factor": "travel",
+   "implied_income": 12000000,
+   "detail": "8 intl trip(s); ~1,500,000 PKR income per annual trip"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle"
+ ],
+ "ml": {
+  "deviation_score": 96,
+  "deviation_score_if": 96,
+  "gnn_score": 3,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "electricity bills vs declared income in the top 1% of the population (ratio 3.7x)",
+   "international travel vs declared income in the top 1% of the population (ratio 6.7x)",
+   "overall lifestyle vs declared income in the top 1% of the population (ratio 18.0x)",
+   "property holdings vs declared income in the top 5% of the population (ratio 130.6x)",
+   "Lifestyle implies ~Rs 2.16 crore/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 74098400,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 25199440,
+  "tax_gap_pkr": 25199440,
+  "rule_deviation_score": 99,
+  "band": "high"
+ }
+}

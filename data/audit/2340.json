@@ -1,0 +1,228 @@
+{
+ "entity_id": 2340,
+ "display_name": "Eman Abbas",
+ "city": "Peshawar",
+ "records": [
+  {
+   "record_id": "VEH005813",
+   "registry": "vehicles",
+   "name": "Eman Abbas",
+   "fields": {
+    "record_id": "VEH005813",
+    "owner_name": "Eman Abbas",
+    "owner_cnic": "17301-1785023-2",
+    "father_name": "Mansoor Abbas",
+    "dob": "1977-07-23",
+    "engine_cc": "2755",
+    "reg_value": "11155945",
+    "city": "Peshawar"
+   }
+  },
+  {
+   "record_id": "VEH005815",
+   "registry": "vehicles",
+   "name": "Eman Abbas",
+   "fields": {
+    "record_id": "VEH005815",
+    "owner_name": "Eman Abbas",
+    "owner_cnic": "17301-1785023-2",
+    "father_name": "Mansoor Abbas",
+    "dob": "1977-07-23",
+    "engine_cc": "2694",
+    "reg_value": "10993357",
+    "city": "Peshawar"
+   }
+  },
+  {
+   "record_id": "PROP004808",
+   "registry": "real_estate",
+   "name": "Eman Abbas",
+   "fields": {
+    "record_id": "PROP004808",
+    "owner_name": "Eman Abbas",
+    "owner_cnic": "17301-1785023-2",
+    "father_name": "MANSOOR ABBAS",
+    "dob": "1977-07-23",
+    "property_value": "116559998",
+    "household": "House 288, Street 53, Gulbahar, Peshawar",
+    "area": "Gulbahar",
+    "city": "Peshawar"
+   }
+  },
+  {
+   "record_id": "UTL005786",
+   "registry": "utilities",
+   "name": "Eman Abbas",
+   "fields": {
+    "account_id": "UTL005786",
+    "consumer_name": "Eman Abbas",
+    "consumer_cnic": "17301-1785023-2",
+    "dob": "1977-07-23",
+    "address": "House 288, Street 53, Gulbahar, Peshawar",
+    "avg_monthly_bill": "270256",
+    "phone": "0336-2521303",
+    "city": "Peshawar"
+   }
+  },
+  {
+   "record_id": "TAX004387",
+   "registry": "tax_returns",
+   "name": "Eman Abbas",
+   "fields": {
+    "return_id": "TAX004387",
+    "filer_name": "Eman Abbas",
+    "filer_cnic": "1730117850232",
+    "father_name": "Mansoor Abbas",
+    "dob": "1977-07-23",
+    "declared_income": "388863",
+    "tax_paid": "0",
+    "city": "Peshawar"
+   }
+  },
+  {
+   "record_id": "VEH005814",
+   "registry": "vehicles",
+   "name": "Eman Abbas",
+   "fields": {
+    "record_id": "VEH005814",
+    "owner_name": "Eman Abbas",
+    "dob": "1977-07-23",
+    "engine_cc": "1991",
+    "reg_value": "6419145",
+    "city": "Peshawar"
+   }
+  }
+ ],
+ "links": [
+  {
+   "records": "PROP004808 <-> TAX004387",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH005815 <-> TAX004387",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH005815 <-> PROP004808",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "UTL005786 <-> TAX004387",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP004808 <-> UTL005786",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH005813 <-> TAX004387",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH005813 <-> PROP004808",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH005815 <-> UTL005786",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH005813 <-> VEH005815",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH005813 <-> UTL005786",
+   "decided_by": "tier1",
+   "evidence": "name_exact|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH005814 <-> VEH005815",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH005814 <-> UTL005786",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH005813 <-> VEH005814",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH005814 <-> TAX004387",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH005814 <-> PROP004808",
+   "decided_by": "tier4_promote",
+   "evidence": "name_exact|dob_match|city_match",
+   "confidence": 1.0
+  }
+ ],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 54051200,
+   "detail": "avg bill 270,256 PKR/month; conservative floor assuming power takes up to 6% of gross income"
+  },
+  {
+   "factor": "vehicles",
+   "implied_income": 15000000,
+   "detail": "3 vehicle(s), largest 2755cc; engine-size income floor"
+  },
+  {
+   "factor": "property",
+   "implied_income": 14569999,
+   "detail": "1 holding(s), total value 116,559,998 PKR; assumes purchase from ~8 years of income"
+  }
+ ],
+ "notes": [],
+ "ml": {
+  "deviation_score": 93,
+  "deviation_score_if": 90,
+  "gnn_score": 5,
+  "reasons": [
+   "overall lifestyle vs declared income in the top 1% of the population (ratio 18.3x)",
+   "electricity bills vs declared income in the top 2% of the population (ratio 2.0x)",
+   "vehicle value vs declared income in the top 2% of the population (ratio 18.0x)",
+   "property holdings vs declared income in the top 8% of the population (ratio 73.4x)",
+   "Lifestyle implies ~Rs 2.91 crore/yr income, but declared Rs 3.89 lakh"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 54051200,
+  "declared_income_pkr": 388863,
+  "filer_status": "filer",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 18182920,
+  "tax_gap_pkr": 18182920,
+  "rule_deviation_score": 98,
+  "band": "high"
+ }
+}

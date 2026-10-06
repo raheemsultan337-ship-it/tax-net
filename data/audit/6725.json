@@ -1,0 +1,182 @@
+{
+ "entity_id": 6725,
+ "display_name": "Shagufta Begum",
+ "city": "Hyderabad",
+ "records": [
+  {
+   "record_id": "PROP001677",
+   "registry": "real_estate",
+   "name": "Shagufta Begum",
+   "fields": {
+    "record_id": "PROP001677",
+    "owner_name": "Shagufta Begum",
+    "father_name": "Muhammad Jamil Arain",
+    "dob": "1976-10-09",
+    "property_value": "98597975",
+    "household": "House 175, Street 29, Latifabad, Hyderabad",
+    "area": "Latifabad",
+    "city": "Hyderabad"
+   }
+  },
+  {
+   "record_id": "PROP001676",
+   "registry": "real_estate",
+   "name": "Shagufta Begum",
+   "fields": {
+    "record_id": "PROP001676",
+    "owner_name": "Shagufta Begum",
+    "owner_cnic": "41304-9960074-4",
+    "father_name": "Muhammad Jamil Arain",
+    "dob": "1976-10-09",
+    "property_value": "74293102",
+    "household": "House 175, Street 29, Latifabad, Hyderabad",
+    "area": "Latifabad",
+    "city": "Hyderabad"
+   }
+  },
+  {
+   "record_id": "PROP001679",
+   "registry": "real_estate",
+   "name": "Shagufta Begum",
+   "fields": {
+    "record_id": "PROP001679",
+    "owner_name": "Shagufta Begum",
+    "owner_cnic": "4130499600744",
+    "father_name": "Muhammad Jamil Arain",
+    "dob": "1976-10-09",
+    "property_value": "90989438",
+    "household": "House 175, Street 29, Latifabad, Hyderabad",
+    "area": "Latifabad",
+    "city": "Hyderabad"
+   }
+  },
+  {
+   "record_id": "PROP001678",
+   "registry": "real_estate",
+   "name": "Shagufta Begum",
+   "fields": {
+    "record_id": "PROP001678",
+    "owner_name": "Shagufta Begum",
+    "owner_cnic": "41304-9960074-4",
+    "father_name": "M. Jamil Arain",
+    "property_value": "101057084",
+    "household": "House 175, Street 29, Latifabad, Hyderabad",
+    "area": "Latifabad",
+    "city": "Hyderabad"
+   }
+  },
+  {
+   "record_id": "UTL002012",
+   "registry": "utilities",
+   "name": "Shagufta Begum",
+   "fields": {
+    "account_id": "UTL002012",
+    "consumer_name": "Shagufta Begum",
+    "father_name": "MOHD JAMIL ARAIN",
+    "dob": "1976-10-09",
+    "address": "House 175, Street 29, Latifabad, Hyderabad",
+    "avg_monthly_bill": "186121",
+    "city": "Hyderabad"
+   }
+  }
+ ],
+ "links": [
+  {
+   "records": "PROP001676 <-> PROP001678",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001677 <-> PROP001679",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001676 <-> PROP001679",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001677 <-> PROP001676",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001679 <-> UTL002012",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001678 <-> UTL002012",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001679 <-> PROP001678",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001677 <-> UTL002012",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001677 <-> PROP001678",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP001676 <-> UTL002012",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  }
+ ],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 18612100,
+   "detail": "avg bill 186,121 PKR/month; conservative floor assuming power takes up to 6% of gross income, shared across a household of 2"
+  },
+  {
+   "factor": "property",
+   "implied_income": 45617199,
+   "detail": "4 holding(s), total value 364,937,599 PKR; assumes purchase from ~8 years of income"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle"
+ ],
+ "ml": {
+  "deviation_score": 94,
+  "deviation_score_if": 93,
+  "gnn_score": 5,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "overall lifestyle vs declared income in the top 1% of the population (ratio 46.5x)",
+   "property holdings vs declared income in the top 1% of the population (ratio 304.1x)",
+   "electricity bills vs declared income in the top 2% of the population (ratio 1.9x)",
+   "Lifestyle implies ~Rs 5.58 crore/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 45617199,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 15231020,
+  "tax_gap_pkr": 15231020,
+  "rule_deviation_score": 98,
+  "band": "high"
+ }
+}

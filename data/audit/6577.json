@@ -1,0 +1,84 @@
+{
+ "entity_id": 6577,
+ "display_name": "Muhammad Irfan Bhatti",
+ "city": "Faisalabad",
+ "records": [
+  {
+   "record_id": "VEH000502",
+   "registry": "vehicles",
+   "name": "Muhammad Irfan Bhatti",
+   "fields": {
+    "record_id": "VEH000502",
+    "owner_name": "Muhammad Irfan Bhatti",
+    "owner_cnic": "33100-6400269-7",
+    "father_name": "Muhammad Imran Bhatti",
+    "dob": "1985-08-28",
+    "engine_cc": "2755",
+    "reg_value": "10795406",
+    "phone": "+923233093235",
+    "city": "Faisalabad"
+   }
+  },
+  {
+   "record_id": "UTL000494",
+   "registry": "utilities",
+   "name": "Mohammad Irfan Bhatti",
+   "fields": {
+    "account_id": "UTL000494",
+    "consumer_name": "Mohammad Irfan Bhatti",
+    "consumer_cnic": "33100-6400269-7",
+    "father_name": "Muhammad Imran Bhatti",
+    "dob": "1985-08-28",
+    "address": "House 651, Street 17, Madina Town, Faisalabad",
+    "avg_monthly_bill": "8063",
+    "city": "Faisalabad"
+   }
+  }
+ ],
+ "links": [
+  {
+   "records": "VEH000502 <-> UTL000494",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  }
+ ],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 806300,
+   "detail": "avg bill 8,063 PKR/month; conservative floor assuming power takes up to 6% of gross income, shared across a household of 2"
+  },
+  {
+   "factor": "vehicles",
+   "implied_income": 15000000,
+   "detail": "1 vehicle(s), largest 2755cc; engine-size income floor"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle",
+  "linked to 1 non-filing household associate(s) holding ~62,797,218 PKR in assets (implied income ~15,699,304 PKR) — possible proxy/benami holding"
+ ],
+ "ml": {
+  "deviation_score": 93,
+  "deviation_score_if": 86,
+  "gnn_score": 45,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "linked to 1 non-filing household associate(s) holding ~Rs 6.28 crore in assets (likely proxy/benami holdings)",
+   "vehicle value vs declared income in the top 7% of the population (ratio 9.0x)",
+   "overall lifestyle vs declared income in the top 12% of the population (ratio 2.8x)",
+   "Lifestyle implies ~Rs 33.36 lakh/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 15000000,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 4515000,
+  "tax_gap_pkr": 4515000,
+  "rule_deviation_score": 94,
+  "band": "high"
+ }
+}

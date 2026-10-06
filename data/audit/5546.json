@@ -1,0 +1,56 @@
+{
+ "entity_id": 5546,
+ "display_name": "Wasim Kakar",
+ "city": "Peshawar",
+ "records": [
+  {
+   "record_id": "PROP004814",
+   "registry": "real_estate",
+   "name": "Wasim Kakar",
+   "fields": {
+    "record_id": "PROP004814",
+    "owner_name": "Wasim Kakar",
+    "father_name": "Muhammed aveed Kakar",
+    "dob": "1983-03-22",
+    "property_value": "35410901",
+    "household": "House 205, Street 1, Warsak Road, Peshawar",
+    "area": "Warsak Road",
+    "city": "Peshawar"
+   }
+  }
+ ],
+ "links": [],
+ "lifestyle_factors": [
+  {
+   "factor": "property",
+   "implied_income": 4426362,
+   "detail": "1 holding(s), total value 35,410,901 PKR; assumes purchase from ~8 years of income"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle",
+  "linked to 1 non-filing household associate(s) holding ~76,423,391 PKR in assets (implied income ~19,105,847 PKR) — possible proxy/benami holding"
+ ],
+ "ml": {
+  "deviation_score": 96,
+  "deviation_score_if": 91,
+  "gnn_score": 46,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "linked to 1 non-filing household associate(s) holding ~Rs 7.64 crore in assets (likely proxy/benami holdings)",
+   "overall lifestyle vs declared income in the top 7% of the population (ratio 7.4x)",
+   "property holdings vs declared income in the top 13% of the population (ratio 29.5x)",
+   "Lifestyle implies ~Rs 88.53 lakh/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 4426362,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 814227,
+  "tax_gap_pkr": 814227,
+  "rule_deviation_score": 73,
+  "band": "high"
+ }
+}

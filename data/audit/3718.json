@@ -1,0 +1,55 @@
+{
+ "entity_id": 3718,
+ "display_name": "Hira Bibi",
+ "city": "Lahore",
+ "records": [
+  {
+   "record_id": "PROP001463",
+   "registry": "real_estate",
+   "name": "Hira Bibi",
+   "fields": {
+    "record_id": "PROP001463",
+    "owner_name": "Hira Bibi",
+    "father_name": "Muhammad Youis Qureshi",
+    "dob": "1954-12-16",
+    "property_value": "12007186",
+    "household": "House 993, Street 45, DHA Phase 5, Lahore",
+    "area": "DHA Phase 5",
+    "city": "Lahore"
+   }
+  }
+ ],
+ "links": [],
+ "lifestyle_factors": [
+  {
+   "factor": "property",
+   "implied_income": 1500898,
+   "detail": "1 holding(s), total value 12,007,186 PKR; assumes purchase from ~8 years of income"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle",
+  "linked to 2 non-filing household associate(s) holding ~116,806,930 PKR in assets (implied income ~29,201,732 PKR) — possible proxy/benami holding"
+ ],
+ "ml": {
+  "deviation_score": 94,
+  "deviation_score_if": 88,
+  "gnn_score": 47,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "linked to 2 non-filing household associate(s) holding ~Rs 11.68 crore in assets (likely proxy/benami holdings)",
+   "overall lifestyle vs declared income in the top 12% of the population (ratio 2.5x)",
+   "Lifestyle implies ~Rs 30.02 lakh/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 1500898,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 75135,
+  "tax_gap_pkr": 75135,
+  "rule_deviation_score": 20,
+  "band": "low"
+ }
+}

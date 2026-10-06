@@ -1,0 +1,54 @@
+{
+ "entity_id": 7878,
+ "display_name": "Mohammed Javed Kakar",
+ "city": "Quetta",
+ "records": [
+  {
+   "record_id": "UTL009316",
+   "registry": "utilities",
+   "name": "Mohammed Javed Kakar",
+   "fields": {
+    "account_id": "UTL009316",
+    "consumer_name": "Mohammed Javed Kakar",
+    "father_name": "Ali Kakar",
+    "address": "House 650, Street 33, Cantt, Quetta",
+    "avg_monthly_bill": "30377",
+    "city": "Quetta"
+   }
+  }
+ ],
+ "links": [],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 3037700,
+   "detail": "avg bill 30,377 PKR/month; conservative floor assuming power takes up to 6% of gross income, shared across a household of 2"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle",
+  "linked to 1 non-filing household associate(s) holding ~108,230,107 PKR in assets (implied income ~27,057,526 PKR) — possible proxy/benami holding"
+ ],
+ "ml": {
+  "deviation_score": 94,
+  "deviation_score_if": 89,
+  "gnn_score": 29,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "linked to 1 non-filing household associate(s) holding ~Rs 10.82 crore in assets (likely proxy/benami holdings)",
+   "electricity bills vs declared income in the top 10% of the population (ratio 0.3x)",
+   "overall lifestyle vs declared income in the top 12% of the population (ratio 2.5x)",
+   "Lifestyle implies ~Rs 30.39 lakh/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 3037700,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 389425,
+  "tax_gap_pkr": 389425,
+  "rule_deviation_score": 56,
+  "band": "medium"
+ }
+}

@@ -1,0 +1,187 @@
+{
+ "entity_id": 828,
+ "display_name": "Bushra Satti",
+ "city": "Karachi",
+ "records": [
+  {
+   "record_id": "VEH008088",
+   "registry": "vehicles",
+   "name": "Bushra Satti",
+   "fields": {
+    "record_id": "VEH008088",
+    "owner_name": "Bushra Satti",
+    "owner_cnic": "4210115360549",
+    "father_name": "Mohd Rafiq Satti",
+    "dob": "1982-12-04",
+    "engine_cc": "1991",
+    "reg_value": "8030659",
+    "phone": "03154166340",
+    "city": "Karachi"
+   }
+  },
+  {
+   "record_id": "VEH008089",
+   "registry": "vehicles",
+   "name": "Bushra Satti",
+   "fields": {
+    "record_id": "VEH008089",
+    "owner_name": "Bushra Satti",
+    "owner_cnic": "42101-1536054-9",
+    "father_name": "MOHAMMAD RAFIQUE SATTI",
+    "dob": "1982-12-04",
+    "engine_cc": "2694",
+    "reg_value": "9269908",
+    "city": "Karachi"
+   }
+  },
+  {
+   "record_id": "PROP006712",
+   "registry": "real_estate",
+   "name": "Bushra Satti",
+   "fields": {
+    "record_id": "PROP006712",
+    "owner_name": "Bushra Satti",
+    "owner_cnic": "4210115360549",
+    "father_name": "Muhammad Rafiq Satti",
+    "dob": "1982-12-04",
+    "property_value": "36212844",
+    "household": "House 978, Street 44, DHA Phase 6, Karachi",
+    "area": "DHA Phase 6",
+    "city": "Karachi"
+   }
+  },
+  {
+   "record_id": "UTL007957",
+   "registry": "utilities",
+   "name": "Bushra Sati",
+   "fields": {
+    "account_id": "UTL007957",
+    "consumer_name": "Bushra Sati",
+    "father_name": "Mohammad Rafiq Satti",
+    "dob": "1982-12-04",
+    "address": "House 978, Street 44, DHA Phase 6, Karachi",
+    "avg_monthly_bill": "341693",
+    "phone": "0315-4166340",
+    "city": "Karachi"
+   }
+  },
+  {
+   "record_id": "TRV002397",
+   "registry": "travel",
+   "name": "Bushra Satti",
+   "fields": {
+    "record_id": "TRV002397",
+    "passenger_name": "Bushra Satti",
+    "father_name": "Muhammad Rafiq Satti",
+    "dob": "1982-12-04",
+    "trips_last_year": "8",
+    "destinations": "Kuala Lumpur; Toronto; Jeddah; Dubai",
+    "city": "Karachi"
+   }
+  }
+ ],
+ "links": [
+  {
+   "records": "VEH008089 <-> PROP006712",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH008088 <-> PROP006712",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP006712 <-> UTL007957",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|addr_exact|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH008088 <-> VEH008089",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|cnic_exact|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH008088 <-> UTL007957",
+   "decided_by": "tier1",
+   "evidence": "name_exact|father_match|dob_match|phone_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "UTL007957 <-> TRV002397",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_exact|father_match|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "PROP006712 <-> TRV002397",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_exact|father_match|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH008088 <-> TRV002397",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_exact|father_match|dob_match|city_match",
+   "confidence": 1.0
+  },
+  {
+   "records": "VEH008089 <-> TRV002397",
+   "decided_by": "tier2_accumulation",
+   "evidence": "name_exact|father_match|dob_match|city_match",
+   "confidence": 1.0
+  }
+ ],
+ "lifestyle_factors": [
+  {
+   "factor": "electricity",
+   "implied_income": 68338600,
+   "detail": "avg bill 341,693 PKR/month; conservative floor assuming power takes up to 6% of gross income"
+  },
+  {
+   "factor": "vehicles",
+   "implied_income": 15000000,
+   "detail": "2 vehicle(s), largest 2694cc; engine-size income floor"
+  },
+  {
+   "factor": "property",
+   "implied_income": 4526605,
+   "detail": "1 holding(s), total value 36,212,844 PKR; assumes purchase from ~8 years of income"
+  },
+  {
+   "factor": "travel",
+   "implied_income": 12000000,
+   "detail": "8 intl trip(s); ~1,500,000 PKR income per annual trip"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle"
+ ],
+ "ml": {
+  "deviation_score": 96,
+  "deviation_score_if": 96,
+  "gnn_score": 4,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "electricity bills vs declared income in the top 1% of the population (ratio 3.4x)",
+   "international travel vs declared income in the top 1% of the population (ratio 6.7x)",
+   "vehicle value vs declared income in the top 4% of the population (ratio 14.4x)",
+   "overall lifestyle vs declared income in the top 8% of the population (ratio 6.2x)",
+   "Lifestyle implies ~Rs 74.86 lakh/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 68338600,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 23183510,
+  "tax_gap_pkr": 23183510,
+  "rule_deviation_score": 99,
+  "band": "high"
+ }
+}

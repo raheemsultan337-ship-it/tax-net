@@ -1,0 +1,57 @@
+{
+ "entity_id": 6681,
+ "display_name": "Naila Bibi",
+ "city": "Islamabad",
+ "records": [
+  {
+   "record_id": "PROP006177",
+   "registry": "real_estate",
+   "name": "Naila Bibi",
+   "fields": {
+    "record_id": "PROP006177",
+    "owner_name": "Naila Bibi",
+    "owner_cnic": "6110177564329",
+    "father_name": "Muhammad Rashid Wattoo",
+    "dob": "1993-02-19",
+    "property_value": "51740401",
+    "household": "House 535, Street 45, F-7/2, Islamabad",
+    "area": "F-7/2",
+    "city": "Islamabad"
+   }
+  }
+ ],
+ "links": [],
+ "lifestyle_factors": [
+  {
+   "factor": "property",
+   "implied_income": 6467550,
+   "detail": "1 holding(s), total value 51,740,401 PKR; assumes purchase from ~8 years of income"
+  }
+ ],
+ "notes": [
+  "no tax return on file (ghost) despite a taxable lifestyle",
+  "linked to 2 non-filing household associate(s) holding ~229,974,985 PKR in assets (implied income ~57,493,746 PKR) — possible proxy/benami holding"
+ ],
+ "ml": {
+  "deviation_score": 97,
+  "deviation_score_if": 92,
+  "gnn_score": 77,
+  "reasons": [
+   "NON-FILER: no tax return on record despite the assets below",
+   "linked to 2 non-filing household associate(s) holding ~Rs 23.00 crore in assets (likely proxy/benami holdings)",
+   "overall lifestyle vs declared income in the top 5% of the population (ratio 10.8x)",
+   "property holdings vs declared income in the top 11% of the population (ratio 43.1x)",
+   "Lifestyle implies ~Rs 1.29 crore/yr income, but declared Rs 0"
+  ]
+ },
+ "cross_check": {
+  "estimated_income_pkr": 6467550,
+  "declared_income_pkr": 0,
+  "filer_status": "absent",
+  "tax_paid_pkr": 0,
+  "expected_tax_pkr": 1528642,
+  "tax_gap_pkr": 1528642,
+  "rule_deviation_score": 84,
+  "band": "high"
+ }
+}
