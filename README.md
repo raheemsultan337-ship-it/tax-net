@@ -50,11 +50,11 @@ data/
 | 4. Deviation scoring | `src/scoring.py` | Multi-signal **implied-income** estimator → footprint-to-declared ratios → **Isolation Forest** anomaly score (0–100) + explainable audit trail. |
 | 4b. GNN detector | `src/gnn_detector.py` | Graph-neural-net (GraphSAGE) anomaly detector — message-passing catches wealth hidden across proxy networks. |
 | 4c. Ensemble | `src/ensemble.py` | Blends IF + GNN into one production score (`deviation_score_combined`) — the dashboard headline. Falls back to IF if torch is absent. |
-| 4d. Score new person | `src/score_person.py` | Inference: scores a brand-new individual from the frozen model without retraining. |
-| 4e. Rule floors | `src/rule_floors.py`, `src/tax_slabs.py` | Secondary, fully explainable lifestyle-income **floors** (engine-cc / electricity / property / travel) → an independent tax-gap cross-check shown in the audit + dashboard. |
-| 4f. Audit notices | `src/audit_report.py` | Per-entity **bilingual (English/Urdu) PDF** notice + JSON + Markdown: headline ML score, the per-link ER evidence, and the rule-floor cross-check. |
+| 4d. Rule floors | `src/rule_floors.py`, `src/tax_slabs.py` | Secondary, fully explainable lifestyle-income **floors** (engine-cc / electricity / property / travel) → an independent tax-gap cross-check shown in the audit + dashboard. |
+| 4e. Audit notices | `src/audit_report.py` | Per-entity **bilingual (English/Urdu) PDF** notice + JSON + Markdown: headline ML score, the per-link ER evidence, and the rule-floor cross-check. |
+| Inference | `src/score_person.py` | Standalone inference: scores a brand-new individual from the frozen model bundle without retraining. |
 | 5. Dashboard | `app.py` | Streamlit UI: KPIs + four tabs — **Overview** (declared-vs-implied scatter with an adjustable points slider, score & tax-gap charts), **Flagged** (named entities; rich audit panel: lifestyle factors, per-link cascade evidence, observations, named records, PDF download, ego-graph), **Proxy/benami networks** (own-vs-network score lift + the named frontmen holding the assets), **Score a new individual** (live inference). |
-| Eval | `src/evaluate.py` | **Only** module that reads ground truth — ER + detection precision/recall. |
+| 6. Evaluation | `src/evaluate.py` | **Only** module that reads ground truth — ER + detection precision/recall scorecard. |
 
 ---
 
