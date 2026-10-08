@@ -170,8 +170,9 @@ the graph links them to their asset-rich, non-filing associates.
 wealth hidden *across a network* of proxies, the **GNN dominates** — message-passing
 propagates a proxy's anomalous assets back onto the principal, something a tabular
 model structurally cannot do without bespoke features. The production system
-**ensembles** the two (AP 0.96, principal recall 0.95): Isolation Forest's accuracy
-plus the GNN's relational reach in one 0–100 score.
+**ensembles** the two: it gives up almost nothing in overall AP (0.90 vs 0.91) while
+raising principal recall to 0.91, versus 0.84 for Isolation Forest with the network
+feature and 0.07 without it.
 
 ---
 
