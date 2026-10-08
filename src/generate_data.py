@@ -28,7 +28,7 @@ from datagen import registries as reg
 from datagen.personas import generate_population, is_evader
 
 SEED = 42
-N_PERSONS = int(os.environ.get("N_PERSONS", "50000"))
+N_PERSONS = int(os.environ.get("N_PERSONS", "10000"))
 
 # Per-registry probability that a name is rendered in Urdu script (passport and
 # FBR records stay Roman — official systems use the Roman transliteration).

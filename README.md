@@ -101,10 +101,10 @@ set PYTHONUTF8=1                       # PowerShell: $env:PYTHONUTF8=1
 This recreates everything under `data/` (observable registries, ground truth,
 resolved entities, graph, scores, rule floors) and writes bilingual audit notices to
 `data/audit/`, then prints the ER + detection scorecard. At the default scale
-(`N_PERSONS = 50,000` → ~195k records) a full run takes **~20 minutes** — the entity-
-resolution cascade scores ~4.6M candidate pairs. To iterate faster, lower `N_PERSONS`
-in `src/generate_data.py` (e.g. 10,000 ≈ ~60 s). The embedding model is cached after
-the first download.
+(`N_PERSONS = 10,000` → ~39k records) a full run takes **~25–30 seconds**, reproducing
+the exact dataset and metrics served by the live dashboard. (To stress-test at larger scale,
+`N_PERSONS` can be set to 50,000 in `src/generate_data.py` or via environment variable).
+The embedding model is cached after the first download.
 
 > **Entity-resolution embeddings (Tier 2).** On first run the cascade downloads
 > `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` (~450 MB) into
@@ -135,16 +135,16 @@ launching it** on a fresh clone.
 
 ## Results (default seed)
 
-Run at **N = 50,000 people** (~195k raw records → ~53,586 resolved entities):
+Run at **N = 10,000 people** (~39,084 raw records → ~10,712 resolved entities):
 
 | Stage | Metric | Value |
 |------|--------|-------|
 | Entity resolution (cascade) | Precision / Recall / F1 | **1.000 / 0.972 / 0.985** |
 | | Cluster purity | **1.000** |
-| Detection (Isolation Forest, own+network) | Average Precision | **0.91** |
-| | Precision@25% / Recall@25% | **0.90 / 0.72** (vs ~0.31 base rate) |
-| **Ensemble (IF + GNN)** — production score | Average Precision | **0.90** |
-| | Principal recall@25% | **0.91** |
+| Detection (Isolation Forest, own+network) | Average Precision | **0.90** |
+| | Precision@25% / Recall@25% | **0.88 / 0.72** (vs ~0.30 base rate) |
+| **Ensemble (IF + GNN)** — production score | Average Precision | **0.91** |
+| | Principal recall@25% | **0.88** |
 
 Entity resolution reaches near-perfect linkage by combining probabilistic
 Fellegi-Sunter matching, multilingual embeddings that bridge Urdu↔Roman spellings,
@@ -161,18 +161,18 @@ the graph links them to their asset-rich, non-filing associates.
 
 | Detector | Principal recall@25% |
 |---|---|
-| Isolation Forest — own features only (tabular) | **0.07** (blind) |
-| Isolation Forest — own + engineered network feature | **0.84** |
-| **Ensemble (IF + GNN) — the production score** | **0.91** |
+| Isolation Forest — own features only (tabular) | **0.05** (blind) |
+| Isolation Forest — own + engineered network feature | **0.78** |
+| **Ensemble (IF + GNN) — the production score** | **0.88** |
 
 **Right tool per threat.** For straightforward footprint-vs-declared mismatch
-(self-evaders), Isolation Forest is accurate (AP 0.91) and fully explainable. For
+(self-evaders), Isolation Forest is accurate (AP 0.90) and fully explainable. For
 wealth hidden *across a network* of proxies, the **GNN dominates** — message-passing
 propagates a proxy's anomalous assets back onto the principal, something a tabular
 model structurally cannot do without bespoke features. The production system
-**ensembles** the two: it gives up almost nothing in overall AP (0.90 vs 0.91) while
-raising principal recall to 0.91, versus 0.84 for Isolation Forest with the network
-feature and 0.07 without it.
+**ensembles** the two: it lifts overall AP (0.90 to 0.91) while raising
+principal recall to 0.88, versus 0.78 for Isolation Forest with the network
+feature and 0.05 without it.
 
 ---
 
