@@ -32,12 +32,12 @@ a knowledge graph, and flags likely tax non-filers / under-reporters with an
 | 4 | `src/scoring.py` | Multi-signal implied-income estimator → footprint/declared RATIOS + network signal → Isolation Forest (own + network). Audit trail = population-percentile reasons in PKR. |
 | 4b | `src/gnn_detector.py` | GraphSAGE autoencoder. Wins on proxy networks (msg-passing). (Diagnostic GT read removed — evaluate.py is now the sole GT reader.) |
 | 4c | `src/ensemble.py` | Blends IF + GNN into ONE production score (`deviation_score_combined`). Quantile-aligns GNN→IF, blends `IF_WEIGHT*IF + (1-w)*GNN`, then remaps onto IF's distribution. Falls back to IF if no torch. No ground truth (wall holds). |
-| 4c | `src/score_person.py` | INFERENCE on a new individual: loads frozen `model_bundle.pkl`, predicts deviation score + audit trail without retraining. |
-| 4d | `src/rule_floors.py` + `src/tax_slabs.py` | SECONDARY explainable layer (NOT the headline). Donor rule engine re-implemented over the flat `entity_features.csv`: engine-cc/electricity/property/travel income FLOORS → `entity_floors.csv` + `factors.json`. |
-| 4e | `src/audit_report.py` | `AuditBuilder` → per-entity JSON + Markdown + **bilingual PDF** notice (Urdu header via Windows Arabic font + reshaper/bidi, English fallback). Headline = ensemble score; rule floors + per-link ER evidence as cross-check. `make_audits(top_n)`. |
+| 4d | `src/score_person.py` | INFERENCE on a new individual: loads frozen `model_bundle.pkl`, predicts deviation score + audit trail without retraining. |
+| 4e | `src/rule_floors.py` + `src/tax_slabs.py` | SECONDARY explainable layer (NOT the headline). Donor rule engine re-implemented over the flat `entity_features.csv`: engine-cc/electricity/property/travel income FLOORS → `entity_floors.csv` + `factors.json`. |
+| 4f | `src/audit_report.py` | `AuditBuilder` → per-entity JSON + Markdown + **bilingual PDF** notice (Urdu header via Windows Arabic font + reshaper/bidi, English fallback). Headline = ensemble score; rule floors + per-link ER evidence as cross-check. `make_audits(top_n)`. |
 | 5 | `app.py` | Streamlit dashboard: KPIs + 4 tabs — Overview (scatter w/ points slider + score/tax-gap charts), Flagged (named; rich audit: lifestyle factors + per-link cascade evidence + observations + named records + PDF), Proxy/benami (own-vs-network lift + named frontmen), Score-a-new-individual. (`src/live_match.py` remains as a standalone backend module; the Live-match tab was removed.) |
 | eval | `src/evaluate.py` | ONLY reader of ground truth. Target = `is_evader OR role=='proxy'`. |
-| run | `src/run_pipeline.py` | Runs stages 1–4e + eval. |
+| run | `src/run_pipeline.py` | Runs stages 1–4f + eval. |
 | test | `tests/` (pytest) | 42 tests: normalization (cascade primitives + DOB band), ER+detection thresholds, ensemble, graph, proxy claim, father/son + twins split, rule floors, audit, live match, the wall. `pytest tests/ -q`. |
 | bench | `src/benchmark.py` | Scalability: ER near-linear via blocking. |
 | pitch | `PITCH.md` | Round-2 material (value prop / market / demo script). |
