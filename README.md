@@ -101,9 +101,9 @@ set PYTHONUTF8=1                       # PowerShell: $env:PYTHONUTF8=1
 This recreates everything under `data/` (observable registries, ground truth,
 resolved entities, graph, scores, rule floors) and writes bilingual audit notices to
 `data/audit/`, then prints the ER + detection scorecard. At the default scale
-(`N_PERSONS = 10,000` → ~39k records) a full run takes **~25–30 seconds**, reproducing
-the exact dataset and metrics served by the live dashboard. (To stress-test at larger scale,
-`N_PERSONS` can be set to 50,000 in `src/generate_data.py` or via environment variable).
+(`N_PERSONS = 10,000` → ~39k records) a full run takes **~60 seconds**, closely reproducing
+the dataset and metrics served by the live dashboard. (To stress-test at larger scale,
+`N_PERSONS` can be set to 50,000 in `src/generate_data.py` or via the `N_PERSONS` environment variable).
 The embedding model is cached after the first download.
 
 > **Entity-resolution embeddings (Tier 2).** On first run the cascade downloads
@@ -205,8 +205,8 @@ with **blocking on high-cardinality keys** (exact CNIC, then DOB, then name
 metaphone), so only plausibly-matching records are ever compared. Measured
 (`python src/benchmark.py`):
 
-| Persons | Records | ER time | All-vs-all would be |
-|--------:|--------:|--------:|--------------------:|
+| Persons | Records | ER time | All-vs-all growth per doubling |
+|--------:|--------:|--------:|-------------------------------:|
 | 1,500 | 4,524 | 1.8 s | — |
 | 3,000 | 9,149 | 3.5 s | ×4 |
 | 6,000 | 18,387 | 11.6 s | ×4 |
